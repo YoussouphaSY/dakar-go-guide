@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Medal, TrendingUp } from "lucide-react";
+import { Trophy, Medal, TrendingUp, Clock, MapPin } from "lucide-react";
 
 const Results = () => {
   const [activeTab, setActiveTab] = useState("live");
@@ -88,38 +88,50 @@ const Results = () => {
           </TabsList>
 
           <TabsContent value="live" className="mt-6">
-            <div className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
               {liveResults.map((result) => (
-                <Card key={result.id} className="border-l-4 border-l-accent">
-                  <CardHeader>
+                <Card key={result.id} className="border-l-4 border-l-accent overflow-hidden hover:shadow-lg transition-all">
+                  <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
                     <div className="flex justify-between items-start">
-                      <div>
+                      <div className="space-y-2">
+                        <Badge variant="secondary" className="animate-pulse mb-2">
+                          🔴 {result.status}
+                        </Badge>
                         <CardTitle className="text-xl">{result.event}</CardTitle>
-                        <p className="text-sm text-muted-foreground mt-1">{result.sport}</p>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <MapPin className="h-4 w-4" />
+                          <span>{result.sport}</span>
+                        </div>
                       </div>
-                      <Badge variant="secondary" className="animate-pulse">
-                        🔴 {result.status}
-                      </Badge>
                     </div>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="pt-6">
                     <div className="space-y-3">
                       {result.participants.map((participant, idx) => (
                         <div
                           key={idx}
-                          className={`flex items-center justify-between p-3 rounded-lg ${getMedalColor(participant.position)}`}
+                          className={`flex items-center justify-between p-4 rounded-lg transition-all ${getMedalColor(participant.position)} ${
+                            participant.position === 1 ? 'ring-2 ring-secondary' : ''
+                          }`}
                         >
-                          <div className="flex items-center gap-3">
-                            <span className="font-bold text-lg w-6">{participant.position}</span>
+                          <div className="flex items-center gap-4">
+                            <div className={`flex items-center justify-center w-10 h-10 rounded-full font-bold text-lg ${
+                              participant.position === 1 ? 'bg-secondary text-secondary-foreground' : 'bg-background'
+                            }`}>
+                              {participant.position}
+                            </div>
                             <div>
-                              <p className="font-semibold">{participant.name}</p>
-                              <p className="text-sm opacity-80">{participant.country}</p>
+                              <p className="font-semibold text-base">{participant.name}</p>
+                              <p className="text-sm opacity-80 flex items-center gap-1">
+                                <span className="text-lg">{participant.country === 'SEN' ? '🇸🇳' : participant.country === 'GHA' ? '🇬🇭' : '🇲🇱'}</span>
+                                {participant.country}
+                              </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-lg">{participant.time}</span>
+                          <div className="flex items-center gap-3">
+                            <span className="font-bold text-2xl">{participant.time}</span>
                             {participant.position <= 3 && (
-                              <Medal className="h-5 w-5" />
+                              <Medal className="h-6 w-6 text-primary" />
                             )}
                           </div>
                         </div>
@@ -132,29 +144,37 @@ const Results = () => {
           </TabsContent>
 
           <TabsContent value="finished" className="mt-6">
-            <div className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
               {finishedResults.map((result) => (
-                <Card key={result.id}>
-                  <CardHeader>
+                <Card key={result.id} className="hover:shadow-md transition-all">
+                  <CardHeader className="bg-gradient-to-r from-muted/50 to-background">
                     <div className="flex justify-between items-start">
-                      <div>
+                      <div className="space-y-2">
+                        <Badge variant="outline" className="mb-2">{result.status}</Badge>
                         <CardTitle className="text-xl">{result.event}</CardTitle>
-                        <p className="text-sm text-muted-foreground mt-1">{result.sport}</p>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <MapPin className="h-4 w-4" />
+                          <span>{result.sport}</span>
+                        </div>
                       </div>
-                      <Badge variant="outline">{result.status}</Badge>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
+                  <CardContent className="pt-6">
+                    <div className="space-y-4">
                       {result.score && (
-                        <p className="text-lg font-semibold">{result.score}</p>
+                        <div className="p-4 bg-muted/50 rounded-lg">
+                          <p className="text-lg font-semibold text-center">{result.score}</p>
+                        </div>
                       )}
-                      <div className="flex items-center gap-2 text-success">
-                        <Trophy className="h-5 w-5" />
-                        <span className="font-semibold">Vainqueur: {result.winner}</span>
+                      <div className="flex items-center gap-3 p-4 bg-success/10 rounded-lg border border-success/20">
+                        <Trophy className="h-6 w-6 text-success flex-shrink-0" />
+                        <div>
+                          <p className="text-sm text-muted-foreground">Vainqueur</p>
+                          <p className="font-semibold text-lg">{result.winner}</p>
+                        </div>
                         {result.medal && (
-                          <Badge className="bg-secondary text-secondary-foreground">
-                            {result.medal}
+                          <Badge className="bg-secondary text-secondary-foreground ml-auto">
+                            🏅 {result.medal}
                           </Badge>
                         )}
                       </div>
@@ -167,39 +187,52 @@ const Results = () => {
         </Tabs>
 
         {/* Medal Count Section */}
-        <Card className="mt-8">
-          <CardHeader>
+        <Card className="mt-8 overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10">
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5" />
               Tableau des Médailles
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="space-y-3">
               {[
-                { country: "Sénégal", gold: 12, silver: 8, bronze: 6 },
-                { country: "Ghana", gold: 9, silver: 11, bronze: 7 },
-                { country: "Côte d'Ivoire", gold: 8, silver: 9, bronze: 10 },
-                { country: "Mali", gold: 7, silver: 6, bronze: 8 },
+                { country: "Sénégal", flag: "🇸🇳", gold: 12, silver: 8, bronze: 6, total: 26 },
+                { country: "Ghana", flag: "🇬🇭", gold: 9, silver: 11, bronze: 7, total: 27 },
+                { country: "Côte d'Ivoire", flag: "🇨🇮", gold: 8, silver: 9, bronze: 10, total: 27 },
+                { country: "Mali", flag: "🇲🇱", gold: 7, silver: 6, bronze: 8, total: 21 },
               ].map((country, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <span className="font-bold text-lg w-6">{idx + 1}</span>
-                    <span className="font-semibold">{country.country}</span>
+                <div 
+                  key={idx} 
+                  className={`flex items-center justify-between p-4 rounded-lg transition-all hover:scale-[1.02] ${
+                    idx === 0 ? 'bg-gradient-to-r from-secondary/20 to-secondary/10 ring-2 ring-secondary/30' : 'bg-muted hover:bg-muted/80'
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`flex items-center justify-center w-10 h-10 rounded-full font-bold text-lg ${
+                      idx === 0 ? 'bg-secondary text-secondary-foreground' : 'bg-background'
+                    }`}>
+                      {idx + 1}
+                    </div>
+                    <span className="text-2xl">{country.flag}</span>
+                    <div>
+                      <span className="font-semibold text-lg">{country.country}</span>
+                      <p className="text-sm text-muted-foreground">Total: {country.total} médailles</p>
+                    </div>
                   </div>
-                  <div className="flex gap-4">
-                    <span className="flex items-center gap-1">
-                      <span className="font-bold text-secondary">{country.gold}</span>
-                      <span className="text-xs">🥇</span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="font-bold">{country.silver}</span>
-                      <span className="text-xs">🥈</span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="font-bold text-accent">{country.bronze}</span>
-                      <span className="text-xs">🥉</span>
-                    </span>
+                  <div className="flex gap-6">
+                    <div className="flex flex-col items-center">
+                      <span className="text-2xl">🥇</span>
+                      <span className="font-bold text-secondary text-lg">{country.gold}</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-2xl">🥈</span>
+                      <span className="font-bold text-lg">{country.silver}</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-2xl">🥉</span>
+                      <span className="font-bold text-accent text-lg">{country.bronze}</span>
+                    </div>
                   </div>
                 </div>
               ))}
