@@ -1,112 +1,227 @@
-import { Link } from "react-router-dom";
-import { Calendar, Trophy, MessageCircle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Calendar, Trophy, MessageCircle, User, MapPin, Utensils, Camera, Bus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import heroImage from "@/assets/hero-dakar.jpg";
+import heroImage from "@/assets/hero-dakar-tourism.jpg";
+import restaurantImg from "@/assets/restaurant-senegal.jpg";
+import transportImg from "@/assets/transport-dakar.jpg";
 
 const Index = () => {
-  const features = [
-    {
-      icon: Calendar,
-      title: "Calendrier Complet",
-      description: "Consultez le programme de toutes les compétitions avec des filtres personnalisés",
-      link: "/events",
-    },
-    {
-      icon: Trophy,
-      title: "Résultats en Temps Réel",
-      description: "Suivez les scores et résultats instantanément avec notifications",
-      link: "/results",
-    },
-    {
-      icon: MessageCircle,
-      title: "Assistant IA",
-      description: "Posez vos questions sur les événements, horaires et transports",
-      link: "/assistant",
-    },
-    {
-      icon: Sparkles,
-      title: "Recommandations",
-      description: "Découvrez des activités culturelles personnalisées selon vos préférences",
-      link: "/profile",
-    },
-  ];
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-hero opacity-90" />
+      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})`, opacity: 0.3 }}
-        />
-        <div className="container relative z-10 py-24 md:py-32">
-          <div className="max-w-3xl mx-auto text-center text-primary-foreground">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Jeux Olympiques de la Jeunesse
-              <span className="block mt-2">Dakar 2026</span>
-            </h1>
-            <p className="text-lg md:text-xl mb-8 opacity-90">
-              Votre assistant complet pour vivre l'expérience olympique à Dakar.
-              Découvrez les événements, suivez les résultats et planifiez votre séjour.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild variant="hero" size="lg">
-                <Link to="/events">Explorer les Événements</Link>
-              </Button>
-              <Button asChild variant="secondary" size="lg">
-                <Link to="/assistant">Parler à l'Assistant</Link>
-              </Button>
-            </div>
+          style={{ backgroundImage: `url(${heroImage})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-hero opacity-80" />
+        </div>
+        
+        <div className="relative z-10 text-center space-y-6 px-4 max-w-5xl mx-auto">
+          <div className="inline-block px-6 py-2 bg-secondary/20 backdrop-blur-sm rounded-full border border-secondary/30 mb-4">
+            <span className="text-white font-semibold">✨ Jeux Olympiques de la Jeunesse 2026</span>
+          </div>
+          <h1 className="text-6xl md:text-8xl font-bold text-white animate-fade-in tracking-tight">
+            Bienvenue à Dakar
+          </h1>
+          <p className="text-2xl md:text-3xl text-white/90 max-w-3xl mx-auto font-light">
+            Votre guide intelligent pour les JOJ 2026 et la découverte de Dakar
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+            <Button 
+              size="lg" 
+              className="text-lg px-10 py-6 bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all shadow-xl"
+              onClick={() => navigate('/events')}
+            >
+              <Calendar className="mr-2 h-5 w-5" />
+              Programme des Jeux
+            </Button>
+            <Button 
+              size="lg"
+              onClick={() => navigate('/discover')}
+              className="text-lg px-10 py-6 bg-secondary hover:bg-secondary/90 hover:scale-105 transition-all shadow-xl"
+            >
+              <MapPin className="mr-2 h-5 w-5" />
+              Découvrir Dakar
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="container py-16 md:py-24">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Tout ce dont vous avez besoin
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Une application complète pour ne rien manquer des Jeux Olympiques de la Jeunesse
-          </p>
-        </div>
+      {/* Features Section - Olympic */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Jeux Olympiques de la Jeunesse</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Suivez tous les événements sportifs en direct
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group border-t-4 border-t-primary" onClick={() => navigate('/events')}>
+              <CardHeader>
+                <div className="w-14 h-14 bg-gradient-card rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Calendar className="h-7 w-7 text-white" />
+                </div>
+                <CardTitle>Programme</CardTitle>
+                <CardDescription>
+                  Calendrier complet des compétitions avec filtres par sport et lieu
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <Link key={index} to={feature.link}>
-                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-gradient-card">
-                  <CardHeader>
-                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                      <Icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <CardTitle>{feature.title}</CardTitle>
-                    <CardDescription>{feature.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              </Link>
-            );
-          })}
+            <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group border-t-4 border-t-accent" onClick={() => navigate('/results')}>
+              <CardHeader>
+                <div className="w-14 h-14 bg-gradient-live rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Trophy className="h-7 w-7 text-white" />
+                </div>
+                <CardTitle>Résultats Live</CardTitle>
+                <CardDescription>
+                  Scores en temps réel, classements et tableau des médailles
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group border-t-4 border-t-secondary" onClick={() => navigate('/assistant')}>
+              <CardHeader>
+                <div className="w-14 h-14 bg-secondary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <MessageCircle className="h-7 w-7 text-secondary-foreground" />
+                </div>
+                <CardTitle>Assistant IA</CardTitle>
+                <CardDescription>
+                  Questions en français, wolof, anglais ou pulaar
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group border-t-4 border-t-muted-foreground" onClick={() => navigate('/profile')}>
+              <CardHeader>
+                <div className="w-14 h-14 bg-muted rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <User className="h-7 w-7" />
+                </div>
+                <CardTitle>Mon Profil</CardTitle>
+                <CardDescription>
+                  Personnalisez vos préférences et notifications
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Tourism Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-muted/50 to-background">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Découvrez Dakar</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Explorez la ville pendant votre séjour
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="overflow-hidden hover:shadow-2xl transition-all cursor-pointer group" onClick={() => navigate('/discover')}>
+              <div className="h-48 overflow-hidden">
+                <img 
+                  src={restaurantImg} 
+                  alt="Restaurants de Dakar"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <CardHeader>
+                <div className="w-12 h-12 bg-red-500/10 rounded-lg flex items-center justify-center mb-3">
+                  <Utensils className="h-6 w-6 text-red-500" />
+                </div>
+                <CardTitle>Restaurants</CardTitle>
+                <CardDescription>
+                  Découvrez la gastronomie sénégalaise authentique
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="overflow-hidden hover:shadow-2xl transition-all cursor-pointer group" onClick={() => navigate('/discover')}>
+              <div className="h-48 overflow-hidden bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
+                <Camera className="h-24 w-24 text-blue-500" />
+              </div>
+              <CardHeader>
+                <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-3">
+                  <Camera className="h-6 w-6 text-blue-500" />
+                </div>
+                <CardTitle>Attractions</CardTitle>
+                <CardDescription>
+                  Monuments, musées et sites historiques incontournables
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="overflow-hidden hover:shadow-2xl transition-all cursor-pointer group" onClick={() => navigate('/discover')}>
+              <div className="h-48 overflow-hidden">
+                <img 
+                  src={transportImg} 
+                  alt="Transport à Dakar"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <CardHeader>
+                <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-3">
+                  <Bus className="h-6 w-6 text-green-500" />
+                </div>
+                <CardTitle>Transport</CardTitle>
+                <CardDescription>
+                  Infos trafic et moyens de transport en temps réel
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg"
+              onClick={() => navigate('/discover')}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <MapPin className="mr-2 h-5 w-5" />
+              Voir la Carte Interactive
+            </Button>
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-muted py-16">
-        <div className="container text-center">
-          <h2 className="text-3xl font-bold mb-4">Prêt à vivre l'expérience olympique ?</h2>
-          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Créez votre profil pour recevoir des recommandations personnalisées et ne manquer aucun moment important
+      <section className="py-20 px-4 bg-primary text-white">
+        <div className="container mx-auto text-center">
+          <h2 className="text-5xl font-bold mb-6">
+            Vivez Dakar 2026 pleinement
+          </h2>
+          <p className="text-2xl mb-10 text-white/90 max-w-3xl mx-auto">
+            Assistant intelligent, résultats live, guide touristique - Tout en un seul endroit
           </p>
-          <Button asChild variant="hero" size="lg">
-            <Link to="/profile">Configurer mon Profil</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg"
+              onClick={() => navigate('/assistant')}
+              className="text-lg px-10 py-6 bg-white text-primary hover:bg-white/90"
+            >
+              <MessageCircle className="mr-2 h-5 w-5" />
+              Parler à l'Assistant
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              onClick={() => navigate('/profile')}
+              className="text-lg px-10 py-6 bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary"
+            >
+              <User className="mr-2 h-5 w-5" />
+              Créer mon Profil
+            </Button>
+          </div>
         </div>
       </section>
     </div>

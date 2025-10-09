@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp } from "lucide-react";
+import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -14,6 +14,7 @@ const Header = () => {
     { path: "/", label: "Accueil", icon: null },
     { path: "/events", label: "Événements", icon: Calendar },
     { path: "/results", label: "Résultats", icon: Trophy },
+    { path: "/discover", label: "Découvrir", icon: MapPin },
     { path: "/records", label: "Records", icon: TrendingUp },
     { path: "/assistant", label: "Assistant IA", icon: MessageCircle },
     { path: "/profile", label: "Profil", icon: User },

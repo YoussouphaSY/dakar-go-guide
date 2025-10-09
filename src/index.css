@@ -8,48 +8,40 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Olympic-inspired color palette */
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
-
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    /* Deep Olympic Blue */
-    --primary: 220 70% 45%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 220 80% 60%;
-
-    /* Gold/Yellow accent */
-    --secondary: 45 95% 55%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 210 30% 93%;
-    --muted-foreground: 220 9% 46%;
-
-    /* Vibrant red accent */
-    --accent: 5 85% 55%;
+    --popover-foreground: 222.2 84% 4.9%;
+    
+    /* Modern Sports Platform - SofaScore inspired */
+    --primary: 222 47% 20%; /* Deep Navy Blue */
+    --primary-foreground: 210 40% 98%;
+    --primary-glow: 217 91% 60%; /* Bright Blue accent */
+    
+    --secondary: 217 91% 60%; /* Bright Blue */
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 142 76% 45%; /* Green for live/success states */
     --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 13% 88%;
-    --input: 220 13% 88%;
-    --ring: 220 70% 45%;
-
-    --radius: 0.75rem;
-
-    /* Success green */
-    --success: 142 76% 36%;
+    
+    --success: 142 76% 45%;
     --success-foreground: 0 0% 100%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --muted: 220 13% 95%;
+    --muted-foreground: 220 9% 46%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
+    --radius: 0.5rem;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(220, 70%, 45%) 0%, hsl(220, 80%, 60%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(210, 30%, 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(222, 47%, 20%) 0%, hsl(217, 91%, 60%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(222, 47%, 25%) 0%, hsl(217, 91%, 65%) 100%);
+    --gradient-live: linear-gradient(90deg, hsl(142, 76%, 45%) 0%, hsl(142, 76%, 55%) 100%);
     
     /* Shadows */
     --shadow-sm: 0 2px 8px hsla(220, 70%, 45%, 0.08);
@@ -62,40 +54,37 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222 47% 8%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
-
-    --card: 222 47% 11%;
+    --card: 222 47% 15%;
     --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 11%;
+    --popover: 222 47% 15%;
     --popover-foreground: 210 40% 98%;
-
-    --primary: 220 80% 60%;
+    
+    --primary: 217 91% 60%;
     --primary-foreground: 222 47% 11%;
-    --primary-glow: 220 85% 70%;
-
-    --secondary: 45 95% 60%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 5 85% 60%;
+    --primary-glow: 217 91% 70%;
+    
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 142 76% 50%;
     --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 63% 50%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217 33% 20%;
-    --input: 217 33% 20%;
-    --ring: 220 80% 60%;
-
-    --success: 142 76% 45%;
+    
+    --success: 142 76% 50%;
     --success-foreground: 0 0% 100%;
-
-    --gradient-hero: linear-gradient(135deg, hsl(220, 80%, 30%) 0%, hsl(220, 85%, 45%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(222, 47%, 11%) 0%, hsl(217, 33%, 14%) 100%);
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --muted: 222 47% 20%;
+    --muted-foreground: 220 9% 60%;
+    --border: 222 47% 20%;
+    --input: 222 47% 20%;
+    --ring: 217 91% 60%;
+    
+    --gradient-hero: linear-gradient(135deg, hsl(222, 47%, 15%) 0%, hsl(217, 91%, 60%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(222, 47%, 20%) 0%, hsl(217, 91%, 65%) 100%);
+    --gradient-live: linear-gradient(90deg, hsl(142, 76%, 50%) 0%, hsl(142, 76%, 60%) 100%);
     
     --shadow-sm: 0 2px 8px hsla(0, 0%, 0%, 0.3);
     --shadow-md: 0 8px 24px hsla(0, 0%, 0%, 0.4);
