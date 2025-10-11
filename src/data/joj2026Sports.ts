@@ -5,6 +5,7 @@ export interface Sport {
   name: string;
   category: "competition" | "mobilisation";
   emoji: string;
+  image?: string;
   color: string;
   gradient: string;
   venue: string;
@@ -28,6 +29,7 @@ export const joj2026Sports: Sport[] = [
     name: "Athlétisme",
     category: "competition",
     emoji: "🏃",
+    image: "/src/assets/sports/athletisme.jpg",
     color: "#FF6B6B",
     gradient: "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)",
     venue: "Stade Léopold Sédar Senghor, Dakar",
@@ -59,6 +61,7 @@ export const joj2026Sports: Sport[] = [
     name: "Badminton",
     category: "competition",
     emoji: "🏸",
+    image: "/src/assets/sports/badminton.jpg",
     color: "#A8E6CF",
     gradient: "linear-gradient(135deg, #A8E6CF 0%, #88D8B0 100%)",
     venue: "Arena Dakar",
@@ -90,6 +93,7 @@ export const joj2026Sports: Sport[] = [
     name: "Basket-ball 3x3",
     category: "competition",
     emoji: "🏀",
+    image: "/src/assets/sports/basketball.jpg",
     color: "#FF8B94",
     gradient: "linear-gradient(135deg, #FF8B94 0%, #FF6B6B 100%)",
     venue: "Place du Souvenir, Dakar",
@@ -105,6 +109,7 @@ export const joj2026Sports: Sport[] = [
     name: "Beach-volley",
     category: "competition",
     emoji: "🏐",
+    image: "/src/assets/sports/beach-volley.jpg",
     color: "#FFA07A",
     gradient: "linear-gradient(135deg, #FFA07A 0%, #FF7F50 100%)",
     venue: "Plage de Saly",
@@ -120,6 +125,7 @@ export const joj2026Sports: Sport[] = [
     name: "Breaking",
     category: "competition",
     emoji: "🕺",
+    image: "/src/assets/sports/breaking.jpg",
     color: "#C77DFF",
     gradient: "linear-gradient(135deg, #C77DFF 0%, #9D4EDD 100%)",
     venue: "Scène urbaine Dakar",
@@ -135,6 +141,7 @@ export const joj2026Sports: Sport[] = [
     name: "Boxe",
     category: "competition",
     emoji: "🥊",
+    image: "/src/assets/sports/boxe.jpg",
     color: "#E63946",
     gradient: "linear-gradient(135deg, #E63946 0%, #C1121F 100%)",
     venue: "Arena Nationale, Diamniadio",
@@ -150,6 +157,7 @@ export const joj2026Sports: Sport[] = [
     name: "Cyclisme sur route",
     category: "competition",
     emoji: "🚴",
+    image: "/src/assets/sports/cyclisme.jpg",
     color: "#06FFA5",
     gradient: "linear-gradient(135deg, #06FFA5 0%, #00CC88 100%)",
     venue: "Circuit Dakar-Saly",
@@ -165,6 +173,7 @@ export const joj2026Sports: Sport[] = [
     name: "Rugby à sept",
     category: "competition",
     emoji: "🏉",
+    image: "/src/assets/sports/rugby.jpg",
     color: "#2D6A4F",
     gradient: "linear-gradient(135deg, #2D6A4F 0%, #1B4332 100%)",
     venue: "Stade Demba Diop, Dakar",
@@ -180,6 +189,7 @@ export const joj2026Sports: Sport[] = [
     name: "Skateboard",
     category: "competition",
     emoji: "🛹",
+    image: "/src/assets/sports/skateboard.jpg",
     color: "#F72585",
     gradient: "linear-gradient(135deg, #F72585 0%, #B5179E 100%)",
     venue: "Skatepark urbain Diamniadio",
@@ -195,6 +205,7 @@ export const joj2026Sports: Sport[] = [
     name: "Natation",
     category: "competition",
     emoji: "🏊",
+    image: "/src/assets/sports/natation.jpg",
     color: "#4CC9F0",
     gradient: "linear-gradient(135deg, #4CC9F0 0%, #3A8FB7 100%)",
     venue: "Centre Aquatique Olympique, Diamniadio",
@@ -211,6 +222,7 @@ export const joj2026Sports: Sport[] = [
     name: "Taekwondo",
     category: "competition",
     emoji: "🥋",
+    image: "/src/assets/sports/taekwondo.jpg",
     color: "#F94144",
     gradient: "linear-gradient(135deg, #F94144 0%, #D62828 100%)",
     venue: "Dojang National, Dakar",
@@ -382,6 +394,7 @@ export const joj2026Sports: Sport[] = [
     name: "Surf",
     category: "mobilisation",
     emoji: "🏄‍♂️",
+    image: "/src/assets/sports/surf.jpg",
     color: "#00BBF9",
     gradient: "linear-gradient(135deg, #00BBF9 0%, #0077B6 100%)",
     venue: "Plage de Yoff",

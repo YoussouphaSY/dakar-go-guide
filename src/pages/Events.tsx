@@ -1,26 +1,37 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Calendar, MapPin, Clock, Play, Trophy, Sparkles } from "lucide-react";
+import { Search, Calendar, MapPin, Clock, Play, Trophy, Sparkles, Filter } from "lucide-react";
 import { joj2026Sports, getCompetitionSports, getMobilisationSports } from "@/data/joj2026Sports";
 import { useNavigate } from "react-router-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Events = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("competition");
+  const [venueFilter, setVenueFilter] = useState<string>("all");
   
   const competitionSports = getCompetitionSports();
   const mobilisationSports = getMobilisationSports();
 
-  const filteredSports = (activeTab === "competition" ? competitionSports : mobilisationSports).filter(sport =>
-    sport.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sport.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSports = useMemo(() => {
+    const currentSports = activeTab === "competition" ? competitionSports : mobilisationSports;
+    
+    return currentSports.filter(sport => {
+      const matchesSearch = sport.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        sport.description.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesVenue = venueFilter === "all" || 
+        sport.venue.toLowerCase().includes(venueFilter.toLowerCase());
+      
+      return matchesSearch && matchesVenue;
+    });
+  }, [activeTab, searchTerm, venueFilter, competitionSports, mobilisationSports]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -43,15 +54,32 @@ const Events = () => {
       </div>
 
       <div className="container py-8">
-        {/* Search Bar */}
-        <div className="relative mb-8">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input
-            placeholder="Rechercher un sport..."
-            className="pl-12 h-14 text-lg"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        {/* Search and Filters */}
+        <div className="flex flex-col md:flex-row gap-4 mb-8">
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              placeholder="Rechercher un sport..."
+              className="pl-12 h-14 text-lg"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          
+          <Select value={venueFilter} onValueChange={setVenueFilter}>
+            <SelectTrigger className="w-full md:w-[280px] h-14">
+              <div className="flex items-center gap-2">
+                <Filter className="h-5 w-5" />
+                <SelectValue placeholder="Filtrer par lieu" />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les lieux</SelectItem>
+              <SelectItem value="dakar">🏙️ Dakar</SelectItem>
+              <SelectItem value="diamniadio">🏟️ Diamniadio</SelectItem>
+              <SelectItem value="saly">🏖️ Saly</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Tabs */}
@@ -76,19 +104,34 @@ const Events = () => {
                   style={{ borderTopColor: sport.color }}
                   onClick={() => navigate(`/events/${sport.id}`)}
                 >
-                  {/* Sport Icon Header */}
+                  {/* Sport Image Header */}
                   <div 
-                    className="h-32 flex items-center justify-center relative overflow-hidden"
-                    style={{ background: sport.gradient }}
+                    className="h-48 relative overflow-hidden"
                   >
-                    <div className="text-7xl group-hover:scale-110 transition-transform duration-300">
-                      {sport.emoji}
-                    </div>
-                    {sport.category === "competition" && sport.videoUrl && (
-                      <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm rounded-full p-2">
-                        <Play className="h-4 w-4 text-white" />
+                    {sport.image ? (
+                      <img 
+                        src={sport.image} 
+                        alt={sport.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div 
+                        className="h-full flex items-center justify-center"
+                        style={{ background: sport.gradient }}
+                      >
+                        <div className="text-7xl group-hover:scale-110 transition-transform duration-300">
+                          {sport.emoji}
+                        </div>
                       </div>
                     )}
+                    {sport.category === "competition" && sport.videoUrl && (
+                      <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm rounded-full p-2.5 shadow-lg">
+                        <Play className="h-5 w-5 text-white" />
+                      </div>
+                    )}
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    />
                   </div>
 
                   <CardHeader>
