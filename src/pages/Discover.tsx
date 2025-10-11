@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,8 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, Utensils, Bus, Camera, Search, Navigation, Star, Clock } from "lucide-react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 
 // Mock data for places
 const restaurants = [
@@ -34,9 +32,6 @@ const Discover = () => {
   const [activeTab, setActiveTab] = useState("restaurants");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const markers = useRef<mapboxgl.Marker[]>([]);
 
   const getCurrentData = () => {
     switch (activeTab) {
@@ -52,58 +47,13 @@ const Discover = () => {
     place.type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  useEffect(() => {
-    if (!mapContainer.current) return;
+  // Using Google Maps Embed instead of Mapbox for better visual
+  const getGoogleMapsEmbedUrl = () => {
+    const places = filteredData.map(p => `${p.lat},${p.lng}`).join('|');
+    const center = filteredData.length > 0 ? `${filteredData[0].lat},${filteredData[0].lng}` : '14.7167,-17.4677';
+    return `https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dN51c_e_cPvCCg&center=${center}&zoom=12`;
+  };
 
-    // Initialize map
-    mapboxgl.accessToken = 'pk.eyJ1IjoibG92YWJsZSIsImEiOiJjbTRva21vMmgwNGpiMmpzOTJsa29sbGt5In0.4R1pT8g5BKZiLLiwjN8vXQ';
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-17.4677, 14.7167], // Dakar
-      zoom: 12,
-    });
-
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
-    return () => {
-      map.current?.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!map.current) return;
-
-    // Clear existing markers
-    markers.current.forEach(marker => marker.remove());
-    markers.current = [];
-
-    // Add new markers
-    filteredData.forEach(place => {
-      const el = document.createElement('div');
-      el.className = 'custom-marker';
-      el.style.width = '32px';
-      el.style.height = '32px';
-      el.style.borderRadius = '50%';
-      el.style.backgroundColor = activeTab === 'restaurants' ? '#EF4444' : 
-                                 activeTab === 'attractions' ? '#3B82F6' : '#10B981';
-      el.style.border = '3px solid white';
-      el.style.cursor = 'pointer';
-      el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
-
-      const marker = new mapboxgl.Marker(el)
-        .setLngLat([place.lng, place.lat])
-        .addTo(map.current!);
-
-      el.addEventListener('click', () => {
-        setSelectedPlace(place);
-        map.current?.flyTo({ center: [place.lng, place.lat], zoom: 14 });
-      });
-
-      markers.current.push(marker);
-    });
-  }, [filteredData, activeTab]);
 
   const getIcon = () => {
     switch (activeTab) {
@@ -156,10 +106,47 @@ const Discover = () => {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            {/* Map Section */}
+            {/* Map Section - Google Maps Embed */}
             <div className="lg:col-span-2">
-              <Card className="overflow-hidden h-[600px]">
-                <div ref={mapContainer} className="w-full h-full" />
+              <Card className="overflow-hidden h-[600px] relative">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={getGoogleMapsEmbedUrl()}
+                  className="rounded-lg"
+                />
+                {selectedPlace && (
+                  <div className="absolute top-4 left-4 right-4 max-w-sm">
+                    <Card className="shadow-2xl border-2" style={{ borderColor: 
+                      activeTab === 'restaurants' ? '#EF4444' : 
+                      activeTab === 'attractions' ? '#3B82F6' : '#10B981' 
+                    }}>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          {getIcon()}
+                          {selectedPlace.name}
+                        </CardTitle>
+                        <Badge variant="secondary">{selectedPlace.type}</Badge>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm mb-3">{selectedPlace.description}</p>
+                        <Button 
+                          className="w-full"
+                          onClick={() => {
+                            window.open(`https://www.google.com/maps/dir/?api=1&destination=${selectedPlace.lat},${selectedPlace.lng}`, '_blank');
+                          }}
+                        >
+                          <MapPin className="mr-2 h-4 w-4" />
+                          Y aller
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
               </Card>
             </div>
 
@@ -173,7 +160,6 @@ const Discover = () => {
                   }`}
                   onClick={() => {
                     setSelectedPlace(place);
-                    map.current?.flyTo({ center: [place.lng, place.lat], zoom: 14 });
                   }}
                 >
                   <CardHeader className="pb-3">
