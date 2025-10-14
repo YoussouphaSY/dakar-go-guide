@@ -1,9 +1,10 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Award, TrendingUp, Clock, Zap, Star, Medal } from "lucide-react";
-import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { Medal, Trophy, Award, Clock, Zap, Star, TrendingUp } from "lucide-react";
 
 const Records = () => {
   const athleticsRecords = [
@@ -14,7 +15,7 @@ const Records = () => {
       record: "9.58s",
       year: 2009,
       location: "Berlin",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "100m Femmes",
@@ -23,7 +24,7 @@ const Records = () => {
       record: "10.49s",
       year: 1988,
       location: "Indianapolis",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "Saut en longueur Hommes",
@@ -32,7 +33,7 @@ const Records = () => {
       record: "8.95m",
       year: 1991,
       location: "Tokyo",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "Saut en hauteur Femmes",
@@ -41,7 +42,7 @@ const Records = () => {
       record: "2.09m",
       year: 1987,
       location: "Rome",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "Marathon Hommes",
@@ -50,7 +51,7 @@ const Records = () => {
       record: "2:01:09",
       year: 2022,
       location: "Berlin",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "400m Haies Hommes",
@@ -59,7 +60,7 @@ const Records = () => {
       record: "45.94s",
       year: 2021,
       location: "Tokyo",
-      rank: "🥇",
+      medal: "gold",
     },
   ];
 
@@ -71,7 +72,7 @@ const Records = () => {
       record: "20.91s",
       year: 2009,
       location: "São Paulo",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "50m Nage Libre Femmes",
@@ -80,7 +81,7 @@ const Records = () => {
       record: "23.61s",
       year: 2017,
       location: "Budapest",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "100m Papillon Hommes",
@@ -89,7 +90,7 @@ const Records = () => {
       record: "49.45s",
       year: 2019,
       location: "Gwangju",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "200m Dos Femmes",
@@ -98,7 +99,7 @@ const Records = () => {
       record: "2:03.14",
       year: 2021,
       location: "Tokyo",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "400m 4 Nages Hommes",
@@ -107,7 +108,7 @@ const Records = () => {
       record: "4:02.50",
       year: 2024,
       location: "Paris",
-      rank: "🥇",
+      medal: "gold",
     },
   ];
 
@@ -120,7 +121,7 @@ const Records = () => {
       year: 2024,
       location: "Dakar",
       category: "Nouveau",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "Basketball 3x3",
@@ -130,7 +131,7 @@ const Records = () => {
       year: 2024,
       location: "Accra",
       category: "Série",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "Natation 4x100m Relais",
@@ -140,7 +141,7 @@ const Records = () => {
       year: 2025,
       location: "Dakar",
       category: "National",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "Skateboard Street",
@@ -150,7 +151,7 @@ const Records = () => {
       year: 2025,
       location: "Dakar",
       category: "Nouveau",
-      rank: "🥇",
+      medal: "gold",
     },
     {
       event: "Breaking Battle",
@@ -160,37 +161,43 @@ const Records = () => {
       year: 2025,
       location: "Dakar",
       category: "Nouveau",
-      rank: "🥇",
+      medal: "gold",
     },
   ];
 
-  const RecordCard = ({ record, index }: { record: any; index: number }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ scale: 1.03, y: -5 }}
-    >
-      <Card className="relative overflow-hidden hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-primary">
-        {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-card opacity-5" />
-        
-        <CardHeader className="relative">
-          <div className="flex justify-between items-start">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-4xl">{record.rank}</span>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary">
-                    #{index + 1}
-                  </Badge>
-                  {record.category && (
-                    <Badge variant="default" className="bg-secondary text-secondary-foreground">
-                      {record.category}
+  const RecordCard = ({ record, index }: { record: any; index: number }) => {
+    const MedalIcon = record.medal === "gold" ? Trophy : record.medal === "silver" ? Award : Medal;
+    const medalColor = record.medal === "gold" ? "text-secondary" : 
+                      record.medal === "silver" ? "text-gray-400" : 
+                      "text-bronze";
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.1 }}
+        whileHover={{ scale: 1.03, y: -5 }}
+      >
+        <Card className="relative overflow-hidden hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-primary">
+          {/* Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-card opacity-5" />
+          
+          <CardHeader className="relative">
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-3">
+                  <MedalIcon className={`h-10 w-10 ${medalColor}`} />
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary">
+                      #{index + 1}
                     </Badge>
-                  )}
+                    {record.category && (
+                      <Badge variant="default" className="bg-secondary text-secondary-foreground">
+                        {record.category}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
-              </div>
               <CardTitle className="text-xl font-bold">{record.event}</CardTitle>
             </div>
             <motion.div
@@ -244,7 +251,8 @@ const Records = () => {
         </CardContent>
       </Card>
     </motion.div>
-  );
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">

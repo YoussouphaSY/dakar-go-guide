@@ -1,6 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
-import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
   Sheet,
   SheetContent,
@@ -9,6 +13,30 @@ import {
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    toast({
+      title: "Déconnecté",
+      description: "À bientôt aux JOJ Dakar 2026!",
+    });
+    navigate("/");
+  };
 
   const navItems = [
     { path: "/", label: "Accueil", icon: null },
@@ -17,7 +45,6 @@ const Header = () => {
     { path: "/discover", label: "Découvrir", icon: MapPin },
     { path: "/records", label: "Records", icon: TrendingUp },
     { path: "/assistant", label: "Assistant IA", icon: MessageCircle },
-    { path: "/profile", label: "Profil", icon: User },
   ];
 
   const NavLinks = ({ mobile = false }: { mobile?: boolean }) => (
@@ -55,6 +82,36 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2">
           <NavLinks />
+          {user ? (
+            <>
+              <Link to="/profile">
+                <Button
+                  variant={location.pathname === "/profile" ? "default" : "ghost"}
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <User className="h-4 w-4" />
+                  <span>Profil</span>
+                </Button>
+              </Link>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Déconnexion</span>
+              </Button>
+            </>
+          ) : (
+            <Link to="/auth">
+              <Button variant="default" size="sm" className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                <span>Connexion</span>
+              </Button>
+            </Link>
+          )}
         </nav>
 
         {/* Mobile Navigation */}
@@ -67,6 +124,34 @@ const Header = () => {
           <SheetContent side="right">
             <nav className="flex flex-col gap-4 mt-8">
               <NavLinks mobile />
+              {user ? (
+                <>
+                  <Link to="/profile" className="w-full">
+                    <Button
+                      variant={location.pathname === "/profile" ? "default" : "ghost"}
+                      className="w-full flex items-center gap-2 text-lg"
+                    >
+                      <User className="h-4 w-4" />
+                      <span>Profil</span>
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="ghost"
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-2 text-lg"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Déconnexion</span>
+                  </Button>
+                </>
+              ) : (
+                <Link to="/auth" className="w-full">
+                  <Button variant="default" className="w-full flex items-center gap-2 text-lg">
+                    <User className="h-4 w-4" />
+                    <span>Connexion</span>
+                  </Button>
+                </Link>
+              )}
             </nav>
           </SheetContent>
         </Sheet>

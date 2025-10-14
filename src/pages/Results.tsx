@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Clock, ChevronRight } from "lucide-react";
+import { Trophy, Clock, ChevronRight, Medal, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Results = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("live");
 
   const liveMatches = [
@@ -122,6 +124,7 @@ const Results = () => {
         <Button 
           variant="ghost" 
           className="w-full mt-3 group-hover:bg-primary group-hover:text-primary-foreground transition-all"
+          onClick={() => navigate(`/match/${match.id}`)}
         >
           Voir détails
           <ChevronRight className="h-4 w-4 ml-2" />
@@ -217,15 +220,15 @@ const Results = () => {
                   </div>
                   <div className="flex gap-6 items-center">
                     <div className="text-center">
-                      <div className="text-2xl mb-1">🥇</div>
+                      <Trophy className="h-6 w-6 mx-auto mb-1 text-secondary" />
                       <div className="font-bold text-lg">{country.gold}</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl mb-1">🥈</div>
+                      <Award className="h-6 w-6 mx-auto mb-1 text-gray-400" />
                       <div className="font-bold text-lg">{country.silver}</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl mb-1">🥉</div>
+                      <Medal className="h-6 w-6 mx-auto mb-1 text-bronze" />
                       <div className="font-bold text-lg">{country.bronze}</div>
                     </div>
                   </div>

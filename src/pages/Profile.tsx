@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,12 +13,49 @@ import { User, Bell, Heart, Settings } from "lucide-react";
 
 const Profile = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
-    name: "Utilisateur",
-    email: "user@example.com",
+    name: "",
+    email: "",
     notifications: true,
     emailNotifications: false,
   });
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        navigate("/auth");
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+      if (profile) {
+        setFormData({
+          name: profile.full_name || "",
+          email: profile.email || user.email || "",
+          notifications: profile.notifications_enabled ?? true,
+          emailNotifications: profile.email_notifications_enabled ?? false,
+        });
+        setFavorites(profile.favorite_sports || []);
+      } else {
+        setFormData({
+          ...formData,
+          email: user.email || "",
+        });
+      }
+      setLoading(false);
+    };
+
+    loadProfile();
+  }, [navigate]);
 
   const [favorites, setFavorites] = useState<string[]>(["Athlétisme", "Basketball"]);
 
@@ -31,11 +70,32 @@ const Profile = () => {
     "Volleyball",
   ];
 
-  const handleSave = () => {
-    toast({
-      title: "Profil sauvegardé",
-      description: "Vos préférences ont été mises à jour avec succès",
-    });
+  const handleSave = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        full_name: formData.name,
+        notifications_enabled: formData.notifications,
+        email_notifications_enabled: formData.emailNotifications,
+        favorite_sports: favorites,
+      })
+      .eq("user_id", user.id);
+
+    if (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de sauvegarder le profil",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Profil sauvegardé",
+        description: "Vos préférences ont été mises à jour avec succès",
+      });
+    }
   };
 
   const toggleFavorite = (sport: string) => {
@@ -45,6 +105,17 @@ const Profile = () => {
         : [...prev, sport]
     );
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container py-8">
+          <div className="text-center">Chargement...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
