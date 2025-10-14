@@ -48,8 +48,7 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-hero" />
-            <span className="text-xl font-bold">DakarGo2026</span>
+            <img src="/src/assets/dakar2026-logo.jpg" alt="Dakar 2026" className="h-12 w-auto object-contain" />
           </div>
         </Link>
 

@@ -2,7 +2,8 @@ import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Award, TrendingUp, Clock } from "lucide-react";
+import { Trophy, Award, TrendingUp, Clock, Zap, Star, Medal } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Records = () => {
   const athleticsRecords = [
@@ -13,6 +14,7 @@ const Records = () => {
       record: "9.58s",
       year: 2009,
       location: "Berlin",
+      rank: "🥇",
     },
     {
       event: "100m Femmes",
@@ -21,6 +23,7 @@ const Records = () => {
       record: "10.49s",
       year: 1988,
       location: "Indianapolis",
+      rank: "🥇",
     },
     {
       event: "Saut en longueur Hommes",
@@ -29,6 +32,7 @@ const Records = () => {
       record: "8.95m",
       year: 1991,
       location: "Tokyo",
+      rank: "🥇",
     },
     {
       event: "Saut en hauteur Femmes",
@@ -37,6 +41,25 @@ const Records = () => {
       record: "2.09m",
       year: 1987,
       location: "Rome",
+      rank: "🥇",
+    },
+    {
+      event: "Marathon Hommes",
+      holder: "Eliud Kipchoge",
+      country: "Kenya",
+      record: "2:01:09",
+      year: 2022,
+      location: "Berlin",
+      rank: "🥇",
+    },
+    {
+      event: "400m Haies Hommes",
+      holder: "Karsten Warholm",
+      country: "Norvège",
+      record: "45.94s",
+      year: 2021,
+      location: "Tokyo",
+      rank: "🥇",
     },
   ];
 
@@ -48,6 +71,7 @@ const Records = () => {
       record: "20.91s",
       year: 2009,
       location: "São Paulo",
+      rank: "🥇",
     },
     {
       event: "50m Nage Libre Femmes",
@@ -56,6 +80,7 @@ const Records = () => {
       record: "23.61s",
       year: 2017,
       location: "Budapest",
+      rank: "🥇",
     },
     {
       event: "100m Papillon Hommes",
@@ -64,6 +89,25 @@ const Records = () => {
       record: "49.45s",
       year: 2019,
       location: "Gwangju",
+      rank: "🥇",
+    },
+    {
+      event: "200m Dos Femmes",
+      holder: "Kaylee McKeown",
+      country: "Australie",
+      record: "2:03.14",
+      year: 2021,
+      location: "Tokyo",
+      rank: "🥇",
+    },
+    {
+      event: "400m 4 Nages Hommes",
+      holder: "Leon Marchand",
+      country: "France",
+      record: "4:02.50",
+      year: 2024,
+      location: "Paris",
+      rank: "🥇",
     },
   ];
 
@@ -76,6 +120,7 @@ const Records = () => {
       year: 2024,
       location: "Dakar",
       category: "Nouveau",
+      rank: "🥇",
     },
     {
       event: "Basketball 3x3",
@@ -85,6 +130,7 @@ const Records = () => {
       year: 2024,
       location: "Accra",
       category: "Série",
+      rank: "🥇",
     },
     {
       event: "Natation 4x100m Relais",
@@ -94,51 +140,110 @@ const Records = () => {
       year: 2025,
       location: "Dakar",
       category: "National",
+      rank: "🥇",
+    },
+    {
+      event: "Skateboard Street",
+      holder: "Fatou Cissé",
+      country: "Sénégal",
+      record: "285.5 pts",
+      year: 2025,
+      location: "Dakar",
+      category: "Nouveau",
+      rank: "🥇",
+    },
+    {
+      event: "Breaking Battle",
+      holder: "B-Boy Thierno",
+      country: "Sénégal",
+      record: "Champion",
+      year: 2025,
+      location: "Dakar",
+      category: "Nouveau",
+      rank: "🥇",
     },
   ];
 
   const RecordCard = ({ record, index }: { record: any; index: number }) => (
-    <Card className="hover:shadow-md transition-all duration-300">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-bold text-2xl text-primary">#{index + 1}</span>
-              {record.category && (
-                <Badge variant="secondary">{record.category}</Badge>
-              )}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ scale: 1.03, y: -5 }}
+    >
+      <Card className="relative overflow-hidden hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-primary">
+        {/* Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-card opacity-5" />
+        
+        <CardHeader className="relative">
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-4xl">{record.rank}</span>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary">
+                    #{index + 1}
+                  </Badge>
+                  {record.category && (
+                    <Badge variant="default" className="bg-secondary text-secondary-foreground">
+                      {record.category}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+              <CardTitle className="text-xl font-bold">{record.event}</CardTitle>
             </div>
-            <CardTitle className="text-lg">{record.event}</CardTitle>
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            >
+              <Trophy className="h-10 w-10 text-secondary" />
+            </motion.div>
           </div>
-          <Trophy className="h-8 w-8 text-secondary" />
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="p-4 bg-gradient-card rounded-lg">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Détenteur</p>
-              <p className="font-bold text-lg">{record.holder}</p>
-              <p className="text-sm text-muted-foreground">{record.country}</p>
+        </CardHeader>
+        
+        <CardContent className="space-y-4 relative">
+          {/* Record Display */}
+          <div className="p-5 bg-gradient-trophy rounded-xl shadow-md">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-primary-foreground/80 mb-1 flex items-center gap-1">
+                  <Star className="h-3 w-3" />
+                  Détenteur
+                </p>
+                <p className="font-bold text-xl text-primary-foreground">{record.holder}</p>
+                <p className="text-sm text-primary-foreground/90 font-medium">{record.country}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-medium text-primary-foreground/80 mb-1 flex items-center justify-end gap-1">
+                  <Zap className="h-3 w-3" />
+                  Record
+                </p>
+                <motion.p 
+                  className="font-black text-3xl text-primary-foreground"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+                >
+                  {record.record}
+                </motion.p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground mb-1">Record</p>
-              <p className="font-bold text-2xl text-primary">{record.record}</p>
+          </div>
+          
+          {/* Info Section */}
+          <div className="flex items-center justify-between gap-4 px-2">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="h-4 w-4 text-accent" />
+              <span className="font-medium">{record.year}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Award className="h-4 w-4 text-accent" />
+              <span className="font-medium">{record.location}</span>
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <Clock className="h-4 w-4" />
-            <span>{record.year}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Award className="h-4 w-4" />
-            <span>{record.location}</span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 
   return (
@@ -146,39 +251,67 @@ const Records = () => {
       <Header />
       
       <div className="container py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
-            <TrendingUp className="h-8 w-8 text-primary" />
-            Records Olympiques
-          </h1>
-          <p className="text-muted-foreground">
-            Découvrez les records mondiaux et olympiques des différentes disciplines
-          </p>
-        </div>
+        {/* Hero Section */}
+        <motion.div 
+          className="mb-12"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="relative overflow-hidden rounded-2xl p-8 bg-gradient-hero text-primary-foreground shadow-lg">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_50%)]" />
+            <div className="relative">
+              <div className="flex items-center gap-4 mb-4">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Medal className="h-16 w-16" />
+                </motion.div>
+                <div>
+                  <h1 className="text-5xl font-black mb-2">Records Olympiques</h1>
+                  <p className="text-xl opacity-90 font-medium">
+                    Les performances légendaires qui ont marqué l'histoire du sport
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
+        {/* Tabs Section */}
         <Tabs defaultValue="youth" className="w-full">
-          <TabsList className="grid w-full max-w-2xl grid-cols-3">
-            <TabsTrigger value="youth">Records Jeunesse</TabsTrigger>
-            <TabsTrigger value="athletics">Athlétisme</TabsTrigger>
-            <TabsTrigger value="swimming">Natation</TabsTrigger>
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 h-14 bg-muted">
+            <TabsTrigger value="youth" className="text-base font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              🏃 Records Jeunesse
+            </TabsTrigger>
+            <TabsTrigger value="athletics" className="text-base font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              ⚡ Athlétisme
+            </TabsTrigger>
+            <TabsTrigger value="swimming" className="text-base font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              🏊 Natation
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="youth" className="mt-6">
-            <div className="mb-4">
-              <Card className="bg-gradient-hero text-primary-foreground">
+          <TabsContent value="youth" className="mt-8">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-6"
+            >
+              <Card className="bg-primary text-primary-foreground border-none shadow-lg">
                 <CardContent className="py-6">
                   <div className="flex items-center gap-4">
-                    <Trophy className="h-12 w-12" />
+                    <Trophy className="h-14 w-14" />
                     <div>
-                      <h3 className="text-2xl font-bold">Records des Jeux de la Jeunesse</h3>
-                      <p className="opacity-90">
-                        Les meilleures performances des jeunes athlètes africains
+                      <h3 className="text-3xl font-black mb-1">Records des Jeux de la Jeunesse</h3>
+                      <p className="opacity-90 text-lg font-medium">
+                        Les meilleures performances des jeunes athlètes pour Dakar 2026
                       </p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </motion.div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {youthRecords.map((record, idx) => (
                 <RecordCard key={idx} record={record} index={idx} />
@@ -186,7 +319,7 @@ const Records = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="athletics" className="mt-6">
+          <TabsContent value="athletics" className="mt-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {athleticsRecords.map((record, idx) => (
                 <RecordCard key={idx} record={record} index={idx} />
@@ -194,7 +327,7 @@ const Records = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="swimming" className="mt-6">
+          <TabsContent value="swimming" className="mt-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {swimmingRecords.map((record, idx) => (
                 <RecordCard key={idx} record={record} index={idx} />
@@ -204,39 +337,68 @@ const Records = () => {
         </Tabs>
 
         {/* Fun Facts Section */}
-        <Card className="mt-8 bg-muted">
-          <CardHeader>
-            <CardTitle>Le saviez-vous ?</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 bg-background rounded-lg">
-                <p className="font-semibold mb-2">🏃‍♂️ Vitesse maximale</p>
-                <p className="text-sm text-muted-foreground">
-                  Usain Bolt a atteint une vitesse de pointe de 44.72 km/h lors de son record du 100m
-                </p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <Card className="mt-12 border-2 border-accent/20 shadow-xl">
+            <CardHeader className="bg-gradient-card">
+              <CardTitle className="text-3xl font-black text-primary-foreground flex items-center gap-3">
+                <Zap className="h-8 w-8" />
+                Le saviez-vous ?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <motion.div 
+                  className="p-6 bg-primary/5 rounded-xl border-2 border-primary/20 hover:border-primary/40 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <p className="font-bold text-xl mb-3 text-primary flex items-center gap-2">
+                    🏃‍♂️ Vitesse maximale
+                  </p>
+                  <p className="text-base text-foreground leading-relaxed">
+                    Usain Bolt a atteint une vitesse de pointe de 44.72 km/h lors de son record du 100m - plus rapide qu'une voiture en ville !
+                  </p>
+                </motion.div>
+                <motion.div 
+                  className="p-6 bg-secondary/5 rounded-xl border-2 border-secondary/20 hover:border-secondary/40 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <p className="font-bold text-xl mb-3 text-secondary flex items-center gap-2">
+                    🏊‍♀️ Nage la plus rapide
+                  </p>
+                  <p className="text-base text-foreground leading-relaxed">
+                    Le record du 50m nage libre équivaut à nager à environ 8.5 km/h - une vitesse incroyable dans l'eau !
+                  </p>
+                </motion.div>
+                <motion.div 
+                  className="p-6 bg-accent/5 rounded-xl border-2 border-accent/20 hover:border-accent/40 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <p className="font-bold text-xl mb-3 text-accent flex items-center gap-2">
+                    🥇 Plus jeune champion
+                  </p>
+                  <p className="text-base text-foreground leading-relaxed">
+                    Le plus jeune médaillé d'or olympique avait seulement 13 ans - l'âge de beaucoup de participants aux JOJ 2026 !
+                  </p>
+                </motion.div>
+                <motion.div 
+                  className="p-6 bg-primary/5 rounded-xl border-2 border-primary/20 hover:border-primary/40 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <p className="font-bold text-xl mb-3 text-primary flex items-center gap-2">
+                    📊 Records africains
+                  </p>
+                  <p className="text-base text-foreground leading-relaxed">
+                    L'Afrique détient plusieurs records mondiaux en athlétisme, notamment en course de fond - une fierté pour le continent !
+                  </p>
+                </motion.div>
               </div>
-              <div className="p-4 bg-background rounded-lg">
-                <p className="font-semibold mb-2">🏊‍♀️ Nage la plus rapide</p>
-                <p className="text-sm text-muted-foreground">
-                  Le record du 50m nage libre équivaut à nager à environ 8.5 km/h
-                </p>
-              </div>
-              <div className="p-4 bg-background rounded-lg">
-                <p className="font-semibold mb-2">🥇 Plus jeune champion</p>
-                <p className="text-sm text-muted-foreground">
-                  Le plus jeune médaillé d'or olympique avait seulement 13 ans
-                </p>
-              </div>
-              <div className="p-4 bg-background rounded-lg">
-                <p className="font-semibold mb-2">📊 Records africains</p>
-                <p className="text-sm text-muted-foreground">
-                  L'Afrique détient plusieurs records mondiaux en athlétisme, notamment en course de fond
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );
