@@ -43,13 +43,27 @@ const transports = [
 // Component to handle map updates
 function MapUpdater({ center }: { center: [number, number] }) {
   const map = useMap();
-  
   useEffect(() => {
     if (map && center) {
       map.setView(center, map.getZoom());
     }
   }, [center, map]);
-  
+  return null;
+}
+
+// Ensure tiles render correctly when container size changes
+function MapInitializer() {
+  const map = useMap();
+  useEffect(() => {
+    const invalidate = () => map.invalidateSize();
+    // Invalidate after mount and on resize
+    const timeout = setTimeout(invalidate, 0);
+    window.addEventListener('resize', invalidate);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener('resize', invalidate);
+    };
+  }, [map]);
   return null;
 }
 
@@ -149,32 +163,29 @@ const Discover = () => {
                   className="rounded-lg"
                   scrollWheelZoom={false}
                 >
-{((() => (
-  <>
-    <TileLayer
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-    <MapUpdater center={mapCenter} />
-    {filteredData.map((place) => (
-      <Marker 
-        key={place.id} 
-        position={[place.lat, place.lng]}
-        eventHandlers={{
-          click: () => setSelectedPlace(place)
-        }}
-      >
-        <Popup>
-          <div className="p-2">
-            <h3 className="font-semibold">{place.name}</h3>
-            <p className="text-sm text-muted-foreground">{place.type}</p>
-            <p className="text-xs mt-1">{place.description}</p>
-          </div>
-        </Popup>
-      </Marker>
-    ))}
-  </>
-)) as unknown as React.ReactNode)}
+                    <TileLayer
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <MapInitializer />
+                    <MapUpdater center={mapCenter} />
+                    {filteredData.map((place) => (
+                      <Marker 
+                        key={place.id} 
+                        position={[place.lat, place.lng]}
+                        eventHandlers={{
+                          click: () => setSelectedPlace(place)
+                        }}
+                      >
+                        <Popup>
+                          <div className="p-2">
+                            <h3 className="font-semibold">{place.name}</h3>
+                            <p className="text-sm text-muted-foreground">{place.type}</p>
+                            <p className="text-xs mt-1">{place.description}</p>
+                          </div>
+                        </Popup>
+                      </Marker>
+                    ))}
                 </MapContainer>
                 {selectedPlace && (
                   <div className="absolute top-4 left-4 right-4 max-w-sm z-[1000]">
