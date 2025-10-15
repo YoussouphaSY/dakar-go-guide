@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,6 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, Utensils, Bus, Camera, Search, Navigation, Star, Clock } from "lucide-react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix for default marker icons in Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 // Mock data for places
 const restaurants = [
@@ -28,10 +39,20 @@ const transports = [
   { id: 3, name: "Station Taxi Plateau", type: "Taxi", rating: 4.0, distance: "2.2 km", lat: 14.6737, lng: -17.4300, description: "Taxis vers tous quartiers" },
 ];
 
+// Component to handle map updates
+const MapUpdater = ({ center }: { center: [number, number] }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(center, map.getZoom());
+  }, [center, map]);
+  return null;
+};
+
 const Discover = () => {
   const [activeTab, setActiveTab] = useState("restaurants");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([14.7167, -17.4677]);
 
   const getCurrentData = () => {
     switch (activeTab) {
@@ -47,13 +68,11 @@ const Discover = () => {
     place.type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Using Google Maps Embed instead of Mapbox for better visual
-  const getGoogleMapsEmbedUrl = () => {
-    const places = filteredData.map(p => `${p.lat},${p.lng}`).join('|');
-    const center = filteredData.length > 0 ? `${filteredData[0].lat},${filteredData[0].lng}` : '14.7167,-17.4677';
-    return `https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dN51c_e_cPvCCg&center=${center}&zoom=12`;
-  };
-
+  useEffect(() => {
+    if (selectedPlace) {
+      setMapCenter([selectedPlace.lat, selectedPlace.lng]);
+    }
+  }, [selectedPlace]);
 
   const getIcon = () => {
     switch (activeTab) {
@@ -61,6 +80,15 @@ const Discover = () => {
       case "attractions": return <Camera className="h-5 w-5" />;
       case "transport": return <Bus className="h-5 w-5" />;
       default: return <MapPin className="h-5 w-5" />;
+    }
+  };
+
+  const getMarkerColor = () => {
+    switch (activeTab) {
+      case "restaurants": return "red";
+      case "attractions": return "blue";
+      case "transport": return "green";
+      default: return "red";
     }
   };
 
@@ -106,21 +134,40 @@ const Discover = () => {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            {/* Map Section - Google Maps Embed */}
+            {/* Map Section - OpenStreetMap with Leaflet */}
             <div className="lg:col-span-2">
               <Card className="overflow-hidden h-[600px] relative">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src={getGoogleMapsEmbedUrl()}
+                <MapContainer 
+                  center={mapCenter} 
+                  zoom={13} 
+                  style={{ height: '100%', width: '100%' }}
                   className="rounded-lg"
-                />
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <MapUpdater center={mapCenter} />
+                  {filteredData.map((place) => (
+                    <Marker 
+                      key={place.id} 
+                      position={[place.lat, place.lng]}
+                      eventHandlers={{
+                        click: () => setSelectedPlace(place)
+                      }}
+                    >
+                      <Popup>
+                        <div className="p-2">
+                          <h3 className="font-semibold">{place.name}</h3>
+                          <p className="text-sm text-muted-foreground">{place.type}</p>
+                          <p className="text-xs mt-1">{place.description}</p>
+                        </div>
+                      </Popup>
+                    </Marker>
+                  ))}
+                </MapContainer>
                 {selectedPlace && (
-                  <div className="absolute top-4 left-4 right-4 max-w-sm">
+                  <div className="absolute top-4 left-4 right-4 max-w-sm z-[1000]">
                     <Card className="shadow-2xl border-2" style={{ borderColor: 
                       activeTab === 'restaurants' ? '#EF4444' : 
                       activeTab === 'attractions' ? '#3B82F6' : '#10B981' 

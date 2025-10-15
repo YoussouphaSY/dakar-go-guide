@@ -10,6 +10,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import dakarLogo from "@/assets/dakar2026-logo.jpg";
 
 const Header = () => {
   const location = useLocation();
@@ -75,7 +76,7 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="flex items-center gap-2">
-            <img src="/src/assets/dakar2026-logo.jpg" alt="Dakar 2026" className="h-12 w-auto object-contain" />
+            <img src={dakarLogo} alt="Dakar 2026" className="h-12 w-auto object-contain" />
           </div>
         </Link>
 
