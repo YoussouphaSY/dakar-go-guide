@@ -14,6 +14,7 @@ import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import Auth from "./pages/Auth";
 import MatchDetail from "./pages/MatchDetail";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/assistant" element={<Assistant />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

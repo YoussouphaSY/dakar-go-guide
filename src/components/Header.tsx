@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin, LogOut } from "lucide-react";
+import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,24 +11,45 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import dakarLogo from "@/assets/dakar2026-logo.jpg";
+import { NotificationBell } from "@/components/NotificationBell";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminRole(session.user.id);
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminRole(session.user.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const checkAdminRole = async (userId: string) => {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    
+    setIsAdmin(!!data);
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -85,6 +106,19 @@ const Header = () => {
           <NavLinks />
           {user ? (
             <>
+              <NotificationBell />
+              {isAdmin && (
+                <Link to="/admin">
+                  <Button
+                    variant={location.pathname === "/admin" ? "default" : "ghost"}
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <Shield className="h-4 w-4" />
+                    <span>Admin</span>
+                  </Button>
+                </Link>
+              )}
               <Link to="/profile">
                 <Button
                   variant={location.pathname === "/profile" ? "default" : "ghost"}
@@ -127,6 +161,17 @@ const Header = () => {
               <NavLinks mobile />
               {user ? (
                 <>
+                  {isAdmin && (
+                    <Link to="/admin" className="w-full">
+                      <Button
+                        variant={location.pathname === "/admin" ? "default" : "ghost"}
+                        className="w-full flex items-center gap-2 text-lg"
+                      >
+                        <Shield className="h-4 w-4" />
+                        <span>Admin</span>
+                      </Button>
+                    </Link>
+                  )}
                   <Link to="/profile" className="w-full">
                     <Button
                       variant={location.pathname === "/profile" ? "default" : "ghost"}
