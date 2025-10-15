@@ -40,13 +40,17 @@ const transports = [
 ];
 
 // Component to handle map updates
-const MapUpdater = ({ center }: { center: [number, number] }) => {
+function MapUpdater({ center }: { center: [number, number] }) {
   const map = useMap();
+  
   useEffect(() => {
-    map.setView(center, map.getZoom());
+    if (map && center) {
+      map.setView(center, map.getZoom());
+    }
   }, [center, map]);
+  
   return null;
-};
+}
 
 const Discover = () => {
   const [activeTab, setActiveTab] = useState("restaurants");
@@ -142,29 +146,32 @@ const Discover = () => {
                   zoom={13} 
                   style={{ height: '100%', width: '100%' }}
                   className="rounded-lg"
+                  scrollWheelZoom={false}
                 >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  <MapUpdater center={mapCenter} />
-                  {filteredData.map((place) => (
-                    <Marker 
-                      key={place.id} 
-                      position={[place.lat, place.lng]}
-                      eventHandlers={{
-                        click: () => setSelectedPlace(place)
-                      }}
-                    >
-                      <Popup>
-                        <div className="p-2">
-                          <h3 className="font-semibold">{place.name}</h3>
-                          <p className="text-sm text-muted-foreground">{place.type}</p>
-                          <p className="text-xs mt-1">{place.description}</p>
-                        </div>
-                      </Popup>
-                    </Marker>
-                  ))}
+                  <>
+                    <TileLayer
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <MapUpdater center={mapCenter} />
+                    {filteredData.map((place) => (
+                      <Marker 
+                        key={place.id} 
+                        position={[place.lat, place.lng]}
+                        eventHandlers={{
+                          click: () => setSelectedPlace(place)
+                        }}
+                      >
+                        <Popup>
+                          <div className="p-2">
+                            <h3 className="font-semibold">{place.name}</h3>
+                            <p className="text-sm text-muted-foreground">{place.type}</p>
+                            <p className="text-xs mt-1">{place.description}</p>
+                          </div>
+                        </Popup>
+                      </Marker>
+                    ))}
+                  </>
                 </MapContainer>
                 {selectedPlace && (
                   <div className="absolute top-4 left-4 right-4 max-w-sm z-[1000]">
