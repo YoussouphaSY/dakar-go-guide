@@ -370,16 +370,16 @@ const Admin = () => {
                 <div>
                   <Label>Événement lié (optionnel)</Label>
                   <Select
-                    value={notificationData.eventId || ""}
+                    value={notificationData.eventId || "none"}
                     onValueChange={(value) =>
-                      setNotificationData({ ...notificationData, eventId: value || null })
+                      setNotificationData({ ...notificationData, eventId: value === "none" ? null : value })
                     }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Aucun" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Aucun</SelectItem>
+                      <SelectItem value="none">Aucun</SelectItem>
                       {events.map((event) => (
                         <SelectItem key={event.id} value={event.id}>
                           {event.title}
