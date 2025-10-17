@@ -57,17 +57,15 @@ const Profile = () => {
     loadProfile();
   }, [navigate]);
 
-  const [favorites, setFavorites] = useState<string[]>(["Athlétisme", "Basketball"]);
+  const [favorites, setFavorites] = useState<string[]>([]);
 
   const sports = [
-    "Athlétisme",
-    "Basketball",
-    "Football",
-    "Natation",
-    "Gymnastique",
-    "Judo",
-    "Tennis",
-    "Volleyball",
+    "Athlétisme", "Natation", "Badminton", "Baseball5", "Basketball 3x3",
+    "Beach-volley", "Breaking", "Boxe", "Cyclisme", "Rugby à sept",
+    "Skateboard", "Taekwondo", "Tennis de table", "Tir à l'arc",
+    "Triathlon", "Planche à voile", "Wushu", "Aviron de mer",
+    "Escrime", "Futsal", "Gymnastique", "Handball", "Judo",
+    "Lutte", "Saut d'obstacles"
   ];
 
   const handleSave = async () => {

@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      cultural_sites: {
+        Row: {
+          category: string
+          city: string
+          created_at: string | null
+          description: string
+          historical_info: string | null
+          id: string
+          image_url: string | null
+          latitude: number
+          longitude: number
+          name: string
+          virtual_tour_url: string | null
+        }
+        Insert: {
+          category: string
+          city: string
+          created_at?: string | null
+          description: string
+          historical_info?: string | null
+          id?: string
+          image_url?: string | null
+          latitude: number
+          longitude: number
+          name: string
+          virtual_tour_url?: string | null
+        }
+        Update: {
+          category?: string
+          city?: string
+          created_at?: string | null
+          description?: string
+          historical_info?: string | null
+          id?: string
+          image_url?: string | null
+          latitude?: number
+          longitude?: number
+          name?: string
+          virtual_tour_url?: string | null
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           category: string | null
@@ -142,6 +184,50 @@ export type Database = {
         }
         Relationships: []
       }
+      sports_events: {
+        Row: {
+          created_at: string | null
+          discipline_detail: string
+          event_date: string | null
+          event_time: string | null
+          gender_type: string
+          id: number
+          sport_name: string
+          status: string | null
+          venue_id: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          discipline_detail: string
+          event_date?: string | null
+          event_time?: string | null
+          gender_type: string
+          id: number
+          sport_name: string
+          status?: string | null
+          venue_id?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          discipline_detail?: string
+          event_date?: string | null
+          event_time?: string | null
+          gender_type?: string
+          id?: number
+          sport_name?: string
+          status?: string | null
+          venue_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sports_events_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -160,6 +246,36 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      venues: {
+        Row: {
+          city: string
+          created_at: string | null
+          id: number
+          latitude: number
+          longitude: number
+          name: string
+          note: string | null
+        }
+        Insert: {
+          city: string
+          created_at?: string | null
+          id: number
+          latitude: number
+          longitude: number
+          name: string
+          note?: string | null
+        }
+        Update: {
+          city?: string
+          created_at?: string | null
+          id?: number
+          latitude?: number
+          longitude?: number
+          name?: string
+          note?: string | null
         }
         Relationships: []
       }

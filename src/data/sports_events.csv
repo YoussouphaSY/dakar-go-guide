@@ -1,0 +1,157 @@
+event_id,sport_name,venue_id,discipline_detail,gender_type
+10401,"Natation",1,"50 m nage libre",Masculine
+10402,"Natation",1,"100 m nage libre",Masculine
+10403,"Natation",1,"200 m nage libre",Masculine
+10404,"Natation",1,"400 m nage libre",Masculine
+10405,"Natation",1,"800 m nage libre",Masculine
+10406,"Natation",1,"50 m dos",Masculine
+10407,"Natation",1,"100 m dos",Masculine
+10408,"Natation",1,"200 m dos",Masculine
+10409,"Natation",1,"50 m brasse",Masculine
+10410,"Natation",1,"100 m brasse",Masculine
+10411,"Natation",1,"200 m brasse",Masculine
+10412,"Natation",1,"50 m papillon",Masculine
+10413,"Natation",1,"100 m papillon",Masculine
+10414,"Natation",1,"200 m papillon",Masculine
+10415,"Natation",1,"200 m quatre nages",Masculine
+10416,"Natation",1,"50 m nage libre",Féminine
+10417,"Natation",1,"100 m nage libre",Féminine
+10418,"Natation",1,"200 m nage libre",Féminine
+10419,"Natation",1,"400 m nage libre",Féminine
+10420,"Natation",1,"800 m nage libre",Féminine
+10421,"Natation",1,"50 m dos",Féminine
+10422,"Natation",1,"100 m dos",Féminine
+10423,"Natation",1,"200 m dos",Féminine
+10424,"Natation",1,"50 m brasse",Féminine
+10425,"Natation",1,"100 m brasse",Féminine
+10426,"Natation",1,"200 m brasse",Féminine
+10427,"Natation",1,"50 m papillon",Féminine
+10428,"Natation",1,"100 m papillon",Féminine
+10429,"Natation",1,"200 m papillon",Féminine
+10430,"Natation",1,"200 m quatre nages",Féminine
+60101,"TIR A L'ARC",6,"Epreuve individuelle",Masculine
+60102,"TIR A L'ARC",6,"Epreuve individuelle",Féminine
+60103,"TIR A L'ARC",6,"Epreuve par équipes mixtes",Mixte/Ouverte
+20101,"Athlétisme",2,"100 m",Masculine
+20102,"Athlétisme",2,"200 m",Masculine
+20103,"Athlétisme",2,"400 m",Masculine
+20104,"Athlétisme",2,"800 m",Masculine
+20105,"Athlétisme",2,"1500 m",Masculine
+20106,"Athlétisme",2,"3000 m",Masculine
+20107,"Athlétisme",2,"110 m haies",Masculine
+20108,"Athlétisme",2,"400 m haies",Masculine
+20109,"Athlétisme",2,"2000 m steeple",Masculine
+20110,"Athlétisme",2,"Saut en hauteur",Masculine
+20111,"Athlétisme",2,"Saut à la perche",Masculine
+20112,"Athlétisme",2,"Saut en longueur",Masculine
+20113,"Athlétisme",2,"Triple saut",Masculine
+20114,"Athlétisme",2,"Lancer du poids",Masculine
+20115,"Athlétisme",2,"Lancer du disque",Masculine
+20116,"Athlétisme",2,"Lancer du marteau",Masculine
+20117,"Athlétisme",2,"Lancer du javelot",Masculine
+20118,"Athlétisme",2,"5 km marche",Masculine
+20119,"Athlétisme",2,"100 m",Féminine
+20120,"Athlétisme",2,"200 m",Féminine
+20121,"Athlétisme",2,"400 m",Féminine
+20122,"Athlétisme",2,"800 m",Féminine
+20123,"Athlétisme",2,"1500 m",Féminine
+20124,"Athlétisme",2,"3000 m",Féminine
+20125,"Athlétisme",2,"100 m haies",Féminine
+20126,"Athlétisme",2,"400 m haies",Féminine
+20127,"Athlétisme",2,"2000 m steeple",Féminine
+20128,"Athlétisme",2,"Saut en hauteur",Féminine
+20129,"Athlétisme",2,"Saut à la perche",Féminine
+20130,"Athlétisme",2,"Saut en longueur",Féminine
+20131,"Athlétisme",2,"Triple saut",Féminine
+20132,"Athlétisme",2,"Lancer du poids",Féminine
+20133,"Athlétisme",2,"Lancer du disque",Féminine
+20134,"Athlétisme",2,"Lancer du marteau",Féminine
+20135,"Athlétisme",2,"Lancer du javelot",Féminine
+20136,"Athlétisme",2,"5 km marche",Féminine
+50101,"Badminton",5,"Simple",Masculine
+50102,"Badminton",5,"Simple",Féminine
+10201,"Baseball5",1,"Tournoi à 8 équipes mixtes",Mixte/Ouverte
+10101,"Basketball 3x3",1,"Tournoi à 12 équipes",Masculine
+10102,"Basketball 3x3",1,"Tournoi à 12 équipes",Féminine
+20201,"Boxe",2,"50kg",Masculine
+20202,"Boxe",2,"55kg",Masculine
+20203,"Boxe",2,"60kg",Masculine
+20204,"Boxe",2,"65kg",Masculine
+20205,"Boxe",2,"70kg",Masculine
+20206,"Boxe",2,"48kg",Féminine
+20207,"Boxe",2,"51kg",Féminine
+20208,"Boxe",2,"54kg",Féminine
+20209,"Boxe",2,"57kg",Féminine
+20210,"Boxe",2,"60kg",Féminine
+10301,"Breaking",1,"B-Boys",Masculine
+10302,"Breaking",1,"B-Girls",Féminine
+30101,"Cyclisme sur Route",3,"Course en ligne",Masculine
+30102,"Cyclisme sur Route",3,"Contre-la-montre individuel",Masculine
+30103,"Cyclisme sur Route",3,"Course en ligne",Féminine
+30104,"Cyclisme sur Route",3,"Contre-la-montre individuel",Féminine
+40101,"Saut d'obstacles",4,"Saut d'obstacles individuel",Mixte/Ouverte
+70101,"Escrime",7,"Épée individuelle",Masculine
+70102,"Escrime",7,"Fleuret individuel",Masculine
+70103,"Escrime",7,"Sabre individuel",Masculine
+70104,"Escrime",7,"Épée individuelle",Féminine
+70105,"Escrime",7,"Fleuret individuel",Féminine
+70106,"Escrime",7,"Sabre individuel",Féminine
+20301,"Futsal",2,"Tournoi à 8 équipes (première partie)",Masculine
+20302,"Futsal",2,"Tournoi à 8 équipes (première partie)",Féminine
+50201,"Futsal",5,"Tournoi à 8 équipes (deuxième partie)",Masculine
+50202,"Futsal",5,"Tournoi à 8 équipes (deuxième partie)",Féminine
+70201,"Gymnastique Artistique",7,"Concours par équipes",Masculine
+70202,"Gymnastique Artistique",7,"Concours général",Masculine
+70203,"Gymnastique Artistique",7,"Concours par équipes",Féminine
+70204,"Gymnastique Artistique",7,"Concours général",Féminine
+70205,"Gymnastique Artistique",7,"Concours par équipes mixtes",Mixte/Ouverte
+80201,"Beach Handball",8,"Tournoi à 8 équipes",Masculine
+80202,"Beach Handball",8,"Tournoi à 8 équipes",Féminine
+70301,"Judo",7,"-55 kg",Masculine
+70302,"Judo",7,"-66 kg",Masculine
+70303,"Judo",7,"-81 kg",Masculine
+70304,"Judo",7,"-100 kg",Masculine
+70305,"Judo",7,"-44 kg",Féminine
+70306,"Judo",7,"-52 kg",Féminine
+70307,"Judo",7,"-63 kg",Féminine
+70308,"Judo",7,"-78 kg",Féminine
+80101,"Aviron de Mer",8,"Solo",Masculine
+80102,"Aviron de Mer",8,"Solo",Féminine
+80103,"Aviron de Mer",8,"Deux de couple mixte",Mixte/Ouverte
+20401,"Rugby à Sept",2,"Tournoi à 8 équipes",Masculine
+20402,"Rugby à Sept",2,"Tournoi à 8 équipes",Féminine
+80501,"Voile",8,"Planche à voile",Masculine
+80502,"Voile",8,"Planche à voile",Féminine
+10501,"Skateboard",1,"Street",Masculine
+10502,"Skateboard",1,"Street",Féminine
+70501,"Tennis de Table",7,"Simple",Masculine
+70502,"Tennis de Table",7,"Simple",Féminine
+70503,"Tennis de Table",7,"Double mixte",Mixte/Ouverte
+70401,"Taekwondo",7,"-48 kg",Masculine
+70402,"Taekwondo",7,"-55 kg",Masculine
+70403,"Taekwondo",7,"-63 kg",Masculine
+70404,"Taekwondo",7,"-73 kg",Masculine
+70405,"Taekwondo",7,"+73 kg",Masculine
+70406,"Taekwondo",7,"-44 kg",Féminine
+70407,"Taekwondo",7,"-49 kg",Féminine
+70408,"Taekwondo",7,"-55 kg",Féminine
+70409,"Taekwondo",7,"-63 kg",Féminine
+70410,"Taekwondo",7,"+63 kg",Féminine
+70411,"Taekwondo",7,"Épreuve par équipes mixtes",Mixte/Ouverte
+80401,"Triathlon",8,"Sprint individuel",Masculine
+80402,"Triathlon",8,"Sprint individuel",Féminine
+80601,"Volleyball de Plage",8,"Tournoi à 24 équipes",Masculine
+80602,"Volleyball de Plage",8,"Tournoi à 24 équipes",Féminine
+80301,"Lutte de Plage",8,"60 kg",Masculine
+80302,"Lutte de Plage",8,"70 kg",Masculine
+80303,"Lutte de Plage",8,"80 kg",Masculine
+80304,"Lutte de Plage",8,"90 kg",Masculine
+80305,"Lutte de Plage",8,"45 kg",Féminine
+80306,"Lutte de Plage",8,"55 kg",Féminine
+80307,"Lutte de Plage",8,"65 kg",Féminine
+80308,"Lutte de Plage",8,"75 kg",Féminine
+70601,"Wushu",7,"Changquan combiné",Masculine
+70602,"Wushu",7,"Taijiquan combiné",Masculine
+70603,"Wushu",7,"Changquan combiné",Féminine
+70604,"Wushu",7,"Taijiquan combiné",Féminine
+30201,"Sports d'Engagement",3,"Dix sports d'engagement",Mixte/Ouverte

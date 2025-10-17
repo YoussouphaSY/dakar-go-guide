@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Send, Bot, User, Languages } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import Header from "@/components/Header";
+import { Send, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import aiAssistantImage from "@/assets/ai-assistant.png";
 
 interface Message {
@@ -17,14 +19,14 @@ interface Message {
 type Language = "fr" | "en" | "wo" | "ff";
 
 const welcomeMessages: Record<Language, string> = {
-  fr: "Bonjour ! Je suis votre assistant pour les Jeux Olympiques de la Jeunesse Dakar 2026. Comment puis-je vous aider aujourd'hui ?",
-  en: "Hello! I am your assistant for the Dakar 2026 Youth Olympic Games. How can I help you today?",
-  wo: "Salaam aleekum! Man mooy sa assistant ci Jeux Olympiques yu Jeunesse Dakar 2026. Naka man mën a jëkkëri la?",
-  ff: "Bismillah! Mi ko wallifaajo mo kampani Olimpik e Dow Dakar 2026. Hol no mbaɗan wallitaade ma?"
+  fr: "Bienvenue ! Je suis votre assistant pour les Jeux Olympiques de la Jeunesse Dakar 2026 et la découverte du Sénégal. Jërëjëf ! (Merci en wolof)",
+  en: "Welcome! I'm your assistant for the Dakar 2026 Youth Olympic Games and discovering Senegal.",
+  wo: "Dalal ak jam! Maa ngi assistant bi mu Jeux Olympiques yi ci Dakar 2026.",
+  ff: "On jaraama! Mi yimɓe assistant mo Dakar 2026.",
 };
 
 const Assistant = () => {
-  const [language, setLanguage] = useState<Language>("fr");
+  const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -34,177 +36,314 @@ const Assistant = () => {
     },
   ]);
   const [inputValue, setInputValue] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const [language, setLanguage] = useState<Language>("fr");
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
-    scrollToBottom();
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [messages]);
 
   useEffect(() => {
-    // Update welcome message when language changes
-    setMessages([{
-      id: 1,
-      text: welcomeMessages[language],
-      sender: "assistant",
-      timestamp: new Date(),
-    }]);
+    setMessages([
+      {
+        id: 1,
+        text: welcomeMessages[language],
+        sender: "assistant",
+        timestamp: new Date(),
+      },
+    ]);
   }, [language]);
 
-  const handleSend = () => {
-    if (inputValue.trim() === "") return;
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : 'wo-SN';
+
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInputValue(transcript);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = () => {
+        setIsListening(false);
+        toast({
+          title: "Erreur",
+          description: "Impossible d'utiliser le microphone",
+          variant: "destructive",
+        });
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+  }, [language, toast]);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      toast({
+        title: "Non supporté",
+        description: "La reconnaissance vocale n'est pas supportée par votre navigateur",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
+
+  const speak = (text: string) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : 'fr-FR';
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const stopSpeaking = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+  };
+
+  const sendMessage = async (text?: string) => {
+    const messageText = text || inputValue.trim();
+    if (!messageText) return;
 
     const userMessage: Message = {
       id: messages.length + 1,
-      text: inputValue,
+      text: messageText,
       sender: "user",
       timestamp: new Date(),
     };
 
-    setMessages([...messages, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
+    setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const responses: Record<Language, string[]> = {
-        fr: [
-          "Je peux vous aider à trouver les horaires des événements. Quel sport vous intéresse ?",
-          "Le stade Léopold Sédar Senghor est accessible en bus ligne 7 ou en taxi. Souhaitez-vous plus d'informations ?",
-          "Les événements d'athlétisme commencent à 9h00 chaque jour. Voulez-vous ajouter cet événement à votre agenda ?",
-          "Pour les recommandations d'hébergement, je vous suggère de consulter votre profil où vous trouverez des options personnalisées.",
-        ],
-        en: [
-          "I can help you find event schedules. Which sport are you interested in?",
-          "Léopold Sédar Senghor Stadium is accessible by bus line 7 or taxi. Would you like more information?",
-          "Athletics events start at 9:00 AM every day. Would you like to add this event to your agenda?",
-          "For accommodation recommendations, I suggest checking your profile where you'll find personalized options.",
-        ],
-        wo: [
-          "Man mën nañu gis li nekk ci waxtu événements yi. Lan sport la bëgg?",
-          "Stade Léopold Sédar Senghor nekk na ci bus ligne 7 walla taxi. Bëgg nga gëna xam?",
-          "Athlétisme dafay tambali ci 9h00 bés bu nekk. Bëgg nga yokk ko ci sa agenda?",
-          "Ngir recommandations yu dëkk, man lay wone nga gis sa profil, fi nga gis options yu personalisées.",
-        ],
-        ff: [
-          "Miɗo waawi wallude ma yiytude sahaa gollol. Hol walla sportu no yiɗi?",
-          "Stade Léopold Sédar Senghor waɗi e bus ligne 7 walla taxi. Aɗa yiɗi teskude humpito?",
-          "Gollol athlétisme fuɗɗii ka sahaa 9h00 kala ñalawma. Aɗa yiɗi ɓeydude mo e agenda maa?",
-          "Ngam rekommendaasiyoŋ duumɓe, mi waɗi ɗum yiylo profil maa, ɗo a yiytu options personalisées.",
-        ],
-      };
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/senegal-assistant`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({
+            messages: messages
+              .filter((m) => m.sender === "user" || m.sender === "assistant")
+              .map((m) => ({
+                role: m.sender === "user" ? "user" : "assistant",
+                content: m.text,
+              }))
+              .concat([{ role: "user", content: messageText }]),
+          }),
+        }
+      );
 
-      const languageResponses = responses[language];
+      if (!response.ok || !response.body) {
+        throw new Error("Erreur de communication avec l'assistant");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantText = "";
+      let textBuffer = "";
+
       const assistantMessage: Message = {
         id: messages.length + 2,
-        text: languageResponses[Math.floor(Math.random() * languageResponses.length)],
+        text: "",
         sender: "assistant",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-    }, 1000);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        textBuffer += decoder.decode(value, { stream: true });
+        let newlineIndex: number;
+
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") break;
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) {
+              assistantText += content;
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantMessage.id
+                    ? { ...m, text: assistantText }
+                    : m
+                )
+              );
+            }
+          } catch {
+            textBuffer = line + "\n" + textBuffer;
+            break;
+          }
+        }
+      }
+
+      speak(assistantText);
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de communiquer avec l'assistant",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      sendMessage();
     }
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
-      <div className="container py-8 h-[calc(100vh-8rem)]">
-        <div className="mb-6 flex justify-between items-start">
-          <div>
-            <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
-              <img src={aiAssistantImage} alt="Assistant" className="h-12 w-12" />
-              Assistant IA
-            </h1>
-            <p className="text-muted-foreground">
-              {language === "fr" && "Posez vos questions sur les événements, horaires, transports et plus encore"}
-              {language === "en" && "Ask your questions about events, schedules, transport and more"}
-              {language === "wo" && "Laaj sa questions ci événements, waxtu, transport ak yeneen"}
-              {language === "ff" && "Naamna haala maa e gollol, sahaa, transport e goɗɗe"}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Languages className="h-5 w-5 text-muted-foreground" />
-            <Select value={language} onValueChange={(value: Language) => setLanguage(value)}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="fr">🇫🇷 Français</SelectItem>
-                <SelectItem value="en">🇬🇧 English</SelectItem>
-                <SelectItem value="wo">🇸🇳 Wolof</SelectItem>
-                <SelectItem value="ff">🇸🇳 Pulaar</SelectItem>
-              </SelectContent>
-            </Select>
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <img src={aiAssistantImage} alt="Assistant IA" className="h-12 w-12 rounded-full" />
+              <div>
+                <h1 className="text-3xl font-bold">Assistant IA Sénégal</h1>
+                <p className="text-muted-foreground">Expert en culture sénégalaise et JOJ 2026</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              {(["fr", "en", "wo", "ff"] as Language[]).map((lang) => (
+                <Button
+                  key={lang}
+                  variant={language === lang ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setLanguage(lang)}
+                >
+                  {lang.toUpperCase()}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
 
-        <Card className="flex flex-col h-[calc(100%-8rem)]">
-          {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex gap-3 ${
-                  message.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                {message.sender === "assistant" && (
-                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-                    <Bot className="h-5 w-5 text-primary-foreground" />
-                  </div>
-                )}
+        <Card className="h-[600px] flex flex-col">
+          <ScrollArea ref={scrollRef} className="flex-1 p-6">
+            <div className="space-y-4">
+              {messages.map((message) => (
                 <div
-                  className={`max-w-[70%] rounded-lg p-4 ${
-                    message.sender === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
+                  key={message.id}
+                  className={`flex ${
+                    message.sender === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <p className="text-sm">{message.text}</p>
-                  <span className="text-xs opacity-70 mt-2 block">
-                    {message.timestamp.toLocaleTimeString("fr-FR", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                </div>
-                {message.sender === "user" && (
-                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-secondary flex items-center justify-center">
-                    <User className="h-5 w-5 text-secondary-foreground" />
+                  <div
+                    className={`max-w-[80%] rounded-lg p-4 ${
+                      message.sender === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
+                    }`}
+                  >
+                    <p className="whitespace-pre-wrap">{message.text}</p>
+                    <span className="text-xs opacity-70 mt-2 block">
+                      {message.timestamp.toLocaleTimeString(language === "fr" ? "fr-FR" : "en-US")}
+                    </span>
                   </div>
-                )}
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <Badge variant="secondary">L'assistant réfléchit...</Badge>
+                </div>
+              )}
+            </div>
+          </ScrollArea>
 
-          {/* Input Area */}
           <div className="border-t p-4">
             <div className="flex gap-2">
               <Input
-                placeholder="Posez votre question..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
+                placeholder="Posez votre question sur le Sénégal ou les JOJ 2026..."
                 className="flex-1"
+                disabled={isLoading}
               />
-              <Button onClick={handleSend} size="icon">
+              <Button
+                size="icon"
+                variant={isListening ? "destructive" : "outline"}
+                onClick={toggleListening}
+              >
+                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+              </Button>
+              <Button
+                size="icon"
+                variant={isSpeaking ? "destructive" : "outline"}
+                onClick={isSpeaking ? stopSpeaking : () => {}}
+              >
+                {isSpeaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              </Button>
+              <Button size="icon" onClick={() => sendMessage()} disabled={isLoading || !inputValue.trim()}>
                 <Send className="h-4 w-4" />
               </Button>
             </div>
           </div>
         </Card>
+
+        <div className="mt-6 grid md:grid-cols-3 gap-4">
+          <Card className="p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Raconte-moi l'histoire de l'île de Gorée")}>
+            <h3 className="font-semibold mb-2">🏛️ Histoire de Gorée</h3>
+            <p className="text-sm text-muted-foreground">Découvrez le patrimoine UNESCO</p>
+          </Card>
+          <Card className="p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Quels sont les sports aux JOJ Dakar 2026 ?")}>
+            <h3 className="font-semibold mb-2">🏅 Programme JOJ 2026</h3>
+            <p className="text-sm text-muted-foreground">Tous les sports olympiques</p>
+          </Card>
+          <Card className="p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Parle-moi de la culture sénégalaise")}>
+            <h3 className="font-semibold mb-2">🎭 Culture Sénégalaise</h3>
+            <p className="text-sm text-muted-foreground">Teranga et traditions</p>
+          </Card>
+        </div>
       </div>
     </div>
   );

@@ -1,1 +1,4 @@
 project_id = "joocxubnpemxnyerhcsq"
+
+[functions.senegal-assistant]
+verify_jwt = false

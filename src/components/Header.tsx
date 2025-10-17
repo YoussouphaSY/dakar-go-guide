@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin, LogOut, Shield } from "lucide-react";
+import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin, LogOut, Shield, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -65,6 +65,7 @@ const Header = () => {
     { path: "/events", label: "Événements", icon: Calendar },
     { path: "/results", label: "Résultats", icon: Trophy },
     { path: "/discover", label: "Découvrir", icon: MapPin },
+    { path: "/virtual-tour", label: "Visite Virtuelle", icon: Compass },
     { path: "/records", label: "Records", icon: TrendingUp },
     { path: "/assistant", label: "Assistant IA", icon: MessageCircle },
   ];
