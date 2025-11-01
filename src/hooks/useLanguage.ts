@@ -1,0 +1,135 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+type Language = 'fr' | 'en' | 'wo';
+
+interface LanguageStore {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+}
+
+const useLanguageStore = create<LanguageStore>()(
+  persist(
+    (set) => ({
+      language: 'fr',
+      setLanguage: (language) => set({ language }),
+    }),
+    {
+      name: 'language-storage',
+    }
+  )
+);
+
+const translations = {
+  fr: {
+    common: {
+      back: "Retour",
+      close: "Fermer",
+      save: "Enregistrer",
+      cancel: "Annuler",
+      search: "Rechercher",
+      filter: "Filtrer",
+    },
+    museum: {
+      title: "Musée des Civilisations Noires - Visite 3D",
+      loading: "Chargement du musée...",
+      controls: "Contrôles",
+      move: "Se déplacer: Cliquer-glisser",
+      zoom: "Zoom: Molette",
+      rotate: "Rotation: Cliquer droit-glisser",
+      artworks: "Œuvres",
+      map: "Plan",
+    },
+    oeuvre: {
+      details: "Détails de l'œuvre",
+      description: "Description",
+      history: "Histoire",
+      artist: "Artiste",
+      period: "Période",
+      room: "Salle",
+      dimensions: "Dimensions",
+      material: "Matériau",
+      playAudio: "Écouter le guide audio",
+      pauseAudio: "Mettre en pause",
+      addToFavorites: "Ajouté aux favoris",
+      removeFromFavorites: "Retiré des favoris",
+    },
+  },
+  en: {
+    common: {
+      back: "Back",
+      close: "Close",
+      save: "Save",
+      cancel: "Cancel",
+      search: "Search",
+      filter: "Filter",
+    },
+    museum: {
+      title: "Museum of Black Civilizations - 3D Tour",
+      loading: "Loading museum...",
+      controls: "Controls",
+      move: "Move: Click-drag",
+      zoom: "Zoom: Mouse wheel",
+      rotate: "Rotate: Right-click-drag",
+      artworks: "Artworks",
+      map: "Map",
+    },
+    oeuvre: {
+      details: "Artwork Details",
+      description: "Description",
+      history: "History",
+      artist: "Artist",
+      period: "Period",
+      room: "Room",
+      dimensions: "Dimensions",
+      material: "Material",
+      playAudio: "Play audio guide",
+      pauseAudio: "Pause",
+      addToFavorites: "Added to favorites",
+      removeFromFavorites: "Removed from favorites",
+    },
+  },
+  wo: {
+    common: {
+      back: "Dellu",
+      close: "Téye",
+      save: "Yokk",
+      cancel: "Bàyyi",
+      search: "Seet",
+      filter: "Tëriit",
+    },
+    museum: {
+      title: "Musée Civilisations Ñuul - Xool 3D",
+      loading: "Dafa la defar musée...",
+      controls: "Contrôles",
+      move: "Déplacer: Bësal-téral",
+      zoom: "Zoom: Molette",
+      rotate: "Wëriñ: Bësal njariñ-téral",
+      artworks: "Liggéey",
+      map: "Plan",
+    },
+    oeuvre: {
+      details: "Détail Liggéey",
+      description: "Taalif",
+      history: "Tarix",
+      artist: "Artiste",
+      period: "Période",
+      room: "Néeg",
+      dimensions: "Tànn",
+      material: "Njàkk",
+      playAudio: "Dégluwaat guide audio",
+      pauseAudio: "Taxaw",
+      addToFavorites: "Yokk ci favoris",
+      removeFromFavorites: "Jëlle ci favoris",
+    },
+  },
+};
+
+export const useLanguage = () => {
+  const { language, setLanguage } = useLanguageStore();
+  return {
+    language,
+    setLanguage,
+    t: translations[language],
+  };
+};

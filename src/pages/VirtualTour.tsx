@@ -3,9 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Info, Navigation, Image as ImageIcon } from "lucide-react";
+import { MapPin, Info, Navigation, Image as ImageIcon, Box } from "lucide-react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 interface CulturalSite {
   id: string;
@@ -79,12 +80,22 @@ const VirtualTour = () => {
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">
-            Visite Virtuelle 3D
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Explorez les sites emblématiques du Sénégal comme si vous y étiez
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold text-foreground mb-2">
+                Visite Virtuelle 3D
+              </h1>
+              <p className="text-muted-foreground text-lg">
+                Explorez les sites emblématiques du Sénégal comme si vous y étiez
+              </p>
+            </div>
+            <Button asChild size="lg" className="gap-2">
+              <Link to="/museum-3d">
+                <Box className="h-5 w-5" />
+                Musée 3D Immersif
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">

@@ -16,6 +16,7 @@ import Auth from "./pages/Auth";
 import MatchDetail from "./pages/MatchDetail";
 import Admin from "./pages/Admin";
 import VirtualTour from "./pages/VirtualTour";
+import Museum3D from "./pages/Museum3D";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/virtual-tour" element={<VirtualTour />} />
+          <Route path="/museum-3d" element={<Museum3D />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
