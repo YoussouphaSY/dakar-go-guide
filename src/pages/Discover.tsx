@@ -25,6 +25,12 @@ const restaurants = [
   { id: 2, name: "Le Djembé", type: "Africain Fusion", rating: 4.6, distance: "0.8 km", lat: 14.7200, lng: -17.4650, description: "Cuisine moderne africaine" },
   { id: 3, name: "La Calebasse", type: "Traditionnel", rating: 4.7, distance: "2.1 km", lat: 14.7100, lng: -17.4700, description: "Ambiance authentique sénégalaise" },
   { id: 4, name: "Ocean View", type: "Fruits de mer", rating: 4.9, distance: "3.5 km", lat: 14.7250, lng: -17.4600, description: "Vue panoramique sur l'océan" },
+  { id: 5, name: "Le Ngor", type: "Sénégalais", rating: 4.8, distance: "7.8 km", lat: 14.7483, lng: -17.5127, description: "Restaurant vue mer, spécialités locales" },
+  { id: 6, name: "La Fourchette", type: "Français", rating: 4.7, distance: "2.5 km", lat: 14.6950, lng: -17.4550, description: "Cuisine française raffinée" },
+  { id: 7, name: "Teranga Grill", type: "Grillades", rating: 4.5, distance: "1.8 km", lat: 14.7080, lng: -17.4600, description: "Viandes grillées et mafé authentique" },
+  { id: 8, name: "Le Baobab", type: "Sénégalais", rating: 4.9, distance: "3.2 km", lat: 14.7300, lng: -17.4750, description: "Cadre traditionnel, cuisine familiale" },
+  { id: 9, name: "Pointe des Almadies", type: "Fruits de mer", rating: 4.8, distance: "10.5 km", lat: 14.7458, lng: -17.5325, description: "Poissons frais du jour" },
+  { id: 10, name: "Villa Rosa", type: "Italien", rating: 4.6, distance: "2.8 km", lat: 14.7050, lng: -17.4720, description: "Pizzas au feu de bois, pâtes maison" },
 ];
 
 const attractions = [
@@ -32,12 +38,27 @@ const attractions = [
   { id: 2, name: "Île de Gorée", type: "Site historique", rating: 5.0, distance: "4.8 km", lat: 14.6672, lng: -17.3981, description: "Patrimoine UNESCO" },
   { id: 3, name: "Marché Sandaga", type: "Shopping", rating: 4.5, distance: "1.5 km", lat: 14.6740, lng: -17.4464, description: "Marché traditionnel animé" },
   { id: 4, name: "Plage de Ngor", type: "Plage", rating: 4.7, distance: "8.3 km", lat: 14.7503, lng: -17.5145, description: "Plage populaire et surf" },
+  { id: 5, name: "Musée Théodore Monod", type: "Musée", rating: 4.6, distance: "1.7 km", lat: 14.6733, lng: -17.4267, description: "Art africain et culture" },
+  { id: 6, name: "Grande Mosquée de Dakar", type: "Monument", rating: 4.8, distance: "1.9 km", lat: 14.6783, lng: -17.4550, description: "Architecture islamique moderne" },
+  { id: 7, name: "Lac Rose", type: "Nature", rating: 4.9, distance: "35 km", lat: 14.8475, lng: -17.2042, description: "Lac salé aux eaux roses" },
+  { id: 8, name: "Marché Kermel", type: "Shopping", rating: 4.6, distance: "1.3 km", lat: 14.6667, lng: -17.4333, description: "Marché colonial historique" },
+  { id: 9, name: "Parc Hann", type: "Parc", rating: 4.4, distance: "6.5 km", lat: 14.7228, lng: -17.4122, description: "Zoo et jardin botanique" },
+  { id: 10, name: "Village des Arts", type: "Culture", rating: 4.7, distance: "4.2 km", lat: 14.7019, lng: -17.4422, description: "Ateliers d'artistes et galeries" },
+  { id: 11, name: "Plage de Yoff", type: "Plage", rating: 4.5, distance: "9.8 km", lat: 14.7597, lng: -17.4842, description: "Plage authentique, village de pêcheurs" },
+  { id: 12, name: "Cathédrale du Souvenir Africain", type: "Monument", rating: 4.6, distance: "1.6 km", lat: 14.6892, lng: -17.4456, description: "Architecture art déco unique" },
 ];
 
 const transports = [
   { id: 1, name: "Station DDD Liberté", type: "Bus", rating: 4.2, distance: "0.5 km", lat: 14.7150, lng: -17.4680, description: "Lignes vers centre-ville" },
   { id: 2, name: "Gare Petersen", type: "Transport", rating: 4.3, distance: "1.8 km", lat: 14.7090, lng: -17.4620, description: "Hub de transport majeur" },
   { id: 3, name: "Station Taxi Plateau", type: "Taxi", rating: 4.0, distance: "2.2 km", lat: 14.6737, lng: -17.4300, description: "Taxis vers tous quartiers" },
+  { id: 4, name: "Gare Routière Pompiers", type: "Bus", rating: 4.1, distance: "2.8 km", lat: 14.6883, lng: -17.4567, description: "Bus interurbains, cars rapides" },
+  { id: 5, name: "Station Aftu Dem Dikk", type: "Bus", rating: 4.3, distance: "1.5 km", lat: 14.6917, lng: -17.4489, description: "Réseau urbain principal" },
+  { id: 6, name: "Aéroport Blaise Diagne", type: "Aéroport", rating: 4.7, distance: "48 km", lat: 14.6700, lng: -17.0733, description: "Aéroport international" },
+  { id: 7, name: "Station Taxi Sandaga", type: "Taxi", rating: 3.9, distance: "1.4 km", lat: 14.6747, lng: -17.4453, description: "Taxis et sept-places" },
+  { id: 8, name: "Gare Maritime", type: "Ferry", rating: 4.4, distance: "0.9 km", lat: 14.6628, lng: -17.4144, description: "Liaisons vers Gorée et îles" },
+  { id: 9, name: "Location Vélos Ngor", type: "Vélo", rating: 4.5, distance: "8.1 km", lat: 14.7489, lng: -17.5103, description: "Location vélos et scooters" },
+  { id: 10, name: "Station Tata", type: "Bus", rating: 4.0, distance: "3.5 km", lat: 14.7342, lng: -17.4711, description: "Liaisons banlieue nord" },
 ];
 
 // Component to handle map updates
