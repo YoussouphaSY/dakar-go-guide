@@ -16,12 +16,17 @@ interface Message {
   timestamp: Date;
 }
 
-type Language = "fr" | "en" | "wo" | "ff";
+type Language = "fr" | "en" | "ff";
+
+const languageConfig: Record<Language, { flag: string; name: string }> = {
+  fr: { flag: "🇫🇷", name: "Français" },
+  en: { flag: "🇬🇧", name: "English" },
+  ff: { flag: "🇸🇳", name: "Pulaar" },
+};
 
 const welcomeMessages: Record<Language, string> = {
-  fr: "Bienvenue ! Je suis votre assistant pour les Jeux Olympiques de la Jeunesse Dakar 2026 et la découverte du Sénégal. Jërëjëf ! (Merci en wolof)",
+  fr: "Bienvenue ! Je suis votre assistant pour les Jeux Olympiques de la Jeunesse Dakar 2026 et la découverte du Sénégal. Jërëjëf !",
   en: "Welcome! I'm your assistant for the Dakar 2026 Youth Olympic Games and discovering Senegal.",
-  wo: "Dalal ak jam! Maa ngi assistant bi mu Jeux Olympiques yi ci Dakar 2026.",
   ff: "On jaraama! Mi yimɓe assistant mo Dakar 2026.",
 };
 
@@ -40,6 +45,7 @@ const Assistant = () => {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [autoSpeak, setAutoSpeak] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -72,6 +78,10 @@ const Assistant = () => {
         const transcript = event.results[0][0].transcript;
         setInputValue(transcript);
         setIsListening(false);
+        // Envoyer automatiquement après la reconnaissance vocale
+        setTimeout(() => {
+          sendMessage(transcript);
+        }, 100);
       };
 
       recognitionRef.current.onerror = () => {
@@ -203,10 +213,12 @@ const Assistant = () => {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantText += content;
+              // Nettoyer les ** markdown
+              const cleanText = assistantText.replace(/\*\*/g, '');
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantMessage.id
-                    ? { ...m, text: assistantText }
+                    ? { ...m, text: cleanText }
                     : m
                 )
               );
@@ -218,7 +230,11 @@ const Assistant = () => {
         }
       }
 
-      speak(assistantText);
+      // Parler uniquement si autoSpeak est activé
+      if (autoSpeak) {
+        const cleanText = assistantText.replace(/\*\*/g, '');
+        speak(cleanText);
+      }
     } catch (error) {
       console.error("Error:", error);
       toast({
@@ -253,14 +269,16 @@ const Assistant = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              {(["fr", "en", "wo", "ff"] as Language[]).map((lang) => (
+              {(Object.keys(languageConfig) as Language[]).map((lang) => (
                 <Button
                   key={lang}
                   variant={language === lang ? "default" : "outline"}
                   size="sm"
                   onClick={() => setLanguage(lang)}
+                  className="gap-2"
                 >
-                  {lang.toUpperCase()}
+                  <span>{languageConfig[lang].flag}</span>
+                  <span>{languageConfig[lang].name}</span>
                 </Button>
               ))}
             </div>
@@ -300,6 +318,17 @@ const Assistant = () => {
           </ScrollArea>
 
           <div className="border-t p-4">
+            <div className="flex items-center gap-2 mb-2 px-2">
+              <Button
+                size="sm"
+                variant={autoSpeak ? "default" : "outline"}
+                onClick={() => setAutoSpeak(!autoSpeak)}
+                className="text-xs"
+              >
+                {autoSpeak ? <Volume2 className="h-3 w-3 mr-1" /> : <VolumeX className="h-3 w-3 mr-1" />}
+                {autoSpeak ? "Lecture auto activée" : "Lecture auto désactivée"}
+              </Button>
+            </div>
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -313,13 +342,20 @@ const Assistant = () => {
                 size="icon"
                 variant={isListening ? "destructive" : "outline"}
                 onClick={toggleListening}
+                title="Appuyez pour parler"
               >
                 {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
               </Button>
               <Button
                 size="icon"
                 variant={isSpeaking ? "destructive" : "outline"}
-                onClick={isSpeaking ? stopSpeaking : () => {}}
+                onClick={isSpeaking ? stopSpeaking : () => {
+                  if (messages.length > 0) {
+                    const lastAssistantMsg = [...messages].reverse().find(m => m.sender === 'assistant');
+                    if (lastAssistantMsg) speak(lastAssistantMsg.text);
+                  }
+                }}
+                title={isSpeaking ? "Arrêter la lecture" : "Lire le dernier message"}
               >
                 {isSpeaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
               </Button>
