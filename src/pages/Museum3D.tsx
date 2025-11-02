@@ -14,9 +14,12 @@ const Museum3D = () => {
   const [showMap, setShowMap] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [playerPosition, setPlayerPosition] = useState<[number, number, number]>([0, 2, 10]);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   const artworksForScene = oeuvres.map((oeuvre) => ({
     id: oeuvre.id,
+    title: oeuvre.title[language],
     imageUrl: oeuvre.images[0],
     position: [
       (oeuvre.coordinates?.x || 0) as number,
@@ -24,6 +27,31 @@ const Museum3D = () => {
       (oeuvre.coordinates?.y || 0) as number,
     ] as [number, number, number],
   }));
+
+  // Preload images
+  useState(() => {
+    let loaded = 0;
+    const total = oeuvres.length;
+    
+    oeuvres.forEach((oeuvre) => {
+      const img = new Image();
+      img.onload = () => {
+        loaded++;
+        setLoadingProgress(Math.round((loaded / total) * 100));
+        if (loaded === total) {
+          setTimeout(() => setImagesLoaded(true), 500);
+        }
+      };
+      img.onerror = () => {
+        loaded++;
+        setLoadingProgress(Math.round((loaded / total) * 100));
+        if (loaded === total) {
+          setTimeout(() => setImagesLoaded(true), 500);
+        }
+      };
+      img.src = oeuvre.images[0];
+    });
+  });
 
   const handleArtworkClick = (id: string) => {
     setSelectedArtwork(id);
@@ -34,6 +62,23 @@ const Museum3D = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+
+      {!imagesLoaded && (
+        <div className="fixed inset-0 pt-16 bg-background z-50 flex flex-col items-center justify-center gap-6">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <div className="text-center">
+            <p className="text-xl font-semibold mb-2">Chargement du musée...</p>
+            <p className="text-muted-foreground">Préparation des œuvres d'art</p>
+            <div className="mt-4 w-64 h-2 bg-muted rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-primary transition-all duration-300"
+                style={{ width: `${loadingProgress}%` }}
+              />
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">{loadingProgress}%</p>
+          </div>
+        </div>
+      )}
 
       <div className="fixed inset-0 pt-16">
         <MuseumScene artworks={artworksForScene} onArtworkClick={handleArtworkClick} />
