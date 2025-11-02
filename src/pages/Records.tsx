@@ -306,7 +306,7 @@ const Records = () => {
               animate={{ opacity: 1 }}
               className="mb-6"
             >
-              <Card className="bg-primary text-primary-foreground border-none shadow-lg">
+              <Card className="bg-primary text-white border-none shadow-lg">
                 <CardContent className="py-6">
                   <div className="flex items-center gap-4">
                     <Trophy className="h-14 w-14" />

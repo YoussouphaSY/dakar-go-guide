@@ -17,7 +17,7 @@ All colors MUST be HSL.
     
     /* Dakar 2026 Colors - Based on Official Logo */
     --primary: 158 100% 21%; /* Green */
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 43 98% 54%;
     --primary-glow: 158 100% 35%;
     
     --secondary: 43 98% 54%; /* Yellow/Gold */
