@@ -34,10 +34,10 @@ const Events = () => {
             <Trophy className="h-10 w-10" />
             <h1 className="font-bold text-4xl text-slate-900">Programme JOJ 2026</h1>
           </div>
-          <p className="text-xl text-white/90 max-w-3xl">
+          <p className="text-xl text-muted-foreground max-w-3xl">
             25 sports en compétition + 10 activités de mobilisation
           </p>
-          <p className="text-lg mt-2 text-red-200">
+          <p className="text-lg mt-2 text-muted-foreground">
             151 épreuves • Dakar, Diamniadio, Saly
           </p>
         </div>

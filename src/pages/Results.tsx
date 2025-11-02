@@ -185,7 +185,7 @@ const Results = () => {
         {/* Medal Standings */}
         <Card className="mt-12 overflow-hidden border-0 shadow-xl">
           <div className="bg-gradient-card p-6">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
               <Trophy className="h-6 w-6" />
               Classement des Médailles
             </h2>

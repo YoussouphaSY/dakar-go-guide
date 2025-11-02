@@ -4,6 +4,7 @@ import { Calendar, Trophy, MessageCircle, User, MapPin, Utensils, Camera, Bus } 
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import heroImage from "@/assets/hero-dakar-tourism.jpg";
+import heroVideo from "@/assets/1YTG Dakar 2026 _ Svelata la mascotte Ayo ad un anno dai Giochi Olimpici Giovanili.mp4";
 import restaurantImg from "@/assets/restaurant-senegal.jpg";
 import transportImg from "@/assets/transport-dakar.jpg";
 
@@ -16,13 +17,18 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        >
-          <div className="absolute inset-0 bg-gradient-hero opacity-80" />
-        </div>
-        
+      <div className="absolute inset-0 overflow-hidden">
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src={heroVideo}   // ton import de vidéo
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+        <div className="absolute inset-0 bg-gradient-hero opacity-80" />
+      </div>
+
         <div className="relative z-10 text-center space-y-6 px-4 max-w-5xl mx-auto">
           <div className="inline-block px-6 py-2 bg-secondary/20 backdrop-blur-sm rounded-full border border-secondary/30 mb-4">
             <span className="text-white font-semibold">✨ Jeux Olympiques de la Jeunesse 2026</span>

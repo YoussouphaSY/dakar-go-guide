@@ -255,7 +255,7 @@ const Records = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-slate-900">
       <Header />
       
       <div className="container py-8">
@@ -276,8 +276,8 @@ const Records = () => {
                   <Medal className="h-16 w-16" />
                 </motion.div>
                 <div>
-                  <h1 className="text-5xl font-black mb-2">Records Olympiques</h1>
-                  <p className="text-xl opacity-90 font-medium">
+                  <h1 className="text-5xl text-slate-900 font-bold mb-2">Records Olympiques</h1>
+                  <p className="text-xl opacity-90 text-muted-foreground font-medium">
                     Les performances légendaires qui ont marqué l'histoire du sport
                   </p>
                 </div>
@@ -327,8 +327,8 @@ const Records = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="athletics" className="mt-8">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TabsContent value="athletics" className="mt-8 ">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6  !text-slate-900">
               {athleticsRecords.map((record, idx) => (
                 <RecordCard key={idx} record={record} index={idx} />
               ))}
@@ -336,7 +336,7 @@ const Records = () => {
           </TabsContent>
 
           <TabsContent value="swimming" className="mt-8">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6  !text-slate-900">
               {swimmingRecords.map((record, idx) => (
                 <RecordCard key={idx} record={record} index={idx} />
               ))}
@@ -353,8 +353,8 @@ const Records = () => {
           <Card className="mt-12 border-2 border-accent/20 shadow-xl">
             <CardHeader className="bg-gradient-card">
               <CardTitle className="text-3xl font-black text-primary-foreground flex items-center gap-3">
-                <Zap className="h-8 w-8" />
-                Le saviez-vous ?
+                <Zap className="h-8 font-bold text-slate-900 w-8" />
+                <p className=" text-slate-900"> Le saviez-vous ?</p>
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
