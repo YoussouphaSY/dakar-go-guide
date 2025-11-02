@@ -3,6 +3,7 @@ import { Suspense, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls as ThreeOrbitControls } from 'three-stdlib';
 import { TextureLoader } from 'three';
+import placeholderImage from '@/assets/ai-assistant.png';
 
 extend({ OrbitControls: ThreeOrbitControls });
 
@@ -92,7 +93,35 @@ function Artwork({ position, onClick, imageUrl }: {
   imageUrl: string
 }) {
   const [hovered, setHovered] = useState(false);
-  const texture = useLoader(TextureLoader, imageUrl);
+  const [texture, setTexture] = useState<THREE.Texture | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const loader = new TextureLoader();
+    loader.load(
+      imageUrl,
+      (tex) => {
+        if (!mounted) return;
+        tex.colorSpace = THREE.SRGBColorSpace;
+        setTexture(tex);
+      },
+      undefined,
+      () => {
+        // Fallback placeholder if original fails
+        loader.load(
+          placeholderImage as unknown as string,
+          (tex) => {
+            if (!mounted) return;
+            tex.colorSpace = THREE.SRGBColorSpace;
+            setTexture(tex);
+          }
+        );
+      }
+    );
+    return () => {
+      mounted = false;
+    };
+  }, [imageUrl]);
 
   return (
     <group position={position}>
@@ -103,7 +132,7 @@ function Artwork({ position, onClick, imageUrl }: {
       >
         <planeGeometry args={[3, 4]} />
         <meshStandardMaterial
-          map={texture}
+          map={texture ?? undefined}
           emissive={hovered ? "#D4AF37" : "#000000"}
           emissiveIntensity={hovered ? 0.2 : 0}
         />
