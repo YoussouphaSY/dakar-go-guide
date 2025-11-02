@@ -94,30 +94,39 @@ function Artwork({ position, onClick, imageUrl }: {
 }) {
   const [hovered, setHovered] = useState(false);
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
+    setIsLoading(true);
     const loader = new TextureLoader();
+    
     loader.load(
       imageUrl,
       (tex) => {
         if (!mounted) return;
         tex.colorSpace = THREE.SRGBColorSpace;
+        tex.minFilter = THREE.LinearFilter;
+        tex.magFilter = THREE.LinearFilter;
         setTexture(tex);
+        setIsLoading(false);
       },
       undefined,
-      () => {
-        // Fallback placeholder if original fails
+      (error) => {
+        console.error('Error loading texture:', imageUrl, error);
+        // Fallback to placeholder
         loader.load(
           placeholderImage as unknown as string,
           (tex) => {
             if (!mounted) return;
             tex.colorSpace = THREE.SRGBColorSpace;
             setTexture(tex);
+            setIsLoading(false);
           }
         );
       }
     );
+    
     return () => {
       mounted = false;
     };
@@ -125,22 +134,46 @@ function Artwork({ position, onClick, imageUrl }: {
 
   return (
     <group position={position}>
-      <mesh
-        onClick={onClick}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-      >
-        <planeGeometry args={[3, 4]} />
-        <meshStandardMaterial
-          map={texture ?? undefined}
-          emissive={hovered ? "#D4AF37" : "#000000"}
-          emissiveIntensity={hovered ? 0.2 : 0}
-        />
-      </mesh>
+      {/* Background frame */}
       <mesh position={[0, 0, -0.05]}>
         <planeGeometry args={[3.4, 4.4]} />
         <meshStandardMaterial color={hovered ? "#D4AF37" : "#8B4513"} />
       </mesh>
+      
+      {/* Artwork plane */}
+      <mesh
+        onClick={onClick}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        castShadow
+      >
+        <planeGeometry args={[3, 4]} />
+        {texture ? (
+          <meshStandardMaterial
+            map={texture}
+            emissive={hovered ? "#D4AF37" : "#000000"}
+            emissiveIntensity={hovered ? 0.3 : 0}
+            roughness={0.7}
+            metalness={0.1}
+          />
+        ) : (
+          <meshStandardMaterial
+            color={isLoading ? "#3A2A1A" : "#666666"}
+            emissive={hovered ? "#D4AF37" : "#000000"}
+            emissiveIntensity={hovered ? 0.2 : 0}
+          />
+        )}
+      </mesh>
+
+      {/* Spotlight for each artwork */}
+      <spotLight
+        position={[0, 2, 2]}
+        angle={0.4}
+        penumbra={0.5}
+        intensity={0.8}
+        color="#FFFFFF"
+        target-position={position}
+      />
     </group>
   );
 }

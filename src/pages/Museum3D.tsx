@@ -5,17 +5,22 @@ import { HUD } from "@/components/HUD";
 import { MiniMap } from "@/components/MiniMap";
 import { ArtworkDetailModal } from "@/components/ArtworkDetailModal";
 import { oeuvres } from "@/data/oeuvres";
-import { Loader2 } from "lucide-react";
+import { Loader2, Smartphone } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Museum3D = () => {
   const { language } = useLanguage();
+  const isMobile = useIsMobile();
   const [selectedArtwork, setSelectedArtwork] = useState<string | null>(null);
   const [showMap, setShowMap] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [playerPosition, setPlayerPosition] = useState<[number, number, number]>([0, 2, 10]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [forceMobile, setForceMobile] = useState(false);
 
   const artworksForScene = oeuvres.map((oeuvre) => ({
     id: oeuvre.id,
@@ -59,6 +64,41 @@ const Museum3D = () => {
 
   const selectedOeuvre = oeuvres.find((o) => o.id === selectedArtwork);
 
+  // Mobile warning
+  if ((isMobile || forceMobile) && !imagesLoaded) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="fixed inset-0 pt-16 flex items-center justify-center p-4">
+          <Card className="max-w-md">
+            <CardHeader>
+              <div className="flex items-center gap-2 mb-2">
+                <Smartphone className="h-6 w-6 text-primary" />
+                <CardTitle>Visite 3D</CardTitle>
+              </div>
+              <CardDescription>
+                L'expérience 3D fonctionne mieux sur ordinateur avec souris et clavier
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Pour une meilleure expérience de navigation 3D, nous recommandons d'utiliser un ordinateur de bureau ou portable.
+              </p>
+              <div className="flex flex-col gap-2">
+                <Button onClick={() => setForceMobile(false)} className="w-full">
+                  Continuer quand même
+                </Button>
+                <Button variant="outline" onClick={() => window.history.back()} className="w-full">
+                  Retour
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -67,8 +107,16 @@ const Museum3D = () => {
         <div className="fixed inset-0 pt-16 bg-background z-50 flex flex-col items-center justify-center gap-6">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <div className="text-center">
-            <p className="text-xl font-semibold mb-2">Chargement du musée...</p>
-            <p className="text-muted-foreground">Préparation des œuvres d'art</p>
+            <p className="text-xl font-semibold mb-2">
+              {language === "fr" ? "Chargement du musée..." : 
+               language === "en" ? "Loading museum..." : 
+               "Dañuy charger musée bi..."}
+            </p>
+            <p className="text-muted-foreground">
+              {language === "fr" ? "Préparation des œuvres d'art" : 
+               language === "en" ? "Preparing artworks" : 
+               "Dañuy teg oeuvre yi"}
+            </p>
             <div className="mt-4 w-64 h-2 bg-muted rounded-full overflow-hidden">
               <div 
                 className="h-full bg-primary transition-all duration-300"
@@ -86,7 +134,7 @@ const Museum3D = () => {
 
       <HUD
         artworkCount={oeuvres.length}
-        currentRoom="Salle principale"
+        currentRoom={language === "fr" ? "Salle principale" : language === "en" ? "Main Hall" : "Salle bi"}
         onShowMap={() => setShowMap(true)}
         onShowHelp={() => setShowHelp(true)}
       />
