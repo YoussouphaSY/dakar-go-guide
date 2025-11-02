@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
 import { Send, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import aiAssistantImage from "@/assets/ai-assistant.png";
+// import aiAssistantImage from "@/assets/ai-assistant.png";
+import aiAssistantImage from "@/assets/IMG_0167-e1761916299674.jpeg";
 
 interface Message {
   id: number;
@@ -265,7 +266,7 @@ const Assistant = () => {
             <div className="flex items-center gap-3">
               <img src={aiAssistantImage} alt="Assistant IA" className="h-12 w-12 rounded-full" />
               <div>
-                <h1 className="text-3xl font-bold">Assistant IA Sénégal</h1>
+                <h1 className="text-3xl font-bold">AYO Chat</h1>
                 <p className="text-muted-foreground">Expert en culture sénégalaise et JOJ 2026</p>
               </div>
             </div>

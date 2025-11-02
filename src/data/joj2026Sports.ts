@@ -34,7 +34,7 @@ export const joj2026Sports: Sport[] = [
     gradient: "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)",
     venue: "Stade Léopold Sédar Senghor, Dakar",
     description: "Courses, sauts, lancers - L'essence des Jeux Olympiques",
-    videoUrl: "https://www.youtube.com/embed/J2pGY5Pu6dQ",
+    videoUrl: "https://www.youtube.com/embed/dyBvs9mTzRY",
     events: [
       { id: 101, title: "100m Hommes - Finale", date: "2026-11-08", time: "18:00", phase: "Finale", gender: "H" },
       { id: 102, title: "100m Femmes - Finale", date: "2026-11-08", time: "18:30", phase: "Finale", gender: "F" },
@@ -61,12 +61,12 @@ export const joj2026Sports: Sport[] = [
     name: "Badminton",
     category: "competition",
     emoji: "🏸",
-    image: "/src/assets/sports/badminton.jpg",
+    image: "/src/assets/sports/badminton.jpeg",
     color: "#A8E6CF",
     gradient: "linear-gradient(135deg, #A8E6CF 0%, #88D8B0 100%)",
     venue: "Arena Dakar",
     description: "Rapidité, agilité et précision au filet",
-    videoUrl: "https://www.youtube.com/embed/l3wi4ga8x_w",
+    videoUrl: "https://www.youtube.com/embed/7qXNg1x0gYA",
     events: [
       { id: 301, title: "Simple Hommes - Finale", date: "2026-11-12", time: "16:00", phase: "Finale", gender: "H" },
       { id: 302, title: "Simple Femmes - Finale", date: "2026-11-12", time: "17:00", phase: "Finale", gender: "F" },

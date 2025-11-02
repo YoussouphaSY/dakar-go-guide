@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import heroImage from "@/assets/hero-dakar-tourism.jpg";
 import heroVideo from "@/assets/1YTG Dakar 2026 _ Svelata la mascotte Ayo ad un anno dai Giochi Olimpici Giovanili.mp4";
-import restaurantImg from "@/assets/restaurant-senegal.jpg";
+import restaurantImg from "@/assets/saly-princess-senegal_0122_1107.jpg";
 import transportImg from "@/assets/transport-dakar.jpg";
 
 const Index = () => {
@@ -73,7 +73,7 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group border-t-4 border-t-primary" onClick={() => navigate('/events')}>
               <CardHeader>
-                <div className="w-14 h-14 bg-gradient-card rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Calendar className="h-7 w-7 text-white" />
                 </div>
                 <CardTitle>Programme</CardTitle>
@@ -85,7 +85,7 @@ const Index = () => {
 
             <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group border-t-4 border-t-accent" onClick={() => navigate('/results')}>
               <CardHeader>
-                <div className="w-14 h-14 bg-gradient-live rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 bg-[hsl(var(--accent))] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Trophy className="h-7 w-7 text-white" />
                 </div>
                 <CardTitle>Résultats Live</CardTitle>

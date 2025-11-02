@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import dakarLogo from "@/assets/dakar2026-logo.jpg";
+// import dakarLogo from "@/assets/dakar2026-logo.jpg";
 import { NotificationBell } from "@/components/NotificationBell";
 
 const Header = () => {
@@ -98,7 +99,7 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="flex items-center gap-2">
-            <img src={dakarLogo} alt="Dakar 2026" className="h-12 w-auto object-contain" />
+            <img src={dakarLogo} alt="Dakar 2026" className="h-16 w-auto object-contain" />
           </div>
         </Link>
 

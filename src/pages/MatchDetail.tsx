@@ -80,7 +80,7 @@ const MatchDetail = () => {
                 <Badge variant="default" className="bg-accent text-accent-foreground animate-pulse">
                   🔴 {match.status}
                 </Badge>
-                <div className="flex items-center gap-4 text-white">
+                <div className="flex items-center gap-">
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
                     <span className="font-bold">{match.time}</span>
@@ -89,7 +89,7 @@ const MatchDetail = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 items-center text-white">
+              <div className="grid grid-cols-3 gap-4 items-cente">
                 {/* Home Team */}
                 <div className="text-center">
                   <div className="text-6xl mb-3">{match.home.flag}</div>
@@ -112,7 +112,7 @@ const MatchDetail = () => {
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-center gap-2 text-white/80">
+              <div className="mt-4 flex items-center justify-center gap-2">
                 <MapPin className="h-4 w-4" />
                 <span>{match.location}</span>
               </div>

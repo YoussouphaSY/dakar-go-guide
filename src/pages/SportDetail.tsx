@@ -207,15 +207,15 @@ const SportDetail = () => {
             )}
 
             {/* CTA Card */}
-            <Card className="bg-gradient-hero text-white">
+            <Card className="bg-gradient-hero">
               <CardContent className="pt-6 text-center space-y-4">
                 <Trophy className="h-12 w-12 mx-auto" />
                 <h3 className="text-xl font-bold">Ne manquez rien!</h3>
-                <p className="text-white/90">
+                <p className="">
                   Activez les notifications pour être alerté des compétitions
                 </p>
                 <Button 
-                  className="w-full bg-white text-primary hover:bg-white/90"
+                  className="w-full bg-white text-primary"
                   onClick={() => navigate('/profile')}
                 >
                   Activer les notifications
