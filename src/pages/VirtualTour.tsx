@@ -17,6 +17,7 @@ interface CulturalSite {
   longitude: number;
   image_url: string | null;
   virtual_tour_url: string | null;
+  video_url: string | null;
   historical_info: string;
   city: string;
 }
@@ -163,7 +164,17 @@ const VirtualTour = () => {
               </div>
               
               <div className="flex-1 relative">
-                {selectedSite.virtual_tour_url ? (
+                {selectedSite.video_url ? (
+                  <div className="w-full h-full bg-black">
+                    <iframe
+                      src={selectedSite.video_url}
+                      className="w-full h-full"
+                      title={`Vidéo - ${selectedSite.name}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : selectedSite.virtual_tour_url ? (
                   <iframe
                     src={selectedSite.virtual_tour_url}
                     className="w-full h-full"

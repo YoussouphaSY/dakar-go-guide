@@ -26,6 +26,7 @@ export type Database = {
           latitude: number
           longitude: number
           name: string
+          video_url: string | null
           virtual_tour_url: string | null
         }
         Insert: {
@@ -39,6 +40,7 @@ export type Database = {
           latitude: number
           longitude: number
           name: string
+          video_url?: string | null
           virtual_tour_url?: string | null
         }
         Update: {
@@ -52,6 +54,7 @@ export type Database = {
           latitude?: number
           longitude?: number
           name?: string
+          video_url?: string | null
           virtual_tour_url?: string | null
         }
         Relationships: []

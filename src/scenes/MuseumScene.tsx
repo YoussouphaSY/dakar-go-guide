@@ -161,7 +161,7 @@ export default function MuseumScene({
   artworks,
   onArtworkClick,
 }: {
-  artworks: Array<{ id: string, imageUrl: string, position: [number, number, number] }>,
+  artworks: Array<{ id: string, title: string, imageUrl: string, position: [number, number, number] }>,
   onArtworkClick: (id: string) => void,
 }) {
   return (

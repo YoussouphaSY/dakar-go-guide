@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import MuseumScene from "@/scenes/MuseumScene";
 import { HUD } from "@/components/HUD";
@@ -29,7 +29,7 @@ const Museum3D = () => {
   }));
 
   // Preload images
-  useState(() => {
+  useEffect(() => {
     let loaded = 0;
     const total = oeuvres.length;
     
@@ -51,7 +51,7 @@ const Museum3D = () => {
       };
       img.src = oeuvre.images[0];
     });
-  });
+  }, []);
 
   const handleArtworkClick = (id: string) => {
     setSelectedArtwork(id);
