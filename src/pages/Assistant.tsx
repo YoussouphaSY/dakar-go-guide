@@ -16,18 +16,18 @@ interface Message {
   timestamp: Date;
 }
 
-type Language = "fr" | "en" | "ff";
+type Language = "fr" | "en" | "wo";
 
 const languageConfig: Record<Language, { flag: string; name: string }> = {
   fr: { flag: "🇫🇷", name: "Français" },
   en: { flag: "🇬🇧", name: "English" },
-  ff: { flag: "🇸🇳", name: "Pulaar" },
+  wo: { flag: "🇸🇳", name: "Wolof" },
 };
 
 const welcomeMessages: Record<Language, string> = {
   fr: "Bienvenue ! Je suis votre assistant pour les Jeux Olympiques de la Jeunesse Dakar 2026 et la découverte du Sénégal. Jërëjëf !",
   en: "Welcome! I'm your assistant for the Dakar 2026 Youth Olympic Games and discovering Senegal.",
-  ff: "On jaraama! Mi yimɓe assistant mo Dakar 2026.",
+  wo: "Dalal ak djam! Mangi assistant bi ngir Jeux Olympiques Jeunesse Dakar 2026 ak découverte Sénégal.",
 };
 
 const Assistant = () => {
@@ -122,7 +122,7 @@ const Assistant = () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : 'fr-FR';
+      utterance.lang = language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : 'wo-SN';
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
       window.speechSynthesis.speak(utterance);
@@ -168,6 +168,7 @@ const Assistant = () => {
                 content: m.text,
               }))
               .concat([{ role: "user", content: messageText }]),
+            language: language,
           }),
         }
       );
