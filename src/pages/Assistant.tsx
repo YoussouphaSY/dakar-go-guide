@@ -260,24 +260,24 @@ const Assistant = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <img src={aiAssistantImage} alt="Assistant IA" className="h-12 w-12 rounded-full" />
+      <div className="container mx-auto px-2 md:px-4 py-4 md:py-8">
+        <div className="mb-4 md:mb-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0 mb-4">
+            <div className="flex items-center gap-2 md:gap-3">
+              <img src={aiAssistantImage} alt="Assistant IA" className="h-10 w-10 md:h-12 md:w-12 rounded-full" />
               <div>
-                <h1 className="text-3xl font-bold">AYO Chat</h1>
-                <p className="text-muted-foreground">Expert en culture sénégalaise et JOJ 2026</p>
+                <h1 className="text-2xl md:text-3xl font-bold">AYO Chat</h1>
+                <p className="text-xs md:text-sm text-muted-foreground">Expert en culture sénégalaise et JOJ 2026</p>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1.5 md:gap-2 w-full md:w-auto overflow-x-auto">
               {(Object.keys(languageConfig) as Language[]).map((lang) => (
                 <Button
                   key={lang}
                   variant={language === lang ? "default" : "outline"}
                   size="sm"
                   onClick={() => setLanguage(lang)}
-                  className="gap-2"
+                  className="gap-1.5 md:gap-2 text-xs md:text-sm whitespace-nowrap"
                 >
                   <span>{languageConfig[lang].flag}</span>
                   <span>{languageConfig[lang].name}</span>
@@ -287,9 +287,9 @@ const Assistant = () => {
           </div>
         </div>
 
-        <Card className="h-[600px] flex flex-col">
-          <ScrollArea ref={scrollRef} className="flex-1 p-6">
-            <div className="space-y-4">
+        <Card className="h-[500px] md:h-[600px] flex flex-col">
+          <ScrollArea ref={scrollRef} className="flex-1 p-3 md:p-6">
+            <div className="space-y-3 md:space-y-4">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -298,13 +298,13 @@ const Assistant = () => {
                   }`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-lg p-4 ${
+                    className={`max-w-[85%] md:max-w-[80%] rounded-lg p-3 md:p-4 ${
                       message.sender === "user"
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted"
                     }`}
                   >
-                    <p className="whitespace-pre-wrap">{message.text}</p>
+                    <p className="whitespace-pre-wrap text-sm md:text-base break-words">{message.text}</p>
                     <span className="text-xs opacity-70 mt-2 block">
                       {message.timestamp.toLocaleTimeString(language === "fr" ? "fr-FR" : "en-US")}
                     </span>
@@ -313,13 +313,13 @@ const Assistant = () => {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <Badge variant="secondary">L'assistant réfléchit...</Badge>
+                  <Badge variant="secondary" className="text-xs md:text-sm">L'assistant réfléchit...</Badge>
                 </div>
               )}
             </div>
           </ScrollArea>
 
-          <div className="border-t p-4">
+          <div className="border-t p-3 md:p-4">
             <div className="flex items-center gap-2 mb-2 px-2">
               <Button
                 size="sm"
@@ -328,16 +328,17 @@ const Assistant = () => {
                 className="text-xs"
               >
                 {autoSpeak ? <Volume2 className="h-3 w-3 mr-1" /> : <VolumeX className="h-3 w-3 mr-1" />}
-                {autoSpeak ? "Lecture auto activée" : "Lecture auto désactivée"}
+                <span className="hidden sm:inline">{autoSpeak ? "Lecture auto activée" : "Lecture auto désactivée"}</span>
+                <span className="sm:hidden">{autoSpeak ? "Auto" : "Manuel"}</span>
               </Button>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1.5 md:gap-2">
               <Input
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Posez votre question sur le Sénégal ou les JOJ 2026..."
-                className="flex-1"
+                placeholder="Posez votre question..."
+                className="flex-1 text-sm md:text-base"
                 disabled={isLoading}
               />
               <Button
@@ -345,8 +346,9 @@ const Assistant = () => {
                 variant={isListening ? "destructive" : "outline"}
                 onClick={toggleListening}
                 title="Appuyez pour parler"
+                className="h-9 w-9 md:h-10 md:w-10 flex-shrink-0"
               >
-                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                {isListening ? <MicOff className="h-3.5 w-3.5 md:h-4 md:w-4" /> : <Mic className="h-3.5 w-3.5 md:h-4 md:w-4" />}
               </Button>
               <Button
                 size="icon"
@@ -358,28 +360,34 @@ const Assistant = () => {
                   }
                 }}
                 title={isSpeaking ? "Arrêter la lecture" : "Lire le dernier message"}
+                className="h-9 w-9 md:h-10 md:w-10 flex-shrink-0"
               >
-                {isSpeaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                {isSpeaking ? <VolumeX className="h-3.5 w-3.5 md:h-4 md:w-4" /> : <Volume2 className="h-3.5 w-3.5 md:h-4 md:w-4" />}
               </Button>
-              <Button size="icon" onClick={() => sendMessage()} disabled={isLoading || !inputValue.trim()}>
-                <Send className="h-4 w-4" />
+              <Button 
+                size="icon" 
+                onClick={() => sendMessage()} 
+                disabled={isLoading || !inputValue.trim()}
+                className="h-9 w-9 md:h-10 md:w-10 flex-shrink-0"
+              >
+                <Send className="h-3.5 w-3.5 md:h-4 md:w-4" />
               </Button>
             </div>
           </div>
         </Card>
 
-        <div className="mt-6 grid md:grid-cols-3 gap-4">
-          <Card className="p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Raconte-moi l'histoire de l'île de Gorée")}>
-            <h3 className="font-semibold mb-2">🏛️ Histoire de Gorée</h3>
-            <p className="text-sm text-muted-foreground">Découvrez le patrimoine UNESCO</p>
+        <div className="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          <Card className="p-3 md:p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Raconte-moi l'histoire de l'île de Gorée")}>
+            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">🏛️ Histoire de Gorée</h3>
+            <p className="text-xs md:text-sm text-muted-foreground">Découvrez le patrimoine UNESCO</p>
           </Card>
-          <Card className="p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Quels sont les sports aux JOJ Dakar 2026 ?")}>
-            <h3 className="font-semibold mb-2">🏅 Programme JOJ 2026</h3>
-            <p className="text-sm text-muted-foreground">Tous les sports olympiques</p>
+          <Card className="p-3 md:p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Quels sont les sports aux JOJ Dakar 2026 ?")}>
+            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">🏅 Programme JOJ 2026</h3>
+            <p className="text-xs md:text-sm text-muted-foreground">Tous les sports olympiques</p>
           </Card>
-          <Card className="p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Parle-moi de la culture sénégalaise")}>
-            <h3 className="font-semibold mb-2">🎭 Culture Sénégalaise</h3>
-            <p className="text-sm text-muted-foreground">Teranga et traditions</p>
+          <Card className="p-3 md:p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Parle-moi de la culture sénégalaise")}>
+            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">🎭 Culture Sénégalaise</h3>
+            <p className="text-xs md:text-sm text-muted-foreground">Teranga et traditions</p>
           </Card>
         </div>
       </div>

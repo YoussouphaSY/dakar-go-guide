@@ -106,15 +106,19 @@ const VirtualTour = () => {
               className="hover:shadow-lg transition-all cursor-pointer group overflow-hidden"
               onClick={() => setSelectedSite(site)}
             >
-              {site.image_url && (
-                <div className="h-48 overflow-hidden">
+              <div className="h-48 overflow-hidden bg-muted">
+                {site.image_url && (
                   <img 
                     src={site.image_url} 
                     alt={site.name}
+                    loading="eager"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
-                </div>
-              )}
+                )}
+              </div>
               <CardHeader>
                 <div className="flex items-start justify-between mb-2">
                   <CardTitle className="text-lg">{site.name}</CardTitle>

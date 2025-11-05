@@ -77,7 +77,10 @@ const Results = () => {
   ];
 
   const MatchCard = ({ match, isLive = false }: any) => (
-    <Card className={`group cursor-pointer transition-all hover:shadow-xl ${isLive ? 'border-l-4 border-l-accent' : ''}`}>
+    <Card 
+      className={`group cursor-pointer transition-all hover:shadow-xl ${isLive ? 'border-l-4 border-l-accent' : ''}`}
+      onClick={() => navigate(`/match/${match.id}`)}
+    >
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-3">
           <Badge 
@@ -123,8 +126,7 @@ const Results = () => {
 
         <Button 
           variant="ghost" 
-          className="w-full mt-3 group-hover:bg-primary group-hover:text-primary-foreground transition-all"
-          onClick={() => navigate(`/match/${match.id}`)}
+          className="w-full mt-3 group-hover:bg-primary group-hover:text-primary-foreground transition-all pointer-events-none"
         >
           Voir détails
           <ChevronRight className="h-4 w-4 ml-2" />

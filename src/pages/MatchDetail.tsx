@@ -9,50 +9,159 @@ import { motion } from "framer-motion";
 const MatchDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const matchId = Number(id);
 
-  // Mock data - à remplacer par de vraies données
-  const match = {
-    id: Number(id),
-    sport: "Basketball",
-    status: "EN DIRECT",
-    time: "45:32",
-    quarter: "3ème quart-temps",
-    location: "Dakar Arena",
-    home: {
-      name: "Sénégal",
-      flag: "🇸🇳",
-      score: 42,
-      stats: {
-        fieldGoals: "18/35 (51%)",
-        threePoints: "6/15 (40%)",
-        freeThrows: "12/16 (75%)",
-        rebounds: 28,
-        assists: 14,
+  // Mock data basé sur l'ID du match
+  const getMatchData = (matchId: number) => {
+    const matches: Record<number, any> = {
+      1: {
+        sport: "Basketball",
+        status: "EN DIRECT",
+        time: "45:32",
+        quarter: "3ème quart-temps",
+        location: "Dakar Arena",
+        home: {
+          name: "Sénégal",
+          flag: "🇸🇳",
+          score: 42,
+          stats: {
+            fieldGoals: "18/35 (51%)",
+            threePoints: "6/15 (40%)",
+            freeThrows: "12/16 (75%)",
+            rebounds: 28,
+            assists: 14,
+          },
+          players: [
+            { name: "Amadou Diallo", points: 18, rebounds: 7, assists: 3 },
+            { name: "Moussa Sow", points: 12, rebounds: 4, assists: 6 },
+            { name: "Ibrahima Fall", points: 8, rebounds: 9, assists: 2 },
+          ],
+        },
+        away: {
+          name: "Ghana",
+          flag: "🇬🇭",
+          score: 38,
+          stats: {
+            fieldGoals: "16/38 (42%)",
+            threePoints: "4/18 (22%)",
+            freeThrows: "10/12 (83%)",
+            rebounds: 24,
+            assists: 11,
+          },
+          players: [
+            { name: "Kwame Mensah", points: 15, rebounds: 5, assists: 4 },
+            { name: "Kofi Osei", points: 11, rebounds: 6, assists: 3 },
+            { name: "David Agyeman", points: 9, rebounds: 8, assists: 2 },
+          ],
+        },
       },
-      players: [
-        { name: "Amadou Diallo", points: 18, rebounds: 7, assists: 3 },
-        { name: "Moussa Sow", points: 12, rebounds: 4, assists: 6 },
-        { name: "Ibrahima Fall", points: 8, rebounds: 9, assists: 2 },
-      ],
-    },
-    away: {
-      name: "Ghana",
-      flag: "🇬🇭",
-      score: 38,
-      stats: {
-        fieldGoals: "16/38 (42%)",
-        threePoints: "4/18 (22%)",
-        freeThrows: "10/12 (83%)",
-        rebounds: 24,
-        assists: 11,
+      2: {
+        sport: "Athlétisme",
+        status: "EN DIRECT",
+        time: "Finale",
+        quarter: "100m Hommes",
+        location: "Stade Léopold Sédar Senghor",
+        home: {
+          name: "A. Diallo",
+          flag: "🇸🇳",
+          score: "10.23",
+          stats: {},
+          players: [],
+        },
+        away: {
+          name: "K. Mensah",
+          flag: "🇬🇭",
+          score: "10.45",
+          stats: {},
+          players: [],
+        },
       },
-      players: [
-        { name: "Kwame Mensah", points: 15, rebounds: 5, assists: 4 },
-        { name: "Kofi Osei", points: 11, rebounds: 6, assists: 3 },
-        { name: "David Agyeman", points: 9, rebounds: 8, assists: 2 },
-      ],
-    },
+      3: {
+        sport: "Football",
+        status: "EN DIRECT",
+        time: "67:15",
+        quarter: "2ème mi-temps",
+        location: "Stade Demba Diop",
+        home: {
+          name: "Côte d'Ivoire",
+          flag: "🇨🇮",
+          score: 2,
+          stats: {
+            possession: "58%",
+            shots: "12",
+            shotsOnTarget: "6",
+            corners: "5",
+            fouls: "8",
+          },
+          players: [
+            { name: "Y. Koné", points: 1, rebounds: 0, assists: 2 },
+            { name: "S. Traoré", points: 1, rebounds: 0, assists: 1 },
+          ],
+        },
+        away: {
+          name: "Mali",
+          flag: "🇲🇱",
+          score: 1,
+          stats: {
+            possession: "42%",
+            shots: "8",
+            shotsOnTarget: "4",
+            corners: "3",
+            fouls: "11",
+          },
+          players: [
+            { name: "M. Diarra", points: 1, rebounds: 0, assists: 0 },
+          ],
+        },
+      },
+      4: {
+        sport: "Natation",
+        status: "TERMINÉ",
+        time: "Terminé",
+        quarter: "50m Nage Libre",
+        location: "Centre Aquatique Olympique",
+        home: {
+          name: "F. Kane",
+          flag: "🇸🇳",
+          score: "25.12",
+          stats: {},
+          players: [],
+        },
+        away: {
+          name: "A. Koné",
+          flag: "🇨🇮",
+          score: "25.34",
+          stats: {},
+          players: [],
+        },
+      },
+      5: {
+        sport: "Judo",
+        status: "TERMINÉ",
+        time: "Terminé",
+        quarter: "-73kg Hommes",
+        location: "Arena Dakar",
+        home: {
+          name: "Sénégal",
+          flag: "🇸🇳",
+          score: "Victoire",
+          stats: {},
+          players: [],
+        },
+        away: {
+          name: "Ghana",
+          flag: "🇬🇭",
+          score: "Défaite",
+          stats: {},
+          players: [],
+        },
+      },
+    };
+    
+    return matches[matchId] || matches[1];
   };
+
+  const match = getMatchData(matchId);
 
   return (
     <div className="min-h-screen bg-background">
@@ -142,15 +251,15 @@ const MatchDetail = () => {
                     <div className="font-semibold">{match.away.name}</div>
                   </div>
 
-                  {Object.entries(match.home.stats).map(([key, homeValue], idx) => {
+                  {Object.entries(match.home.stats).map(([key, homeValue]) => {
                     const awayValue = match.away.stats[key as keyof typeof match.away.stats];
                     return (
                       <div key={key} className="grid grid-cols-3 gap-2 text-center">
-                        <div className="font-mono">{homeValue}</div>
+                        <div className="font-mono">{String(homeValue)}</div>
                         <div className="text-sm text-muted-foreground capitalize">
                           {key.replace(/([A-Z])/g, ' $1').trim()}
                         </div>
-                        <div className="font-mono">{awayValue}</div>
+                        <div className="font-mono">{String(awayValue)}</div>
                       </div>
                     );
                   })}
