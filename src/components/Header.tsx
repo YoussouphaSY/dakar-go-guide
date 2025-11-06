@@ -68,7 +68,7 @@ const Header = () => {
     { path: "/discover", label: "Découvrir", icon: MapPin },
     { path: "/virtual-tour", label: "Visite Virtuelle", icon: Compass },
     { path: "/records", label: "Records", icon: TrendingUp },
-    { path: "/assistant", label: "Assistant IA", icon: MessageCircle },
+    { path: "/assistant", label: "AYO Chat", icon: MessageCircle },
   ];
 
   const NavLinks = ({ mobile = false }: { mobile?: boolean }) => (

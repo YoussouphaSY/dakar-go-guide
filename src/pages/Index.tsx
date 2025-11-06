@@ -33,6 +33,7 @@ import heroImage from "@/assets/hero-dakar-tourism.jpg";
 import heroVideo from "@/assets/1YTG Dakar 2026 _ Svelata la mascotte Ayo ad un anno dai Giochi Olimpici Giovanili.mp4";
 import restaurantImg from "@/assets/saly-princess-senegal_0122_1107.jpg";
 import transportImg from "@/assets/transport-dakar.png";
+import attractionImg from "@/assets/musee.jpg";
 
 const Index = () => {
   // Hook de navigation React Router
@@ -159,10 +160,20 @@ const Index = () => {
               </CardHeader>
             </Card>
 
-            <Card className="overflow-hidden hover:shadow-2xl transition-all cursor-pointer group" onClick={() => navigate('/discover')}>
-              <div className="h-48 overflow-hidden bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
-                <Camera className="h-24 w-24 text-blue-500" />
+            <Card
+              className="overflow-hidden hover:shadow-2xl transition-all cursor-pointer group"
+              onClick={() => navigate('/discover')}
+            >
+              {/* Image d’en-tête */}
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={attractionImg}
+                  alt="Attractions de Dakar"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
               </div>
+
+              {/* Contenu de la carte */}
               <CardHeader>
                 <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-3">
                   <Camera className="h-6 w-6 text-blue-500" />
@@ -173,6 +184,7 @@ const Index = () => {
                 </CardDescription>
               </CardHeader>
             </Card>
+
 
             <Card className="overflow-hidden hover:shadow-2xl transition-all cursor-pointer group" onClick={() => navigate('/discover')}>
               <div className="h-48 overflow-hidden">
