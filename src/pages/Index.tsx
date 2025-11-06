@@ -1,3 +1,29 @@
+/**
+ * Page : Index (Accueil)
+ * Route : /
+ * 
+ * Description :
+ * Page d'accueil principale de l'application JOJ Dakar 2026
+ * 
+ * Sections :
+ * 1. Hero Section - Vidéo de présentation avec titre et CTA
+ * 2. Features Section - Cartes de navigation vers les fonctionnalités JOJ
+ *    - Programme des événements
+ *    - Résultats en direct
+ *    - Assistant IA multilingue
+ *    - Profil utilisateur
+ * 3. Tourism Section - Guide touristique de Dakar
+ *    - Restaurants
+ *    - Attractions
+ *    - Transport
+ * 4. CTA Section - Appel à l'action final
+ * 
+ * Composants utilisés :
+ * - Header : Navigation principale
+ * - Card : Cartes d'information
+ * - Button : Boutons d'action
+ */
+
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Calendar, Trophy, MessageCircle, User, MapPin, Utensils, Camera, Bus } from "lucide-react";
@@ -6,26 +32,19 @@ import Header from "@/components/Header";
 import heroImage from "@/assets/hero-dakar-tourism.jpg";
 import heroVideo from "@/assets/1YTG Dakar 2026 _ Svelata la mascotte Ayo ad un anno dai Giochi Olimpici Giovanili.mp4";
 import restaurantImg from "@/assets/saly-princess-senegal_0122_1107.jpg";
-import transportImg from "@/assets/transport-dakar.png";
+import transportImg from "@/assets/transport-dakar.jpg";
 
 const Index = () => {
+  // Hook de navigation React Router
   const navigate = useNavigate();
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          src={heroVideo}   // ton import de vidéo
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
+        <video className="absolute inset-0 w-full h-full object-cover" src={heroVideo} // ton import de vidéo
+        autoPlay loop muted playsInline />
         <div className="absolute inset-0 bg-gradient-hero opacity-80" />
       </div>
 
@@ -40,19 +59,11 @@ const Index = () => {
             Votre guide intelligent pour les JOJ 2026 et la découverte de Dakar
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-            <Button 
-              size="lg" 
-              className="text-lg px-10 py-6 bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all shadow-xl"
-              onClick={() => navigate('/events')}
-            >
+            <Button size="lg" className="text-lg px-10 py-6 bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all shadow-xl" onClick={() => navigate('/events')}>
               <Calendar className="mr-2 h-5 w-5" />
               Programme des Jeux
             </Button>
-            <Button 
-              size="lg"
-              onClick={() => navigate('/discover')}
-              className="text-lg px-10 py-6 bg-secondary hover:bg-secondary/90 hover:scale-105 transition-all shadow-xl"
-            >
+            <Button size="lg" onClick={() => navigate('/discover')} className="text-lg px-10 py-6 bg-secondary hover:bg-secondary/90 hover:scale-105 transition-all shadow-xl text-slate-50">
               <MapPin className="mr-2 h-5 w-5" />
               Découvrir Dakar
             </Button>
@@ -135,11 +146,7 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="overflow-hidden hover:shadow-2xl transition-all cursor-pointer group" onClick={() => navigate('/discover')}>
               <div className="h-48 overflow-hidden">
-                <img 
-                  src={restaurantImg} 
-                  alt="Restaurants de Dakar"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
+                <img src={restaurantImg} alt="Restaurants de Dakar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <CardHeader>
                 <div className="w-12 h-12 bg-red-500/10 rounded-lg flex items-center justify-center mb-3">
@@ -169,11 +176,7 @@ const Index = () => {
 
             <Card className="overflow-hidden hover:shadow-2xl transition-all cursor-pointer group" onClick={() => navigate('/discover')}>
               <div className="h-48 overflow-hidden">
-                <img 
-                  src={transportImg} 
-                  alt="Transport à Dakar"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
+                <img src={transportImg} alt="Transport à Dakar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <CardHeader>
                 <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-3">
@@ -188,11 +191,7 @@ const Index = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Button 
-              size="lg"
-              onClick={() => navigate('/discover')}
-              className="bg-primary hover:bg-primary/90"
-            >
+            <Button size="lg" onClick={() => navigate('/discover')} className="bg-primary hover:bg-primary/90">
               <MapPin className="mr-2 h-5 w-5" />
               Voir la Carte Interactive
             </Button>
@@ -210,28 +209,17 @@ const Index = () => {
             Assistant intelligent, résultats live, guide touristique - Tout en un seul endroit
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg"
-              onClick={() => navigate('/assistant')}
-              className="text-lg px-10 py-6 bg-white text-primary hover:bg-white/90"
-            >
+            <Button size="lg" onClick={() => navigate('/assistant')} className="text-lg px-10 py-6 bg-white text-primary hover:bg-white/90">
               <MessageCircle className="mr-2 h-5 w-5" />
               Parler à l'Assistant
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              onClick={() => navigate('/profile')}
-              className="text-lg px-10 py-6 bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary"
-            >
+            <Button size="lg" variant="outline" onClick={() => navigate('/profile')} className="text-lg px-10 py-6 bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary">
               <User className="mr-2 h-5 w-5" />
               Créer mon Profil
             </Button>
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;

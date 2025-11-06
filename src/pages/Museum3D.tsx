@@ -22,14 +22,16 @@ const Museum3D = () => {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [forceMobile, setForceMobile] = useState(false);
 
+  // Transformation des œuvres pour la scène 3D
+  // coordinates { x, y, z } -> position [x, y, z]
   const artworksForScene = oeuvres.map((oeuvre) => ({
     id: oeuvre.id,
     title: oeuvre.title[language],
     imageUrl: oeuvre.images[0],
     position: [
-      (oeuvre.coordinates?.x || 0) as number,
-      2 as number,
-      (oeuvre.coordinates?.y || 0) as number,
+      (oeuvre.coordinates?.x || 0) as number,  // Position horizontale (gauche-droite)
+      (oeuvre.coordinates?.y || 1.5) as number, // Position verticale (hauteur)
+      (oeuvre.coordinates?.z || 0) as number,   // Position profondeur (avant-arrière)
     ] as [number, number, number],
   }));
 

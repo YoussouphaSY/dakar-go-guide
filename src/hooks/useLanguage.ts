@@ -1,26 +1,64 @@
+/**
+ * Hook : useLanguage
+ * 
+ * Description :
+ * Gestion centralisée du multilingue dans l'application
+ * 
+ * Fonctionnalités :
+ * - Stockage persistant de la langue sélectionnée (localStorage via Zustand)
+ * - Support de 3 langues : Français (fr), Anglais (en), Wolof (wo)
+ * - Traductions pour toutes les interfaces clés
+ * - Fonction t() pour accéder facilement aux traductions
+ * 
+ * Langues supportées :
+ * - fr : Français (par défaut)
+ * - en : English
+ * - wo : Wolof (langue locale sénégalaise)
+ * 
+ * Utilisation :
+ * const { language, setLanguage, t } = useLanguage();
+ * <h1>{t.museum.title}</h1>
+ */
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+// Type des langues supportées
 type Language = 'fr' | 'en' | 'wo';
 
+// Interface du store Zustand
 interface LanguageStore {
   language: Language;
   setLanguage: (lang: Language) => void;
 }
 
+/**
+ * Store Zustand avec persistance dans localStorage
+ * La langue sélectionnée est sauvegardée et restaurée automatiquement
+ */
 const useLanguageStore = create<LanguageStore>()(
   persist(
     (set) => ({
-      language: 'fr',
+      language: 'fr', // Langue par défaut : français
       setLanguage: (language) => set({ language }),
     }),
     {
-      name: 'language-storage',
+      name: 'language-storage', // Clé dans localStorage
     }
   )
 );
 
+/**
+ * Dictionnaire de traductions
+ * Structure : { langue: { section: { clé: "valeur" } } }
+ * 
+ * Sections :
+ * - common : Textes communs (boutons, actions)
+ * - museum : Interface du musée 3D
+ * - oeuvre : Détails des œuvres d'art
+ */
 const translations = {
+  // FRANÇAIS
   fr: {
     common: {
       back: "Retour",
@@ -55,6 +93,7 @@ const translations = {
       removeFromFavorites: "Retiré des favoris",
     },
   },
+  // ANGLAIS
   en: {
     common: {
       back: "Back",
@@ -89,6 +128,7 @@ const translations = {
       removeFromFavorites: "Removed from favorites",
     },
   },
+  // WOLOF (langue locale sénégalaise)
   wo: {
     common: {
       back: "Dellu",
@@ -125,11 +165,23 @@ const translations = {
   },
 };
 
+/**
+ * Hook principal exporté
+ * 
+ * Retourne :
+ * - language : Langue actuellement sélectionnée
+ * - setLanguage : Fonction pour changer la langue
+ * - t : Objet de traductions pour la langue active
+ * 
+ * Exemple d'utilisation :
+ * const { language, setLanguage, t } = useLanguage();
+ * console.log(t.common.back); // "Retour" si language === 'fr'
+ */
 export const useLanguage = () => {
   const { language, setLanguage } = useLanguageStore();
   return {
-    language,
-    setLanguage,
-    t: translations[language],
+    language,        // Langue active ('fr' | 'en' | 'wo')
+    setLanguage,     // Fonction pour changer la langue
+    t: translations[language], // Traductions de la langue active
   };
 };

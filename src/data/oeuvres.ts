@@ -1,6 +1,53 @@
+/**
+ * Fichier : oeuvres.ts
+ * 
+ * Description :
+ * Catalogue complet des œuvres d'art du Musée des Civilisations Noires
+ * 
+ * Contenu :
+ * - 6 œuvres principales avec informations multilingues (FR, EN, WO)
+ * - Métadonnées : titre, artiste, période, catégorie, salle
+ * - Descriptions et histoires détaillées
+ * - Ressources médias : images, audio, vidéo
+ * - Coordonnées 3D pour positionnement dans le musée virtuel
+ * 
+ * Œuvres incluses :
+ * 1. Masque Ceremonial Bamana (Mali, XIXe)
+ * 2. Statuette Féminine Sénoufo (Côte d'Ivoire, XXe)
+ * 3. Textile Kente Royal (Ghana, XXe)
+ * 4. Buste Commémoratif Ifé (Nigeria, XIIe-XVe)
+ * 5. Trône Bamiléké (Cameroun, XIXe)
+ * 6. Masque Punu (Gabon, XXe)
+ * 
+ * Utilisation :
+ * Importé dans les composants Museum3D et ArtworkDetailModal
+ */
+
 import type { Oeuvre } from '../types/schema';
 
+/**
+ * Tableau principal des œuvres du musée
+ * Chaque œuvre contient :
+ * - id : Identifiant unique
+ * - title : Titre multilingue { fr, en, wo }
+ * - artist : Nom de l'artiste/artisan
+ * - period : Période historique
+ * - category : Type d'œuvre (Sculpture, Textile, etc.)
+ * - room : Salle du musée
+ * - description : Description multilingue
+ * - history : Histoire et contexte multilingue
+ * - images : Tableau de chemins d'images
+ * - audioUrl : Chemin du guide audio (optionnel)
+ * - videoUrl : Chemin de la vidéo explicative (optionnel)
+ * - qrCode : Code QR pour identification physique
+ * - dimensions : Dimensions physiques
+ * - material : Matériaux utilisés
+ * - coordinates : Position 3D dans le musée virtuel { x, y }
+ */
 export const oeuvres: Oeuvre[] = [
+  // ŒUVRE 1 : Masque Ceremonial Bamana
+  // Origine : Mali, peuple Bamana
+  // Utilisation : Rituels d'initiation
   {
     id: "oeuvre-1",
     title: {
@@ -27,8 +74,11 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-001",
     dimensions: "45 x 25 x 18 cm",
     material: "Bois de fromager, pigments naturels",
-    coordinates: { x: -8, y: 2 }
+    coordinates: { x: -5, y: 1.5, z: 0 } // Position visible face à l'entrée
   },
+  // ŒUVRE 2 : Statuette Féminine Sénoufo
+  // Origine : Côte d'Ivoire, peuple Sénoufo
+  // Symbolisme : Fertilité et continuité
   {
     id: "oeuvre-2",
     title: {
@@ -56,8 +106,11 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-002",
     dimensions: "62 x 15 x 12 cm",
     material: "Bois d'iroko",
-    coordinates: { x: 8, y: 2 }
+    coordinates: { x: 5, y: 1.5, z: 0 } // Position visible face à l'entrée (droite)
   },
+  // ŒUVRE 3 : Textile Kente Royal
+  // Origine : Ghana, peuple Ashanti
+  // Usage : Porté par la royauté
   {
     id: "oeuvre-3",
     title: {
@@ -84,7 +137,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-003",
     dimensions: "200 x 120 cm",
     material: "Coton et soie",
-    coordinates: { x: 0, y: -8 }
+    coordinates: { x: 0, y: 1.5, z: -5 } // Position visible au fond
   },
   {
     id: "oeuvre-4",
@@ -113,7 +166,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-004",
     dimensions: "35 x 20 x 25 cm",
     material: "Bronze",
-    coordinates: { x: -12, y: -5 }
+    coordinates: { x: -7, y: 1.5, z: -3 } // Position visible (gauche fond)
   },
   {
     id: "oeuvre-5",
@@ -141,7 +194,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-005",
     dimensions: "85 x 55 x 60 cm",
     material: "Bois, perles, cauris, tissu",
-    coordinates: { x: 12, y: -5 }
+    coordinates: { x: 7, y: 1.5, z: -3 } // Position visible (droite fond)
   },
   {
     id: "oeuvre-6",
@@ -169,10 +222,14 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-006",
     dimensions: "32 x 22 x 15 cm",
     material: "Bois, kaolin",
-    coordinates: { x: -8, y: -12 }
+    coordinates: { x: -3, y: 1.5, z: 3 } // Position visible (gauche proche)
   }
 ];
 
+/**
+ * Catégories d'œuvres disponibles dans le musée
+ * Utilisées pour le filtrage et l'organisation
+ */
 export const categories = [
   "Sculpture",
   "Textile",
@@ -183,6 +240,10 @@ export const categories = [
   "Instruments"
 ];
 
+/**
+ * Salles du musée
+ * Organisation thématique des œuvres par région/période
+ */
 export const rooms = [
   "Salle 1 - Art Mandingue",
   "Salle 2 - Art Royal",
