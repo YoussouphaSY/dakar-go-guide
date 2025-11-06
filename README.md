@@ -27,6 +27,10 @@ npm i
 
 # Étape 4: Démarrer le serveur de développement avec rechargement automatique et aperçu instantané.
 npm run dev
+ou 
+sudo sysctl fs.inotify.max_user_watches=524288
+sudo sysctl -p
+npm run dev
 ```
 
 **Éditer un fichier directement dans GitHub**
