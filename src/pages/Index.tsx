@@ -1,3 +1,29 @@
+/**
+ * Page : Index (Accueil)
+ * Route : /
+ * 
+ * Description :
+ * Page d'accueil principale de l'application JOJ Dakar 2026
+ * 
+ * Sections :
+ * 1. Hero Section - Vidéo de présentation avec titre et CTA
+ * 2. Features Section - Cartes de navigation vers les fonctionnalités JOJ
+ *    - Programme des événements
+ *    - Résultats en direct
+ *    - Assistant IA multilingue
+ *    - Profil utilisateur
+ * 3. Tourism Section - Guide touristique de Dakar
+ *    - Restaurants
+ *    - Attractions
+ *    - Transport
+ * 4. CTA Section - Appel à l'action final
+ * 
+ * Composants utilisés :
+ * - Header : Navigation principale
+ * - Card : Cartes d'information
+ * - Button : Boutons d'action
+ */
+
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Calendar, Trophy, MessageCircle, User, MapPin, Utensils, Camera, Bus } from "lucide-react";
@@ -9,6 +35,7 @@ import restaurantImg from "@/assets/saly-princess-senegal_0122_1107.jpg";
 import transportImg from "@/assets/transport-dakar.jpg";
 
 const Index = () => {
+  // Hook de navigation React Router
   const navigate = useNavigate();
 
   return (
