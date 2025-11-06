@@ -74,7 +74,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-001",
     dimensions: "45 x 25 x 18 cm",
     material: "Bois de fromager, pigments naturels",
-    coordinates: { x: -8, y: 2 }
+    coordinates: { x: -5, y: 1.5, z: 0 } // Position visible face à l'entrée
   },
   // ŒUVRE 2 : Statuette Féminine Sénoufo
   // Origine : Côte d'Ivoire, peuple Sénoufo
@@ -106,7 +106,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-002",
     dimensions: "62 x 15 x 12 cm",
     material: "Bois d'iroko",
-    coordinates: { x: 8, y: 2 }
+    coordinates: { x: 5, y: 1.5, z: 0 } // Position visible face à l'entrée (droite)
   },
   // ŒUVRE 3 : Textile Kente Royal
   // Origine : Ghana, peuple Ashanti
@@ -137,7 +137,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-003",
     dimensions: "200 x 120 cm",
     material: "Coton et soie",
-    coordinates: { x: 0, y: -8 }
+    coordinates: { x: 0, y: 1.5, z: -5 } // Position visible au fond
   },
   {
     id: "oeuvre-4",
@@ -166,7 +166,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-004",
     dimensions: "35 x 20 x 25 cm",
     material: "Bronze",
-    coordinates: { x: -12, y: -5 }
+    coordinates: { x: -7, y: 1.5, z: -3 } // Position visible (gauche fond)
   },
   {
     id: "oeuvre-5",
@@ -194,7 +194,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-005",
     dimensions: "85 x 55 x 60 cm",
     material: "Bois, perles, cauris, tissu",
-    coordinates: { x: 12, y: -5 }
+    coordinates: { x: 7, y: 1.5, z: -3 } // Position visible (droite fond)
   },
   {
     id: "oeuvre-6",
@@ -222,7 +222,7 @@ export const oeuvres: Oeuvre[] = [
     qrCode: "MCN-006",
     dimensions: "32 x 22 x 15 cm",
     material: "Bois, kaolin",
-    coordinates: { x: -8, y: -12 }
+    coordinates: { x: -3, y: 1.5, z: 3 } // Position visible (gauche proche)
   }
 ];
 

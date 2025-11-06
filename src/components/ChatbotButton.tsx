@@ -16,7 +16,7 @@
 import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import ayoImage from "@/assets/ayo-mascot.png"; // Image de la mascotte AYO
+import ayoImage from "@/assets/ayo-mascot-official.jpg"; // Image officielle de la mascotte AYO
 
 const ChatbotButton = () => {
   const navigate = useNavigate();
