@@ -2,7 +2,6 @@
 
 ## Information du projet
 
-**URL**: https://lovable.dev/projects/e58991ca-7e10-4572-965d-cb1fb64999fe
 
 ## Comment puis-je éditer ce code ?
 
@@ -22,12 +21,6 @@ La seule exigence est d'avoir Node.js et npm installés - [installer avec nvm](h
 
 Suivez ces étapes :
 
-```sh
-# Étape 1: Cloner le dépôt en utilisant l'URL Git du projet.
-git clone <VOTRE_URL_GIT>
-
-# Étape 2: Naviguer vers le répertoire du projet.
-cd <NOM_DE_VOTRE_PROJET>
 
 # Étape 3: Installer les dépendances nécessaires.
 npm i

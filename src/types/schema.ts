@@ -15,6 +15,7 @@ export interface Artwork {
   position: { x: number; y: number };
 }
 
+
 export interface Room {
   id: string;
   name: string;
