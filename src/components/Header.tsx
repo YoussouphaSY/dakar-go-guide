@@ -10,7 +10,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import dakarLogo from "@/assets/dakar2026-logo.jpg";
+import dakarLogo from "@/assets/dakar2026-logo.png";
 // import dakarLogo from "@/assets/dakar2026-logo.jpg";
 import { NotificationBell } from "@/components/NotificationBell";
 
