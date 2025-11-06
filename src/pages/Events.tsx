@@ -1,3 +1,27 @@
+/**
+ * Page : Events (Programme JOJ 2026)
+ * Route : /events
+ * 
+ * Description :
+ * Affiche le programme complet des Jeux Olympiques de la Jeunesse 2026
+ * 
+ * Fonctionnalités :
+ * - Liste de 35 sports (25 compétition + 10 mobilisation)
+ * - Système de recherche en temps réel
+ * - Filtrage par lieu (Dakar, Diamniadio, Saly)
+ * - Onglets pour séparer compétition et mobilisation
+ * - Navigation vers les détails de chaque sport
+ * - Images africaines pour chaque sport
+ * 
+ * États gérés :
+ * - searchTerm : Terme de recherche
+ * - activeTab : Onglet actif (competition/mobilisation)
+ * - venueFilter : Filtre de lieu
+ * 
+ * Données :
+ * Importées depuis src/data/joj2026Sports.ts
+ */
+
 import { useState, useMemo } from "react";
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -9,18 +33,40 @@ import { Search, Calendar, MapPin, Clock, Play, Trophy, Sparkles, Filter } from 
 import { joj2026Sports, getCompetitionSports, getMobilisationSports } from "@/data/joj2026Sports";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 const Events = () => {
   const navigate = useNavigate();
+  
+  // État de recherche
   const [searchTerm, setSearchTerm] = useState("");
+  
+  // Onglet actif (competition ou mobilisation)
   const [activeTab, setActiveTab] = useState("competition");
+  
+  // Filtre de lieu
   const [venueFilter, setVenueFilter] = useState<string>("all");
+  
+  // Récupération des sports par catégorie
   const competitionSports = getCompetitionSports();
   const mobilisationSports = getMobilisationSports();
+  /**
+   * Filtrage des sports en fonction des critères de recherche et de lieu
+   * Mémorisé avec useMemo pour optimiser les performances
+   */
   const filteredSports = useMemo(() => {
+    // Sélection des sports selon l'onglet actif
     const currentSports = activeTab === "competition" ? competitionSports : mobilisationSports;
+    
+    // Filtrage combiné : recherche + lieu
     return currentSports.filter(sport => {
-      const matchesSearch = sport.name.toLowerCase().includes(searchTerm.toLowerCase()) || sport.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesVenue = venueFilter === "all" || sport.venue.toLowerCase().includes(venueFilter.toLowerCase());
+      // Recherche dans le nom et la description
+      const matchesSearch = sport.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                           sport.description.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      // Filtre de lieu
+      const matchesVenue = venueFilter === "all" || 
+                          sport.venue.toLowerCase().includes(venueFilter.toLowerCase());
+      
       return matchesSearch && matchesVenue;
     });
   }, [activeTab, searchTerm, venueFilter, competitionSports, mobilisationSports]);

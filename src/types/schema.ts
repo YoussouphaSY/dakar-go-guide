@@ -72,5 +72,5 @@ export interface Oeuvre {
   qrCode: string;
   dimensions?: string;
   material?: string;
-  coordinates?: { x: number; y: number };
+  coordinates?: { x: number; y: number; z?: number }; // Coordonnées 3D (z optionnel pour compatibilité)
 }
