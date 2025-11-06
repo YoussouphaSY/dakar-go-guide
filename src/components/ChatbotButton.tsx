@@ -20,28 +20,16 @@ import ayoImage from "@/assets/ayo-mascot-official.jpg"; // Image officielle de 
 
 const ChatbotButton = () => {
   const navigate = useNavigate();
-
-  return (
-    <Button
-      onClick={() => navigate("/assistant")} // Redirige vers l'assistant IA
-      className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 z-50 p-0 overflow-hidden"
-      size="icon"
-      aria-label="Ouvrir l'assistant AYO"
-    >
+  return <Button onClick={() => navigate("/assistant")} // Redirige vers l'assistant IA
+  className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 z-50 p-0 overflow-hidden" size="icon" aria-label="Ouvrir l'assistant AYO">
       {/* Image de la mascotte AYO */}
-      <img 
-        src={ayoImage} 
-        alt="AYO - Assistant IA des JOJ 2026" 
-        className="h-full w-full object-cover"
-      />
+      <img src={ayoImage} alt="AYO - Assistant IA des JOJ 2026" className="h-full w-full object-cover" />
       
       {/* Overlay avec effet hover */}
-      <div className="absolute inset-0 bg-primary/20 hover:bg-primary/30 transition-colors" />
+      <div className="absolute inset-0 transition-colors bg-black/0" />
       
       {/* Icône de message en bas à droite */}
       <MessageCircle className="absolute h-6 w-6 text-white bottom-1 right-1 drop-shadow-lg" />
-    </Button>
-  );
+    </Button>;
 };
-
 export default ChatbotButton;
