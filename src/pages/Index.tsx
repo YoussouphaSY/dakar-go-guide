@@ -32,7 +32,7 @@ import Header from "@/components/Header";
 import heroImage from "@/assets/hero-dakar-tourism.jpg";
 import heroVideo from "@/assets/1YTG Dakar 2026 _ Svelata la mascotte Ayo ad un anno dai Giochi Olimpici Giovanili.mp4";
 import restaurantImg from "@/assets/saly-princess-senegal_0122_1107.jpg";
-import transportImg from "@/assets/transport-dakar.jpg";
+import transportImg from "@/assets/transport-dakar.png";
 
 const Index = () => {
   // Hook de navigation React Router
