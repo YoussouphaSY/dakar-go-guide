@@ -1,86 +1,30 @@
-/**
- * Edge Function : senegal-assistant
- * 
- * Description :
- * Fonction serverless qui alimente l'assistant IA multilingue des JOJ Dakar 2026
- * 
- * Fonctionnalités :
- * - Traite les messages utilisateurs en 3 langues (FR, EN, WO)
- * - Utilise Lovable AI avec Gemini 2.5 Flash pour générer des réponses intelligentes
- * - Maintient un contexte conversationnel avec l'historique des messages
- * - Adapte le prompt système selon la langue sélectionnée
- * - Support CORS pour les appels depuis le frontend
- * - Streaming des réponses en temps réel
- * 
- * Variables d'environnement requises :
- * - LOVABLE_API_KEY : Clé API Lovable AI (configurée automatiquement)
- * 
- * Endpoint : POST /functions/v1/senegal-assistant
- * 
- * Body attendu :
- * {
- *   "messages": Array,            // Historique des messages [{ role, content }]
- *   "language": "fr|en|wo"        // Langue sélectionnée
- * }
- * 
- * Réponse :
- * Stream (Server-Sent Events) - Réponse générée chunk par chunk
- */
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-// Configuration CORS pour permettre les requêtes cross-origin depuis le frontend
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*", // Autorise toutes les origines (à restreindre en production)
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-/**
- * Handler principal de la fonction
- * Traite toutes les requêtes HTTP entrantes
- */
 serve(async (req) => {
-  // Gestion des requêtes OPTIONS (preflight CORS)
-  // Les navigateurs envoient une requête OPTIONS avant les requêtes POST pour vérifier les permissions CORS
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Extraction des données de la requête POST
     const { messages, language } = await req.json();
-    
-    // Récupération de la clé API Lovable AI depuis les variables d'environnement
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
-    // Vérification de la présence de la clé API
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    /**
-     * Instructions spécifiques à chaque langue
-     * Définit comment l'IA doit répondre selon la langue sélectionnée
-     */
     const languageInstructions = {
       fr: "Tu réponds en français avec quelques expressions wolof quand c'est approprié.",
       en: "You respond in English with some Wolof expressions when appropriate.",
       wo: "Danga wax ci wolof, lépna géne rafet ak expressions culturelles. Utilise le wolof authentique du Sénégal."
     };
 
-    /**
-     * Prompt système : Instructions complètes pour l'IA
-     * 
-     * Sections :
-     * - Rôle et mission de l'assistant
-     * - Connaissances sur le Sénégal (histoire, culture, patrimoine)
-     * - Informations sur les JOJ 2026
-     * - Style de communication souhaité
-     * - Expressions wolof courantes
-     * 
-     * Le prompt est adapté dynamiquement selon la langue sélectionnée
-     */
-    const systemPrompt = `Tu es un assistant IA expert sur le Sénégal et les Jeux Olympiques de la Jeunesse Dakar 2026.
+    const systemPrompt = `Tu es un assistant IA expert sur le Sénégal et les Jeux Olympiques de la Jeunesse Dakar 2026. 
 
 RÔLE ET MISSION:
 - Tu représentes la culture sénégalaise avec fierté et authenticité
@@ -147,18 +91,6 @@ Si l'utilisateur parle en wolof, réponds en wolof authentique avec des explicat
 
 Sois enthousiaste, culturellement riche, et fais découvrir le Sénégal authentique!`;
 
-    /**
-     * Appel à l'API Lovable AI
-     * 
-     * Modèle utilisé : google/gemini-2.5-flash
-     * - Performant pour les conversations multilingues
-     * - Balance entre qualité et rapidité
-     * - Support du streaming pour réponses en temps réel
-     * 
-     * Messages envoyés :
-     * 1. Message système (systemPrompt) : Instructions pour l'IA
-     * 2. Messages de l'historique : Contexte de la conversation
-     */
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -166,21 +98,15 @@ Sois enthousiaste, culturellement riche, et fais découvrir le Sénégal authent
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash", // Modèle IA utilisé
+        model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: systemPrompt }, // Instructions système
-          ...messages, // Historique de la conversation
+          { role: "system", content: systemPrompt },
+          ...messages,
         ],
-        stream: true, // Active le streaming des réponses
+        stream: true,
       }),
     });
 
-    /**
-     * Gestion des erreurs de l'API
-     * - 429: Limite de requêtes atteinte
-     * - 402: Crédits épuisés
-     * - Autres: Erreurs génériques
-     */
     if (!response.ok) {
       if (response.status === 429) {
         return new Response(
@@ -199,15 +125,10 @@ Sois enthousiaste, culturellement riche, et fais découvrir le Sénégal authent
       throw new Error("Erreur de communication avec l'IA");
     }
 
-    /**
-     * Retourne le stream de réponse au client
-     * Les données arrivent chunk par chunk via Server-Sent Events
-     */
     return new Response(response.body, {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (error) {
-    // Gestion des erreurs globales
     console.error("Error in senegal-assistant:", error);
     return new Response(
       JSON.stringify({ error: error instanceof Error ? error.message : "Erreur inconnue" }),
