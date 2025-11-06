@@ -76,9 +76,12 @@ const Events = () => {
       {/* Hero Section */}
       <div className="bg-gradient-hero text-white py-16">
         <div className="container">
-          <div className="flex items-center gap-3 mb-4">
+          {/* <div className="flex items-center gap-3 mb-4">
             <Trophy className="h-10 w-10" />
             <h1 className="font-bold text-4xl text-slate-900">Programme JOJ 2026</h1>
+          </div> */}
+          <div className="mb-8">
+            <h1 className="text-4xl text-slate-900 font-bold mb-2">Programme JOJ 2026</h1>
           </div>
           <p className="text-xl text-muted-foreground max-w-3xl">
             25 sports en compétition + 10 activités de mobilisation
