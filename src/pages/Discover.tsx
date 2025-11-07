@@ -21,16 +21,16 @@ L.Icon.Default.mergeOptions({
 
 // Mock data for places
 const restaurants = [
-  { id: 1, name: "Chez Loutcha", type: "Sénégalais", rating: 4.8, distance: "1.2 km", lat: 14.7167, lng: -17.4677, description: "Meilleur thiéboudienne de Dakar" },
-  { id: 2, name: "Le Djembé", type: "Africain Fusion", rating: 4.6, distance: "0.8 km", lat: 14.7200, lng: -17.4650, description: "Cuisine moderne africaine" },
-  { id: 3, name: "La Calebasse", type: "Traditionnel", rating: 4.7, distance: "2.1 km", lat: 14.7100, lng: -17.4700, description: "Ambiance authentique sénégalaise" },
-  { id: 4, name: "Ocean View", type: "Fruits de mer", rating: 4.9, distance: "3.5 km", lat: 14.7250, lng: -17.4600, description: "Vue panoramique sur l'océan" },
+  { id: 1, name: "Chez Loutcha", type: "Sénégalais", rating: 4.8, distance: "1.2 km", lat: 14.6937, lng: -17.4467, description: "Meilleur thiéboudienne de Dakar" },
+  { id: 2, name: "Le Djembé", type: "Africain Fusion", rating: 4.6, distance: "0.8 km", lat: 14.6892, lng: -17.4556, description: "Cuisine moderne africaine" },
+  { id: 3, name: "La Calebasse", type: "Traditionnel", rating: 4.7, distance: "2.1 km", lat: 14.7015, lng: -17.4483, description: "Ambiance authentique sénégalaise" },
+  { id: 4, name: "Ocean View", type: "Fruits de mer", rating: 4.9, distance: "3.5 km", lat: 14.7150, lng: -17.4880, description: "Vue panoramique sur l'océan" },
   { id: 5, name: "Le Ngor", type: "Sénégalais", rating: 4.8, distance: "7.8 km", lat: 14.7483, lng: -17.5127, description: "Restaurant vue mer, spécialités locales" },
-  { id: 6, name: "La Fourchette", type: "Français", rating: 4.7, distance: "2.5 km", lat: 14.6950, lng: -17.4550, description: "Cuisine française raffinée" },
-  { id: 7, name: "Teranga Grill", type: "Grillades", rating: 4.5, distance: "1.8 km", lat: 14.7080, lng: -17.4600, description: "Viandes grillées et mafé authentique" },
-  { id: 8, name: "Le Baobab", type: "Sénégalais", rating: 4.9, distance: "3.2 km", lat: 14.7300, lng: -17.4750, description: "Cadre traditionnel, cuisine familiale" },
+  { id: 6, name: "La Fourchette", type: "Français", rating: 4.7, distance: "2.5 km", lat: 14.6853, lng: -17.4389, description: "Cuisine française raffinée" },
+  { id: 7, name: "Teranga Grill", type: "Grillades", rating: 4.5, distance: "1.8 km", lat: 14.6978, lng: -17.4512, description: "Viandes grillées et mafé authentique" },
+  { id: 8, name: "Le Baobab", type: "Sénégalais", rating: 4.9, distance: "3.2 km", lat: 14.7089, lng: -17.4625, description: "Cadre traditionnel, cuisine familiale" },
   { id: 9, name: "Pointe des Almadies", type: "Fruits de mer", rating: 4.8, distance: "10.5 km", lat: 14.7458, lng: -17.5325, description: "Poissons frais du jour" },
-  { id: 10, name: "Villa Rosa", type: "Italien", rating: 4.6, distance: "2.8 km", lat: 14.7050, lng: -17.4720, description: "Pizzas au feu de bois, pâtes maison" },
+  { id: 10, name: "Villa Rosa", type: "Italien", rating: 4.6, distance: "2.8 km", lat: 14.6963, lng: -17.4578, description: "Pizzas au feu de bois, pâtes maison" },
 ];
 
 const attractions = [
@@ -49,16 +49,16 @@ const attractions = [
 ];
 
 const transports = [
-  { id: 1, name: "Station DDD Liberté", type: "Bus", rating: 4.2, distance: "0.5 km", lat: 14.7150, lng: -17.4680, description: "Lignes vers centre-ville" },
-  { id: 2, name: "Gare Petersen", type: "Transport", rating: 4.3, distance: "1.8 km", lat: 14.7090, lng: -17.4620, description: "Hub de transport majeur" },
-  { id: 3, name: "Station Taxi Plateau", type: "Taxi", rating: 4.0, distance: "2.2 km", lat: 14.6737, lng: -17.4300, description: "Taxis vers tous quartiers" },
+  { id: 1, name: "Station DDD Liberté", type: "Bus", rating: 4.2, distance: "0.5 km", lat: 14.6925, lng: -17.4534, description: "Lignes vers centre-ville" },
+  { id: 2, name: "Gare Petersen", type: "Transport", rating: 4.3, distance: "1.8 km", lat: 14.6998, lng: -17.4456, description: "Hub de transport majeur" },
+  { id: 3, name: "Station Taxi Plateau", type: "Taxi", rating: 4.0, distance: "2.2 km", lat: 14.6737, lng: -17.4380, description: "Taxis vers tous quartiers" },
   { id: 4, name: "Gare Routière Pompiers", type: "Bus", rating: 4.1, distance: "2.8 km", lat: 14.6883, lng: -17.4567, description: "Bus interurbains, cars rapides" },
   { id: 5, name: "Station Aftu Dem Dikk", type: "Bus", rating: 4.3, distance: "1.5 km", lat: 14.6917, lng: -17.4489, description: "Réseau urbain principal" },
   { id: 6, name: "Aéroport Blaise Diagne", type: "Aéroport", rating: 4.7, distance: "48 km", lat: 14.6700, lng: -17.0733, description: "Aéroport international" },
   { id: 7, name: "Station Taxi Sandaga", type: "Taxi", rating: 3.9, distance: "1.4 km", lat: 14.6747, lng: -17.4453, description: "Taxis et sept-places" },
   { id: 8, name: "Gare Maritime", type: "Ferry", rating: 4.4, distance: "0.9 km", lat: 14.6628, lng: -17.4144, description: "Liaisons vers Gorée et îles" },
   { id: 9, name: "Location Vélos Ngor", type: "Vélo", rating: 4.5, distance: "8.1 km", lat: 14.7489, lng: -17.5103, description: "Location vélos et scooters" },
-  { id: 10, name: "Station Tata", type: "Bus", rating: 4.0, distance: "3.5 km", lat: 14.7342, lng: -17.4711, description: "Liaisons banlieue nord" },
+  { id: 10, name: "Station Tata", type: "Bus", rating: 4.0, distance: "3.5 km", lat: 14.7095, lng: -17.4623, description: "Liaisons banlieue nord" },
 ];
 
 // Component to handle map updates

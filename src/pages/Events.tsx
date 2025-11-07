@@ -179,9 +179,7 @@ const Events = () => {
                         </div>
                       </div>}
 
-                    <Button className="w-full mt-4" style={{
-                  background: sport.gradient
-                }} onClick={e => {
+                    <Button className="w-full mt-4" onClick={e => {
                   e.stopPropagation();
                   navigate(`/events/${sport.id}`);
                 }}>
