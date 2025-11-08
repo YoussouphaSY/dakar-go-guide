@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Navigation } from "@/components/Navigation";
 import MuseumScene from "@/scenes/MuseumScene";
 import { HUD } from "@/components/HUD";
 import { MiniMap } from "@/components/MiniMap";
@@ -10,6 +9,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Header from "@/components/Header";
 
 const Museum3D = () => {
   const { language } = useLanguage();
@@ -70,7 +70,7 @@ const Museum3D = () => {
   if ((isMobile || forceMobile) && !imagesLoaded) {
     return (
       <div className="min-h-screen bg-background">
-        <Navigation />
+        <Header />
         <div className="fixed inset-0 pt-16 flex items-center justify-center p-4">
           <Card className="max-w-md">
             <CardHeader>
@@ -103,7 +103,7 @@ const Museum3D = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <Header />
 
       {!imagesLoaded && (
         <div className="fixed inset-0 pt-16 bg-background z-50 flex flex-col items-center justify-center gap-6">

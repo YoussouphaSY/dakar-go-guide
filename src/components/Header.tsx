@@ -1,10 +1,17 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin, LogOut, Shield, Compass } from "lucide-react";
+import { Calendar, Trophy, MessageCircle, User, Menu, TrendingUp, MapPin, LogOut, Shield, Compass, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { useLanguage } from "@/hooks/useLanguage";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -18,8 +25,15 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language, setLanguage } = useLanguage();
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const languages = [
+    { code: 'fr' as const, label: '🇫🇷 Français', name: 'Français' },
+    { code: 'en' as const, label: '🇬🇧 English', name: 'English' },
+    { code: 'wo' as const, label: '🇸🇳 Wolof', name: 'Wolof' },
+  ];
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -106,6 +120,28 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2">
           <NavLinks />
+          
+          {/* Language Selector */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Globe className="h-4 w-4 mr-2" />
+                {languages.find(l => l.code === language)?.name}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {languages.map((lang) => (
+                <DropdownMenuItem
+                  key={lang.code}
+                  onClick={() => setLanguage(lang.code)}
+                  className={language === lang.code ? "bg-accent" : ""}
+                >
+                  {lang.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
           {user ? (
             <>
               <NotificationBell />
@@ -161,6 +197,24 @@ const Header = () => {
           <SheetContent side="right">
             <nav className="flex flex-col gap-4 mt-8">
               <NavLinks mobile />
+              
+              {/* Mobile Language Selector */}
+              <div className="w-full border-t pt-4">
+                <p className="text-sm font-semibold mb-2 px-4">Langue / Language</p>
+                <div className="flex flex-col gap-2">
+                  {languages.map((lang) => (
+                    <Button
+                      key={lang.code}
+                      variant={language === lang.code ? "default" : "ghost"}
+                      onClick={() => setLanguage(lang.code)}
+                      className="w-full justify-start text-lg"
+                    >
+                      {lang.label}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              
               {user ? (
                 <>
                   {isAdmin && (
