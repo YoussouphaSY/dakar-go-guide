@@ -29,6 +29,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { Calendar, Trophy, MessageCircle, User, MapPin, Utensils, Camera, Bus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
+import { useLanguage } from "@/hooks/useLanguage";
 import heroImage from "@/assets/hero-dakar-tourism.jpg";
 import heroVideo from "@/assets/1YTG Dakar 2026 _ Svelata la mascotte Ayo ad un anno dai Giochi Olimpici Giovanili.mp4";
 import restaurantImg from "@/assets/saly-princess-senegal_0122_1107.jpg";
@@ -36,8 +37,8 @@ import transportImg from "@/assets/transport-dakar.png";
 import attractionImg from "@/assets/musee.jpg";
 
 const Index = () => {
-  // Hook de navigation React Router
   const navigate = useNavigate();
+  const { t } = useLanguage();
   return <div className="min-h-screen bg-background">
       <Header />
       
@@ -51,22 +52,22 @@ const Index = () => {
 
         <div className="relative z-10 text-center space-y-6 px-4 max-w-5xl mx-auto">
           <div className="inline-block px-6 py-2 bg-secondary/20 backdrop-blur-sm rounded-full border border-secondary/30 mb-4">
-            <span className="text-white font-semibold">✨ Jeux Olympiques de la Jeunesse 2026</span>
+            <span className="text-white font-semibold">✨ {t.home.yog2026}</span>
           </div>
           <h1 className="text-6xl md:text-8xl font-bold text-white animate-fade-in tracking-tight">
-            Bienvenue à Dakar
+            {t.home.title}
           </h1>
           <p className="text-2xl md:text-3xl text-white/90 max-w-3xl mx-auto font-light">
-            Votre guide intelligent pour les JOJ 2026 et la découverte de Dakar
+            {t.home.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
             <Button size="lg" className="text-lg px-10 py-6 bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all shadow-xl" onClick={() => navigate('/events')}>
               <Calendar className="mr-2 h-5 w-5" />
-              Programme des Jeux
+              {t.home.programButton}
             </Button>
             <Button size="lg" onClick={() => navigate('/discover')} className="text-lg px-10 py-6 bg-secondary hover:bg-secondary/90 hover:scale-105 transition-all shadow-xl text-slate-50">
               <MapPin className="mr-2 h-5 w-5" />
-              Découvrir Dakar
+              {t.home.discoverButton}
             </Button>
           </div>
         </div>
@@ -76,9 +77,9 @@ const Index = () => {
       <section className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Jeux Olympiques de la Jeunesse</h2>
+            <h2 className="text-4xl font-bold mb-4">{t.home.featuresTitle}</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Suivez tous les événements sportifs en direct
+              {t.home.featuresSubtitle}
             </p>
           </div>
           
@@ -88,9 +89,9 @@ const Index = () => {
                 <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Calendar className="h-7 w-7 text-white" />
                 </div>
-                <CardTitle>Programme</CardTitle>
+                <CardTitle>{t.home.programCard}</CardTitle>
                 <CardDescription>
-                  Calendrier complet des compétitions avec filtres par sport et lieu
+                  {t.home.programDesc}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -100,9 +101,9 @@ const Index = () => {
                 <div className="w-14 h-14 bg-[hsl(var(--accent))] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Trophy className="h-7 w-7 text-white" />
                 </div>
-                <CardTitle>Résultats Live</CardTitle>
+                <CardTitle>{t.home.resultsCard}</CardTitle>
                 <CardDescription>
-                  Scores en temps réel, classements et tableau des médailles
+                  {t.home.resultsDesc}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -112,9 +113,9 @@ const Index = () => {
                 <div className="w-14 h-14 bg-secondary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <MessageCircle className="h-7 w-7 text-secondary-foreground" />
                 </div>
-                <CardTitle>Assistant IA</CardTitle>
+                <CardTitle>{t.home.assistantCard}</CardTitle>
                 <CardDescription>
-                  Questions en français, wolof, anglais ou pulaar
+                  {t.home.assistantDesc}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -124,9 +125,9 @@ const Index = () => {
                 <div className="w-14 h-14 bg-muted rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <User className="h-7 w-7" />
                 </div>
-                <CardTitle>Mon Profil</CardTitle>
+                <CardTitle>{t.home.profileCard}</CardTitle>
                 <CardDescription>
-                  Personnalisez vos préférences et notifications
+                  {t.home.profileDesc}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -138,9 +139,9 @@ const Index = () => {
       <section className="py-20 px-4 bg-gradient-to-br from-muted/50 to-background">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Découvrez Dakar</h2>
+            <h2 className="text-4xl font-bold mb-4">{t.home.tourismTitle}</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Explorez la ville pendant votre séjour
+              {t.home.tourismSubtitle}
             </p>
           </div>
 
@@ -153,9 +154,9 @@ const Index = () => {
                 <div className="w-12 h-12 bg-red-500/10 rounded-lg flex items-center justify-center mb-3">
                   <Utensils className="h-6 w-6 text-red-500" />
                 </div>
-                <CardTitle>Restaurants</CardTitle>
+                <CardTitle>{t.home.restaurants}</CardTitle>
                 <CardDescription>
-                  Découvrez la gastronomie sénégalaise authentique
+                  {t.home.restaurantsDesc}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -178,9 +179,9 @@ const Index = () => {
                 <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-3">
                   <Camera className="h-6 w-6 text-blue-500" />
                 </div>
-                <CardTitle>Attractions</CardTitle>
+                <CardTitle>{t.home.attractions}</CardTitle>
                 <CardDescription>
-                  Monuments, musées et sites historiques incontournables
+                  {t.home.attractionsDesc}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -194,9 +195,9 @@ const Index = () => {
                 <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-3">
                   <Bus className="h-6 w-6 text-green-500" />
                 </div>
-                <CardTitle>Transport</CardTitle>
+                <CardTitle>{t.home.transport}</CardTitle>
                 <CardDescription>
-                  Infos trafic et moyens de transport en temps réel
+                  {t.home.transportDesc}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -205,7 +206,7 @@ const Index = () => {
           <div className="text-center mt-12">
             <Button size="lg" onClick={() => navigate('/discover')} className="bg-primary hover:bg-primary/90">
               <MapPin className="mr-2 h-5 w-5" />
-              Voir la Carte Interactive
+              {t.home.viewMapButton}
             </Button>
           </div>
         </div>
@@ -215,19 +216,19 @@ const Index = () => {
       <section className="py-20 px-4 bg-primary text-white">
         <div className="container mx-auto text-center">
           <h2 className="text-5xl font-bold mb-6">
-            Vivez Dakar 2026 pleinement
+            {t.home.ctaTitle}
           </h2>
           <p className="text-2xl mb-10 text-white/90 max-w-3xl mx-auto">
-            Assistant intelligent, résultats live, guide touristique - Tout en un seul endroit
+            {t.home.ctaSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => navigate('/assistant')} className="text-lg px-10 py-6 bg-white text-primary hover:bg-white/90">
               <MessageCircle className="mr-2 h-5 w-5" />
-              Parler à l'Assistant
+              {t.home.talkToAssistant}
             </Button>
             <Button size="lg" variant="outline" onClick={() => navigate('/profile')} className="text-lg px-10 py-6 bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary">
               <User className="mr-2 h-5 w-5" />
-              Créer mon Profil
+              {t.home.createProfile}
             </Button>
           </div>
         </div>

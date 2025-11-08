@@ -1,6 +1,7 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -89,6 +90,7 @@ function MapInitializer() {
 }
 
 const Discover = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("restaurants");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
@@ -140,10 +142,10 @@ const Discover = () => {
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
             <MapPin className="h-8 w-8 text-primary" />
-            Découvrir Dakar
+            {t.discover.title}
           </h1>
           <p className="text-muted-foreground">
-            Explorez les meilleurs endroits de la ville pendant votre séjour
+            {t.discover.subtitle}
           </p>
         </div>
 
@@ -151,22 +153,22 @@ const Discover = () => {
           <TabsList className="grid w-full max-w-2xl grid-cols-3 mb-6">
             <TabsTrigger value="restaurants" className="flex items-center gap-2">
               <Utensils className="h-4 w-4" />
-              Restaurants
+              {t.discover.restaurants}
             </TabsTrigger>
             <TabsTrigger value="attractions" className="flex items-center gap-2">
               <Camera className="h-4 w-4" />
-              Attractions
+              {t.discover.attractions}
             </TabsTrigger>
             <TabsTrigger value="transport" className="flex items-center gap-2">
               <Bus className="h-4 w-4" />
-              Transport
+              {t.discover.transport}
             </TabsTrigger>
           </TabsList>
 
           <div className="relative mb-6">
             <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
             <Input
-              placeholder="Rechercher un lieu..."
+              placeholder={t.discover.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -230,7 +232,7 @@ const Discover = () => {
                           }}
                         >
                           <MapPin className="mr-2 h-4 w-4" />
-                          Y aller
+                          {t.discover.goThere}
                         </Button>
                       </CardContent>
                     </Card>
@@ -286,7 +288,7 @@ const Discover = () => {
                       }}
                     >
                       <Navigation className="h-4 w-4 mr-2" />
-                      Y aller
+                      {t.discover.goThere}
                     </Button>
                   </CardContent>
                 </Card>
@@ -300,7 +302,7 @@ const Discover = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bus className="h-5 w-5" />
-              Trafic en Temps Réel
+              {t.discover.trafficTitle}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -310,8 +312,8 @@ const Discover = () => {
                   <Clock className="h-6 w-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-semibold">Fluide</p>
-                  <p className="text-sm text-muted-foreground">Centre-ville</p>
+                  <p className="font-semibold">{t.discover.fluid}</p>
+                  <p className="text-sm text-muted-foreground">{t.discover.downtown}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-4 bg-card rounded-lg">
@@ -319,8 +321,8 @@ const Discover = () => {
                   <Clock className="h-6 w-6 text-yellow-600" />
                 </div>
                 <div>
-                  <p className="font-semibold">Modéré</p>
-                  <p className="text-sm text-muted-foreground">Plateau</p>
+                  <p className="font-semibold">{t.discover.moderate}</p>
+                  <p className="text-sm text-muted-foreground">{t.discover.plateau}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-4 bg-card rounded-lg">
@@ -328,7 +330,7 @@ const Discover = () => {
                   <Clock className="h-6 w-6 text-destructive" />
                 </div>
                 <div>
-                  <p className="font-semibold">Dense</p>
+                  <p className="font-semibold">{t.discover.dense}</p>
                   <p className="text-sm text-muted-foreground">VDN</p>
                 </div>
               </div>

@@ -33,11 +33,12 @@ import { Search, Calendar, MapPin, Clock, Play, Trophy, Sparkles, Filter } from 
 import { joj2026Sports, getCompetitionSports, getMobilisationSports } from "@/data/joj2026Sports";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLanguage } from "@/hooks/useLanguage";
 
 const Events = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
-  // État de recherche
   const [searchTerm, setSearchTerm] = useState("");
   
   // Onglet actif (competition ou mobilisation)
@@ -81,13 +82,13 @@ const Events = () => {
             <h1 className="font-bold text-4xl text-slate-900">Programme JOJ 2026</h1>
           </div> */}
           <div className="mb-8">
-            <h1 className="text-4xl text-slate-900 font-bold mb-2">Programme JOJ 2026</h1>
+            <h1 className="text-4xl text-slate-900 font-bold mb-2">{t.events.title}</h1>
           </div>
           <p className="text-xl text-muted-foreground max-w-3xl">
-            25 sports en compétition + 10 activités de mobilisation
+            {t.events.subtitle}
           </p>
           <p className="text-lg mt-2 text-muted-foreground">
-            151 épreuves • Dakar, Diamniadio, Saly
+            151 {t.events.events} • {t.events.venues}
           </p>
         </div>
       </div>
@@ -97,18 +98,18 @@ const Events = () => {
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input placeholder="Rechercher un sport..." className="pl-12 h-14 text-lg" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            <Input placeholder={t.events.searchPlaceholder} className="pl-12 h-14 text-lg" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
           </div>
           
           <Select value={venueFilter} onValueChange={setVenueFilter}>
             <SelectTrigger className="w-full md:w-[280px] h-14">
               <div className="flex items-center gap-2">
                 <Filter className="h-5 w-5" />
-                <SelectValue placeholder="Filtrer par lieu" />
+                <SelectValue placeholder={t.events.filterByVenue} />
               </div>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous les lieux</SelectItem>
+              <SelectItem value="all">{t.events.allVenues}</SelectItem>
               <SelectItem value="dakar">🏙️ Dakar</SelectItem>
               <SelectItem value="diamniadio">🏟️ Diamniadio</SelectItem>
               <SelectItem value="saly">🏖️ Saly</SelectItem>
@@ -121,11 +122,11 @@ const Events = () => {
           <TabsList className="grid w-full max-w-md grid-cols-2 mb-8 h-12">
             <TabsTrigger value="competition" className="text-base flex items-center gap-2">
               <Trophy className="h-4 w-4" />
-              Compétition <Badge variant="secondary" className="ml-1">25</Badge>
+              {t.events.competition} <Badge variant="secondary" className="ml-1">25</Badge>
             </TabsTrigger>
             <TabsTrigger value="mobilisation" className="text-base flex items-center gap-2">
               <Sparkles className="h-4 w-4" />
-              Mobilisation <Badge variant="secondary" className="ml-1">10</Badge>
+              {t.events.mobilisation} <Badge variant="secondary" className="ml-1">10</Badge>
             </TabsTrigger>
           </TabsList>
 
@@ -153,7 +154,7 @@ const Events = () => {
                     <div className="flex items-start justify-between">
                       <CardTitle className="text-xl">{sport.name}</CardTitle>
                       <Badge variant={sport.category === "competition" ? "default" : "secondary"} className="ml-2">
-                        {sport.category === "competition" ? "Compétition" : "Mobilisation"}
+                        {sport.category === "competition" ? t.events.competition : t.events.mobilisation}
                       </Badge>
                     </div>
                     <CardDescription className="text-base">
@@ -170,7 +171,7 @@ const Events = () => {
                     {sport.category === "competition" && sport.events.length > 0 && <div className="pt-3 border-t">
                         <div className="flex items-center gap-2 text-sm font-semibold mb-2">
                           <Calendar className="h-4 w-4" />
-                          <span>{sport.events.length} épreuves</span>
+                          <span>{sport.events.length} {t.events.events}</span>
                         </div>
                         <div className="flex flex-wrap gap-1">
                           {sport.events.slice(0, 3).map(event => <Badge key={event.id} variant="outline" className="text-xs">
@@ -183,7 +184,7 @@ const Events = () => {
                   e.stopPropagation();
                   navigate(`/events/${sport.id}`);
                 }}>
-                      {sport.category === "competition" ? "Voir le calendrier" : "En savoir plus"}
+                      {sport.category === "competition" ? t.events.viewCalendar : t.events.learnMore}
                     </Button>
                   </CardContent>
                 </Card>)}
@@ -192,7 +193,7 @@ const Events = () => {
             {filteredSports.length === 0 && <div className="text-center py-16">
                 <div className="text-6xl mb-4">🔍</div>
                 <p className="text-muted-foreground text-lg">
-                  Aucun sport trouvé avec ces critères
+                  {t.events.noResults}
                 </p>
               </div>}
           </TabsContent>
