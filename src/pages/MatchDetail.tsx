@@ -6,7 +6,12 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Clock, ArrowLeft, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const MATCH_DETAIL_URL = "http://localhost:5000/api/matches"; // URL du backend
+const BASE_URL = process.env.NODE_ENV === "production"
+  ? "https://backend-dakar-go26.onrender.com"
+  : "http://localhost:5000";
+
+const MATCHES_URL = `${BASE_URL}/api/matches`;
+
 
 const MatchDetail = () => {
   const { id } = useParams(); // Récupère l'ID du match depuis l'URL

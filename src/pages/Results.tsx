@@ -6,7 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, ChevronRight } from "lucide-react";
 
-const MATCHES_URL = "http://localhost:5000/api/matches"; // URL du backend
+const BASE_URL = process.env.NODE_ENV === "production"
+  ? "https://backend-dakar-go26.onrender.com"
+  : "http://localhost:5000";
+
+const MATCHES_URL = `${BASE_URL}/api/matches`;
+
 
 const Results = () => {
   const navigate = useNavigate();
