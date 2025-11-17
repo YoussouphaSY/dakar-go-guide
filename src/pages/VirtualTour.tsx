@@ -84,7 +84,7 @@ const VirtualTour = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold text-foreground mb-2">
-                Visite Virtuelle 3D
+                Visite Virtuelle 
               </h1>
               <p className="text-muted-foreground text-lg">
                 Explorez les sites emblématiques du Sénégal comme si vous y étiez
@@ -137,7 +137,7 @@ const VirtualTour = () => {
                 </p>
                 <Button size="sm" className="w-full">
                   <ImageIcon className="h-4 w-4 mr-2" />
-                  Visiter en 3D
+                  Visiter Virtuellement
                 </Button>
               </CardContent>
             </Card>
