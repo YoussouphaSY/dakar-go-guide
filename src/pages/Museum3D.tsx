@@ -27,7 +27,7 @@ const Museum3D = () => {
   const artworksForScene = oeuvres.map((oeuvre) => ({
     id: oeuvre.id,
     title: oeuvre.title[language],
-    imageUrl: oeuvre.images[0],
+    imageUrl: oeuvre.images[0], // Vérifiez que cette propriété est correcte
     position: [
       (oeuvre.coordinates?.x || 0) as number,  // Position horizontale (gauche-droite)
       (oeuvre.coordinates?.y || 1.5) as number, // Position verticale (hauteur)
@@ -38,27 +38,30 @@ const Museum3D = () => {
   // Preload images
   useEffect(() => {
     let loaded = 0;
-    const total = oeuvres.length;
-    
-    oeuvres.forEach((oeuvre) => {
+    const total = artworksForScene.length;
+
+    artworksForScene.forEach((artwork) => {
       const img = new Image();
       img.onload = () => {
         loaded++;
         setLoadingProgress(Math.round((loaded / total) * 100));
         if (loaded === total) {
-          setTimeout(() => setImagesLoaded(true), 500);
+          setImagesLoaded(true);
+          console.log("Toutes les images sont chargées !");
         }
       };
       img.onerror = () => {
+        console.error(`Erreur lors du chargement de l'image : ${artwork.imageUrl}`);
         loaded++;
         setLoadingProgress(Math.round((loaded / total) * 100));
         if (loaded === total) {
-          setTimeout(() => setImagesLoaded(true), 500);
+          setImagesLoaded(true);
+          console.log("Toutes les images sont chargées (avec erreurs) !");
         }
       };
-      img.src = oeuvre.images[0];
+      img.src = artwork.imageUrl;
     });
-  }, []);
+  }, [artworksForScene]);
 
   const handleArtworkClick = (id: string) => {
     setSelectedArtwork(id);
@@ -132,6 +135,12 @@ const Museum3D = () => {
 
       <div className="fixed inset-0 pt-16">
         <MuseumScene artworks={artworksForScene} onArtworkClick={handleArtworkClick} />
+        {!imagesLoaded && (
+          <div className="absolute inset-0 bg-background z-50 flex flex-col items-center justify-center gap-6">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            <p className="text-sm text-muted-foreground mt-2">{loadingProgress}%</p>
+          </div>
+        )}
       </div>
 
       <HUD

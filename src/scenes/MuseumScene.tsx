@@ -100,33 +100,42 @@ function Artwork({ position, onClick, imageUrl }: {
     let mounted = true;
     setIsLoading(true);
     const loader = new TextureLoader();
-    
+
+    console.log(`Tentative de chargement de l'image : ${imageUrl}`);
+
     loader.load(
       imageUrl,
       (tex) => {
         if (!mounted) return;
+        console.log(`Image chargée avec succès : ${imageUrl}`);
         tex.colorSpace = THREE.SRGBColorSpace;
         tex.minFilter = THREE.LinearFilter;
         tex.magFilter = THREE.LinearFilter;
-        setTexture(tex);
+        setTexture(tex); // Met à jour l'état avec la texture chargée
         setIsLoading(false);
       },
       undefined,
       (error) => {
-        console.error('Error loading texture:', imageUrl, error);
+        console.error(`Erreur lors du chargement de l'image : ${imageUrl}`, error);
         // Fallback to placeholder
         loader.load(
           placeholderImage as unknown as string,
           (tex) => {
             if (!mounted) return;
+            console.log(`Image de fallback chargée : ${placeholderImage}`);
             tex.colorSpace = THREE.SRGBColorSpace;
             setTexture(tex);
+            setIsLoading(false);
+          },
+          undefined,
+          (fallbackError) => {
+            console.error("Erreur lors du chargement de l'image de fallback :", fallbackError);
             setIsLoading(false);
           }
         );
       }
     );
-    
+
     return () => {
       mounted = false;
     };
@@ -197,6 +206,21 @@ export default function MuseumScene({
   artworks: Array<{ id: string, title: string, imageUrl: string, position: [number, number, number] }>,
   onArtworkClick: (id: string) => void,
 }) {
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  useEffect(() => {
+    console.log("Chargement des images commencé...");
+    console.log("Liste des œuvres :", artworks);
+  }, []);
+
+  useEffect(() => {
+    console.log(`Progression du chargement : ${loadingProgress}%`);
+    if (imagesLoaded) {
+      console.log("Toutes les images sont chargées !");
+    }
+  }, [loadingProgress, imagesLoaded]);
+
   return (
     <div className="w-full h-full">
       <Canvas camera={{ position: [0, 2, 10], fov: 75 }} shadows>
