@@ -1,244 +1,212 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Clock, ChevronRight, Medal, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Clock, ChevronRight } from "lucide-react";
+
+const MATCHES_URL = "http://localhost:5000/api/matches"; // URL du backend
 
 const Results = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("live");
+  const [matches, setMatches] = useState([]);
+  const [matchesByCompetition, setMatchesByCompetition] = useState({});
+  const [visibleMatches, setVisibleMatches] = useState({});
+  const [filterDate, setFilterDate] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [searchTeam, setSearchTeam] = useState("");
 
-  const liveMatches = [
-    {
-      id: 1,
-      sport: "Basketball",
-      time: "45:32",
-      status: "EN DIRECT",
-      home: { name: "Sénégal", flag: "🇸🇳", score: 42 },
-      away: { name: "Ghana", flag: "🇬🇭", score: 38 },
-    },
-    {
-      id: 2,
-      sport: "Athlétisme",
-      time: "Finale",
-      status: "EN DIRECT",
-      home: { name: "A. Diallo", flag: "🇸🇳", score: "10.23" },
-      away: { name: "K. Mensah", flag: "🇬🇭", score: "10.45" },
-    },
-    {
-      id: 3,
-      sport: "Football",
-      time: "67:15",
-      status: "EN DIRECT",
-      home: { name: "Côte d'Ivoire", flag: "🇨🇮", score: 2 },
-      away: { name: "Mali", flag: "🇲🇱", score: 1 },
-    },
-  ];
+  // Fonction pour récupérer les matchs depuis le backend
+  const fetchMatches = async () => {
+    try {
+      const response = await fetch(MATCHES_URL);
+      const data = await response.json();
+      setMatches(data.matches);
 
-  const finishedMatches = [
-    {
-      id: 4,
-      sport: "Natation",
-      time: "Terminé",
-      status: "TERMINÉ",
-      home: { name: "F. Kane", flag: "🇸🇳", score: "25.12" },
-      away: { name: "A. Koné", flag: "🇨🇮", score: "25.34" },
-    },
-    {
-      id: 5,
-      sport: "Judo",
-      time: "Terminé",
-      status: "TERMINÉ",
-      home: { name: "Sénégal", flag: "🇸🇳", score: "Victoire" },
-      away: { name: "Ghana", flag: "🇬🇭", score: "Défaite" },
-    },
-  ];
+      // Organiser les matchs par compétition
+      const groupedMatches = data.matches.reduce((acc, match) => {
+        const competition = match.competition.name;
+        if (!acc[competition]) acc[competition] = [];
+        acc[competition].push(match);
+        return acc;
+      }, {});
+      setMatchesByCompetition(groupedMatches);
 
-  const upcomingMatches = [
-    {
-      id: 6,
-      sport: "Football",
-      time: "15:00",
-      status: "PROCHAIN",
-      home: { name: "Sénégal", flag: "🇸🇳" },
-      away: { name: "Nigeria", flag: "🇳🇬" },
-    },
-    {
-      id: 7,
-      sport: "Basketball",
-      time: "17:30",
-      status: "PROCHAIN",
-      home: { name: "Mali", flag: "🇲🇱" },
-      away: { name: "Ghana", flag: "🇬🇭" },
-    },
-  ];
+      // Initialiser les matchs visibles (10 premiers par compétition)
+      const initialVisible = Object.keys(groupedMatches).reduce((acc, competition) => {
+        acc[competition] = 10;
+        return acc;
+      }, {});
+      setVisibleMatches(initialVisible);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des matchs :", error);
+    }
+  };
 
-  const MatchCard = ({ match, isLive = false }: any) => (
-    <Card 
-      className={`group cursor-pointer transition-all hover:shadow-xl ${isLive ? 'border-l-4 border-l-accent' : ''}`}
-      onClick={() => navigate(`/match/${match.id}`)}
-    >
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <Badge 
-            variant={isLive ? "default" : "secondary"}
-            className={isLive ? "bg-accent text-accent-foreground animate-pulse" : ""}
-          >
-            {isLive && "🔴 "}{match.status}
-          </Badge>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">{match.sport}</span>
-            {isLive && (
-              <div className="flex items-center gap-1 text-sm font-medium">
-                <Clock className="h-3 w-3" />
-                {match.time}
-              </div>
-            )}
-          </div>
-        </div>
+  useEffect(() => {
+    fetchMatches();
+  }, []);
 
-        <div className="space-y-3">
-          {/* Home Team */}
-          <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 group-hover:bg-muted/50 transition-colors">
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">{match.home.flag}</span>
-              <span className="font-semibold text-lg">{match.home.name}</span>
-            </div>
-            {match.home.score !== undefined && (
-              <span className="text-2xl font-bold">{match.home.score}</span>
-            )}
-          </div>
+  // Fonction pour charger plus de matchs pour une compétition
+  const loadMoreMatches = (competition) => {
+    setVisibleMatches((prev) => ({
+      ...prev,
+      [competition]: prev[competition] + 10,
+    }));
+  };
 
-          {/* Away Team */}
-          <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 group-hover:bg-muted/50 transition-colors">
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">{match.away.flag}</span>
-              <span className="font-semibold text-lg">{match.away.name}</span>
-            </div>
-            {match.away.score !== undefined && (
-              <span className="text-2xl font-bold">{match.away.score}</span>
-            )}
-          </div>
-        </div>
+  // Fonction pour filtrer les matchs
+  const filteredMatchesByCompetition = Object.keys(matchesByCompetition).reduce((acc, competition) => {
+    const filteredMatches = matchesByCompetition[competition].filter((match) => {
+      const matchDate = new Date(match.utcDate).toISOString().split("T")[0]; // Convertir en YYYY-MM-DD
+      const homeTeam = match.homeTeam.name.toLowerCase();
+      const awayTeam = match.awayTeam.name.toLowerCase();
 
-        <Button 
-          variant="ghost" 
-          className="w-full mt-3 group-hover:bg-primary group-hover:text-primary-foreground transition-all pointer-events-none"
-        >
-          Voir détails
-          <ChevronRight className="h-4 w-4 ml-2" />
-        </Button>
-      </CardContent>
-    </Card>
-  );
+      // Appliquer les filtres
+      const dateMatch = !filterDate || matchDate === filterDate; // Comparer les dates normalisées
+      const statusMatch = !filterStatus || match.status.toLowerCase() === filterStatus.toLowerCase();
+      const teamMatch =
+        !searchTeam ||
+        homeTeam.includes(searchTeam.toLowerCase()) ||
+        awayTeam.includes(searchTeam.toLowerCase());
+
+      return dateMatch && statusMatch && teamMatch;
+    });
+    acc[competition] = filteredMatches;
+    return acc;
+  }, {});
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
       <div className="container py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Résultats</h1>
-          <p className="text-muted-foreground">
-            Suivez tous les résultats en temps réel
-          </p>
+        <h1 className="text-4xl font-bold mb-4">Résultats</h1>
+        <p className="text-muted-foreground mb-6">Suivez tous les résultats en temps réel</p>
+
+        {/* Filtres */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {/* Filtre par date */}
+          <div>
+            <label htmlFor="filter-date" className="block text-sm font-medium text-muted-foreground mb-2">
+              Filtrer par date :
+            </label>
+            <input
+              type="date"
+              id="filter-date"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              className="border border-gray-300 rounded-md p-2 w-full"
+            />
+          </div>
+
+          {/* Filtre par statut */}
+          <div>
+            <label htmlFor="filter-status" className="block text-sm font-medium text-muted-foreground mb-2">
+              Filtrer par statut :
+            </label>
+            <select
+              id="filter-status"
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="border border-gray-300 rounded-md p-2 w-full"
+            >
+              <option value="">Tous</option>
+              <option value="FINISHED">Terminé</option>
+              <option value="IN_PLAY">En direct</option>
+              <option value="SCHEDULED">Programmé</option>
+            </select>
+          </div>
+
+          {/* Barre de recherche */}
+          <div>
+            <label htmlFor="search-team" className="block text-sm font-medium text-muted-foreground mb-2">
+              Rechercher une équipe :
+            </label>
+            <input
+              type="text"
+              id="search-team"
+              value={searchTeam}
+              onChange={(e) => setSearchTeam(e.target.value)}
+              placeholder="Nom de l'équipe"
+              className="border border-gray-300 rounded-md p-2 w-full"
+            />
+          </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-3 mb-8">
-            <TabsTrigger value="live" className="relative">
-              En Direct
-              {liveMatches.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full animate-pulse" />
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="finished">Terminés</TabsTrigger>
-            <TabsTrigger value="upcoming">À venir</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="live" className="space-y-4">
+        {/* Affichage des matchs par compétition */}
+        {Object.keys(filteredMatchesByCompetition).map((competition) => (
+          <div key={competition} className="mb-12">
+            <h2 className="text-2xl font-bold mb-4">{competition}</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {liveMatches.map((match) => (
-                <MatchCard key={match.id} match={match} isLive={true} />
-              ))}
-            </div>
-          </TabsContent>
+              {filteredMatchesByCompetition[competition]
+                .slice(0, visibleMatches[competition])
+                .map((match) => (
+                  <Card
+                    key={match.id}
+                    className="group cursor-pointer transition-all hover:shadow-xl"
+                    onClick={() => navigate(`/match/${match.id}`)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <Badge variant="secondary">{match.status}</Badge>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          <span className="text-sm text-muted-foreground">
+                            {new Date(match.utcDate).toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
 
-          <TabsContent value="finished" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {finishedMatches.map((match) => (
-                <MatchCard key={match.id} match={match} />
-              ))}
-            </div>
-          </TabsContent>
+                      <div className="space-y-3">
+                        {/* Home Team */}
+                        <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={match.homeTeam.crest}
+                              alt={`Logo de ${match.homeTeam.name}`}
+                              className="w-8 h-8 object-contain"
+                            />
+                            <span className="font-semibold text-lg">{match.homeTeam.name}</span>
+                          </div>
+                          {match.score.fullTime.home !== null && (
+                            <span className="text-2xl font-bold">{match.score.fullTime.home}</span>
+                          )}
+                        </div>
 
-          <TabsContent value="upcoming" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {upcomingMatches.map((match) => (
-                <MatchCard key={match.id} match={match} />
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+                        {/* Away Team */}
+                        <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={match.awayTeam.crest}
+                              alt={`Logo de ${match.awayTeam.name}`}
+                              className="w-8 h-8 object-contain"
+                            />
+                            <span className="font-semibold text-lg">{match.awayTeam.name}</span>
+                          </div>
+                          {match.score.fullTime.away !== null && (
+                            <span className="text-2xl font-bold">{match.score.fullTime.away}</span>
+                          )}
+                        </div>
+                      </div>
 
-        {/* Medal Standings */}
-        <Card className="mt-12 overflow-hidden border-0 shadow-xl">
-          <div className="bg-gradient-card p-6">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Trophy className="h-6 w-6" />
-              Classement des Médailles
-            </h2>
+                      <Button variant="ghost" className="w-full mt-3">
+                        Voir détails
+                        <ChevronRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+
+            {/* Bouton "Voir plus..." */}
+            {filteredMatchesByCompetition[competition].length > visibleMatches[competition] && (
+              <div className="mt-4 text-center">
+                <Button onClick={() => loadMoreMatches(competition)}>Voir plus...</Button>
+              </div>
+            )}
           </div>
-          <CardContent className="p-6">
-            <div className="space-y-3">
-              {[
-                { rank: 1, country: "Sénégal", flag: "🇸🇳", gold: 12, silver: 8, bronze: 6, total: 26 },
-                { rank: 2, country: "Ghana", flag: "🇬🇭", gold: 9, silver: 11, bronze: 7, total: 27 },
-                { rank: 3, country: "Côte d'Ivoire", flag: "🇨🇮", gold: 8, silver: 9, bronze: 10, total: 27 },
-                { rank: 4, country: "Mali", flag: "🇲🇱", gold: 7, silver: 6, bronze: 8, total: 21 },
-              ].map((country) => (
-                <div 
-                  key={country.rank}
-                  className={`flex items-center justify-between p-4 rounded-lg transition-all hover:scale-[1.01] ${
-                    country.rank === 1 
-                      ? 'bg-gradient-to-r from-secondary/20 to-secondary/5 border-2 border-secondary/30' 
-                      : 'bg-card hover:bg-muted/50'
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`flex items-center justify-center w-10 h-10 rounded-full font-bold text-lg ${
-                      country.rank === 1 ? 'bg-secondary text-secondary-foreground' : 'bg-muted'
-                    }`}>
-                      {country.rank}
-                    </div>
-                    <span className="text-3xl">{country.flag}</span>
-                    <div>
-                      <span className="font-semibold text-lg">{country.country}</span>
-                      <p className="text-sm text-muted-foreground">{country.total} médailles</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-6 items-center">
-                    <div className="text-center">
-                      <Trophy className="h-6 w-6 mx-auto mb-1 text-secondary" />
-                      <div className="font-bold text-lg">{country.gold}</div>
-                    </div>
-                    <div className="text-center">
-                      <Award className="h-6 w-6 mx-auto mb-1 text-gray-400" />
-                      <div className="font-bold text-lg">{country.silver}</div>
-                    </div>
-                    <div className="text-center">
-                      <Medal className="h-6 w-6 mx-auto mb-1 text-bronze" />
-                      <div className="font-bold text-lg">{country.bronze}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        ))}
       </div>
     </div>
   );
