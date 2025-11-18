@@ -391,11 +391,115 @@ const MatchDetail = () => {
               )}
             </div>
 
-            {/* Statistiques */}
             {!isScheduled && (
               <div>
                 <h3 className="text-lg font-bold mb-4">Statistiques</h3>
-                <p>Statistiques détaillées ici...</p>
+                <div className="space-y-4">
+                  {/* Possession */}
+                  <div>
+                    <p className="text-sm text-muted-foreground">Possession</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">55%</p>
+                      <div className="flex-1 h-4 bg-muted/30 rounded-lg overflow-hidden">
+                        <div
+                          className="h-full bg-primary"
+                          style={{ width: `55%` }}
+                        ></div>
+                      </div>
+                      <p className="font-bold">45%</p>
+                    </div>
+                  </div>
+
+                  {/* Tirs */}
+                  <div>
+                    <p className="text-sm text-muted-foreground">Tirs</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">12</p>
+                      <div className="flex-1 h-4 bg-muted/30 rounded-lg overflow-hidden">
+                        <div
+                          className="h-full bg-secondary"
+                          style={{ width: `60%` }}
+                        ></div>
+                      </div>
+                      <p className="font-bold">8</p>
+                    </div>
+                  </div>
+
+                  {/* Tirs cadrés */}
+                  <div>
+                    <p className="text-sm text-muted-foreground">Tirs cadrés</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">7</p>
+                      <div className="flex-1 h-4 bg-muted/30 rounded-lg overflow-hidden">
+                        <div
+                          className="h-full bg-secondary"
+                          style={{ width: `70%` }}
+                        ></div>
+                      </div>
+                      <p className="font-bold">5</p>
+                    </div>
+                  </div>
+
+                  {/* Corners */}
+                  <div>
+                    <p className="text-sm text-muted-foreground">Corners</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">6</p>
+                      <div className="flex-1 h-4 bg-muted/30 rounded-lg overflow-hidden">
+                        <div
+                          className="h-full bg-accent"
+                          style={{ width: `75%` }}
+                        ></div>
+                      </div>
+                      <p className="font-bold">2</p>
+                    </div>
+                  </div>
+
+                  {/* Fautes */}
+                  <div>
+                    <p className="text-sm text-muted-foreground">Fautes</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">10</p>
+                      <div className="flex-1 h-4 bg-muted/30 rounded-lg overflow-hidden">
+                        <div
+                          className="h-full bg-danger"
+                          style={{ width: `50%` }}
+                        ></div>
+                      </div>
+                      <p className="font-bold">10</p>
+                    </div>
+                  </div>
+
+                  {/* Cartons jaunes */}
+                  <div>
+                    <p className="text-sm text-muted-foreground">Cartons jaunes</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">3</p>
+                      <div className="flex-1 h-4 bg-muted/30 rounded-lg overflow-hidden">
+                        <div
+                          className="h-full bg-warning"
+                          style={{ width: `60%` }}
+                        ></div>
+                      </div>
+                      <p className="font-bold">2</p>
+                    </div>
+                  </div>
+
+                  {/* Cartons rouges */}
+                  <div>
+                    <p className="text-sm text-muted-foreground">Cartons rouges</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">1</p>
+                      <div className="flex-1 h-4 bg-muted/30 rounded-lg overflow-hidden">
+                        <div
+                          className="h-full bg-danger"
+                          style={{ width: `33%` }}
+                        ></div>
+                      </div>
+                      <p className="font-bold">2</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
