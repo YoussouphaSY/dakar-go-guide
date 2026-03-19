@@ -28,6 +28,43 @@ interface Venue {
   city: string;
 }
 
+const MOCK_EVENTS = [
+  // Athlétisme (5)
+  { id: 1001, sport_name: "Athlétisme", discipline_detail: "100m Hommes - Finale", gender_type: "H", event_date: "2026-11-08", event_time: "18:00", status: "terminé", venue_id: 1 },
+  { id: 1002, sport_name: "Athlétisme", discipline_detail: "Saut en hauteur F - Éliminatoires", gender_type: "F", event_date: "2026-11-09", event_time: "10:00", status: "programmé", venue_id: 1 },
+  { id: 1003, sport_name: "Athlétisme", discipline_detail: "400m Haies H - Séries", gender_type: "H", event_date: "2026-11-10", event_time: "14:30", status: "terminé", venue_id: 1 },
+  { id: 1004, sport_name: "Athlétisme", discipline_detail: "Lancer du javelot F - Finale", gender_type: "F", event_date: "2026-11-12", event_time: "16:00", status: "programmé", venue_id: 1 },
+  { id: 1005, sport_name: "Athlétisme", discipline_detail: "Relais 4x100m Mixte", gender_type: "Mixte", event_date: "2026-11-15", event_time: "19:00", status: "programmé", venue_id: 1 },
+
+  // Natation (5)
+  { id: 1011, sport_name: "Natation", discipline_detail: "50m nage libre H - Finale", gender_type: "H", event_date: "2026-11-06", event_time: "18:00", status: "terminé", venue_id: 2 },
+  { id: 1012, sport_name: "Natation", discipline_detail: "100m Papillon F - Séries", gender_type: "F", event_date: "2026-11-07", event_time: "09:00", status: "terminé", venue_id: 2 },
+  { id: 1013, sport_name: "Natation", discipline_detail: "200m Brasse H - Demi-finale", gender_type: "H", event_date: "2026-03-19", event_time: "17:45", status: "en cours", venue_id: 2 },
+  { id: 1014, sport_name: "Natation", discipline_detail: "400m Quatre nages F - Finale", gender_type: "F", event_date: "2026-03-19", event_time: "20:00", status: "programmé", venue_id: 2 },
+  { id: 1015, sport_name: "Natation", discipline_detail: "Relais 4x100m nage libre H", gender_type: "H", event_date: "2026-11-11", event_time: "18:30", status: "programmé", venue_id: 2 },
+
+  // Football (5)
+  { id: 1021, sport_name: "Football", discipline_detail: "Groupe A - Sénégal vs France", gender_type: "Mixte", event_date: "2026-03-19", event_time: "14:00", status: "en cours", venue_id: 4 },
+  { id: 1022, sport_name: "Football", discipline_detail: "Groupe B - Brésil vs Argentine", gender_type: "Mixte", event_date: "2026-03-19", event_time: "16:30", status: "en cours", venue_id: 4 },
+  { id: 1023, sport_name: "Football", discipline_detail: "Groupe C - Nigeria vs Japon", gender_type: "Mixte", event_date: "2026-11-05", event_time: "13:00", status: "terminé", venue_id: 4 },
+  { id: 1024, sport_name: "Football", discipline_detail: "Quart de finale 1", gender_type: "Mixte", event_date: "2026-11-18", event_time: "15:00", status: "programmé", venue_id: 4 },
+  { id: 1025, sport_name: "Football", discipline_detail: "Finale Or", gender_type: "Mixte", event_date: "2026-11-22", event_time: "20:00", status: "programmé", venue_id: 4 },
+
+  // Basket-ball 3x3 (5)
+  { id: 1031, sport_name: "Basket-ball 3x3", discipline_detail: "Tournoi Femmes - Finale", gender_type: "F", event_date: "2026-03-19", event_time: "18:00", status: "en cours", venue_id: 3 },
+  { id: 1032, sport_name: "Basket-ball 3x3", discipline_detail: "Qualifications H - Sénégal vs USA", gender_type: "H", event_date: "2026-11-06", event_time: "11:00", status: "terminé", venue_id: 3 },
+  { id: 1033, sport_name: "Basket-ball 3x3", discipline_detail: "Quarts de finale F", gender_type: "F", event_date: "2026-03-19", event_time: "15:00", status: "terminé", venue_id: 3 },
+  { id: 1034, sport_name: "Basket-ball 3x3", discipline_detail: "Demi-finale H", gender_type: "H", event_date: "2026-11-14", event_time: "17:00", status: "programmé", venue_id: 3 },
+  { id: 1035, sport_name: "Basket-ball 3x3", discipline_detail: "Match pour le Bronze H", gender_type: "H", event_date: "2026-11-15", event_time: "14:00", status: "programmé", venue_id: 3 },
+
+  // Breaking (5)
+  { id: 1041, sport_name: "Breaking", discipline_detail: "Battle B-Boys - Finale", gender_type: "H", event_date: "2026-11-09", event_time: "20:00", status: "programmé", venue_id: 1 },
+  { id: 1042, sport_name: "Breaking", discipline_detail: "Qualifications B-Girls", gender_type: "F", event_date: "2026-11-08", event_time: "14:00", status: "terminé", venue_id: 1 },
+  { id: 1043, sport_name: "Breaking", discipline_detail: "Round Robin H - Groupe A", gender_type: "H", event_date: "2026-03-19", event_time: "16:00", status: "en cours", venue_id: 1 },
+  { id: 1044, sport_name: "Breaking", discipline_detail: "Demi-finale B-Girls", gender_type: "F", event_date: "2026-11-09", event_time: "18:00", status: "programmé", venue_id: 1 },
+  { id: 1045, sport_name: "Breaking", discipline_detail: "Battle d'Exhibition Mixte", gender_type: "Mixte", event_date: "2026-11-10", event_time: "21:00", status: "programmé", venue_id: 1 }
+];
+
 const Results = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -48,10 +85,16 @@ const Results = () => {
         supabase.from("sports_events").select("*").order("event_date", { ascending: true }),
         supabase.from("venues").select("*"),
       ]);
-      if (eventsRes.data) setEvents(eventsRes.data);
+
+      // Merge with MOCK_EVENTS to ensure the page is never empty
+      const dbEvents = eventsRes.data || [];
+      const combinedEvents = [...MOCK_EVENTS, ...dbEvents];
+      setEvents(combinedEvents);
+
       if (venuesRes.data) setVenues(venuesRes.data);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setEvents(MOCK_EVENTS); // Fallback to mocks on error
     } finally {
       setLoading(false);
     }
@@ -88,7 +131,7 @@ const Results = () => {
   const uniqueSports = [...new Set(events.map(e => e.sport_name))].sort();
 
   const filteredEvents = events.filter(event => {
-    const matchesSearch = !searchTerm || 
+    const matchesSearch = !searchTerm ||
       event.sport_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event.discipline_detail.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = !filterStatus || event.status?.toLowerCase() === filterStatus.toLowerCase();
@@ -202,7 +245,11 @@ const Results = () => {
               </h2>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {sportEvents.map((event) => (
-                  <Card key={event.id} className="border border-border hover:shadow-md transition-shadow">
+                  <Card
+                    key={event.id}
+                    className="border border-border hover:shadow-lg transition-all cursor-pointer hover:-translate-y-1"
+                    onClick={() => navigate(`/match/${event.id}`)}
+                  >
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between mb-2">
                         {getStatusBadge(event.status)}

@@ -3,7 +3,9 @@ import { Suspense, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls as ThreeOrbitControls } from 'three-stdlib';
 import { TextureLoader } from 'three';
+import { useTexture } from '@react-three/drei';
 import placeholderImage from '@/assets/ai-assistant.png';
+import aiAssistantJpg from '@/assets/ayo-mascot-official.jpg';
 
 extend({ OrbitControls: ThreeOrbitControls });
 
@@ -94,51 +96,28 @@ function Artwork({ position, onClick, imageUrl }: {
 }) {
   const [hovered, setHovered] = useState(false);
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
+  // Essayer de charger la texture réelle, sinon utiliser le fallback
   useEffect(() => {
-    let mounted = true;
-    setIsLoading(true);
-    const loader = new TextureLoader();
-
-    console.log(`Tentative de chargement de l'image : ${imageUrl}`);
-
+    const loader = new THREE.TextureLoader();
     loader.load(
       imageUrl,
       (tex) => {
-        if (!mounted) return;
-        console.log(`Image chargée avec succès : ${imageUrl}`);
         tex.colorSpace = THREE.SRGBColorSpace;
-        tex.minFilter = THREE.LinearFilter;
-        tex.magFilter = THREE.LinearFilter;
-        setTexture(tex); // Met à jour l'état avec la texture chargée
-        setIsLoading(false);
+        setTexture(tex);
       },
       undefined,
-      (error) => {
-        console.error(`Erreur lors du chargement de l'image : ${imageUrl}`, error);
-        // Fallback to placeholder
-        loader.load(
-          placeholderImage as unknown as string,
-          (tex) => {
-            if (!mounted) return;
-            console.log(`Image de fallback chargée : ${placeholderImage}`);
-            tex.colorSpace = THREE.SRGBColorSpace;
-            setTexture(tex);
-            setIsLoading(false);
-          },
-          undefined,
-          (fallbackError) => {
-            console.error("Erreur lors du chargement de l'image de fallback :", fallbackError);
-            setIsLoading(false);
-          }
-        );
+      () => {
+        console.error("Erreur de chargement pour :", imageUrl);
+        setError(true);
+        // Fallback immédiat vers une image connue
+        loader.load('/assets/ayo-mascot-official.jpg', (fallbackTex) => {
+          fallbackTex.colorSpace = THREE.SRGBColorSpace;
+          setTexture(fallbackTex);
+        });
       }
     );
-
-    return () => {
-      mounted = false;
-    };
   }, [imageUrl]);
 
   return (
@@ -148,7 +127,7 @@ function Artwork({ position, onClick, imageUrl }: {
         <planeGeometry args={[3.4, 4.4]} />
         <meshStandardMaterial color={hovered ? "#D4AF37" : "#8B4513"} />
       </mesh>
-      
+
       {/* Artwork plane */}
       <mesh
         onClick={onClick}
@@ -157,21 +136,17 @@ function Artwork({ position, onClick, imageUrl }: {
         castShadow
       >
         <planeGeometry args={[3, 4]} />
-        {texture ? (
-          <meshStandardMaterial
-            map={texture}
-            emissive={hovered ? "#D4AF37" : "#000000"}
-            emissiveIntensity={hovered ? 0.3 : 0}
-            roughness={0.7}
-            metalness={0.1}
-          />
-        ) : (
-          <meshStandardMaterial
-            color={isLoading ? "#3A2A1A" : "#666666"}
-            emissive={hovered ? "#D4AF37" : "#000000"}
-            emissiveIntensity={hovered ? 0.2 : 0}
-          />
-        )}
+        <meshStandardMaterial
+          map={texture}
+          transparent={!texture}
+          opacity={texture ? 1 : 0.5}
+          color={texture ? "white" : "#3A2A1A"}
+          emissive={hovered ? "#D4AF37" : "#000000"}
+          emissiveIntensity={hovered ? 0.3 : 0}
+          roughness={0.7}
+          metalness={0.1}
+          side={THREE.DoubleSide}
+        />
       </mesh>
 
       {/* Spotlight for each artwork */}

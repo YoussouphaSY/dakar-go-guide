@@ -70,7 +70,7 @@ const Header = () => {
       .eq("user_id", userId)
       .eq("role", "admin")
       .maybeSingle();
-    
+
     setIsAdmin(!!data);
   };
 
@@ -102,11 +102,10 @@ const Header = () => {
           <Link
             key={item.path}
             to={item.path}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-              isActive
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isActive
                 ? "bg-primary text-primary-foreground"
                 : "text-foreground hover:bg-muted"
-            } ${mobile ? "w-full text-lg" : ""}`}
+              } ${mobile ? "w-full text-lg" : ""}`}
           >
             {Icon && <Icon className="h-4 w-4" />}
             <span>{item.label}</span>
@@ -117,13 +116,18 @@ const Header = () => {
   );
 
   return (
-    <header className={`sticky top-0 z-50 w-full border-b-2 border-border transition-all duration-300 ${
-      scrolled ? "bg-primary shadow-lg" : "bg-card shadow-md"
-    }`}>
+    <header className={`sticky top-0 z-50 w-full border-b-2 border-border transition-all duration-300 ${scrolled ? "bg-primary shadow-lg" : "bg-card shadow-md"
+      }`}>
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="flex items-center gap-2">
-            <img src={dakarLogo} alt="Dakar 2026" className="h-16 w-auto object-contain" />
+          <div className={`flex items-center justify-center transition-all duration-300 ${scrolled ? "bg-white rounded-full p-1.5 shadow-sm" : ""
+            }`}>
+            <img
+              src={dakarLogo}
+              alt="Dakar 2026"
+              className={`object-contain transition-all duration-300 ${scrolled ? "h-12 w-12" : "h-16 w-auto"
+                }`}
+            />
           </div>
         </Link>
 
@@ -136,22 +140,21 @@ const Header = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
-                  scrolled
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${scrolled
                     ? isActive
                       ? "bg-white/20 text-white font-semibold"
                       : "text-white/80 hover:bg-white/10 hover:text-white"
                     : isActive
                       ? "bg-primary text-primary-foreground"
                       : "text-foreground hover:bg-muted"
-                }`}
+                  }`}
               >
                 {Icon && <Icon className="h-4 w-4" />}
                 <span>{item.label}</span>
               </Link>
             );
           })}
-          
+
           {/* Language Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -172,7 +175,7 @@ const Header = () => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          
+
           {user ? (
             <>
               <NotificationBell />
@@ -225,7 +228,7 @@ const Header = () => {
           <SheetContent side="right">
             <nav className="flex flex-col gap-4 mt-8">
               <NavLinks mobile />
-              
+
               {/* Mobile Language Selector */}
               <div className="w-full border-t pt-4">
                 <p className="text-sm font-semibold mb-2 px-4">{t.nav.language}</p>
@@ -242,7 +245,7 @@ const Header = () => {
                   ))}
                 </div>
               </div>
-              
+
               {user ? (
                 <>
                   {isAdmin && (
