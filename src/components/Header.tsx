@@ -18,22 +18,30 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import dakarLogo from "@/assets/dakar2026-logo.png";
-// import dakarLogo from "@/assets/dakar2026-logo.jpg";
 import { NotificationBell } from "@/components/NotificationBell";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const languages = [
     { code: 'fr' as const, label: '🇫🇷 Français', name: 'Français' },
     { code: 'en' as const, label: '🇬🇧 English', name: 'English' },
     { code: 'wo' as const, label: '🇸🇳 Wolof', name: 'Wolof' },
   ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -69,20 +77,20 @@ const Header = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     toast({
-      title: "Déconnecté",
-      description: "À bientôt aux JOJ Dakar 2026!",
+      title: t.nav.loggedOut,
+      description: t.nav.loggedOutDesc,
     });
     navigate("/");
   };
 
   const navItems = [
-    { path: "/", label: "Accueil", icon: null },
-    { path: "/events", label: "Événements", icon: Calendar },
-    { path: "/results", label: "Résultats", icon: Trophy },
-    { path: "/discover", label: "Découvrir", icon: MapPin },
-    { path: "/virtual-tour", label: "Visite Virtuelle", icon: Compass },
-    { path: "/records", label: "Records", icon: TrendingUp },
-    { path: "/assistant", label: "AYO Chat", icon: MessageCircle },
+    { path: "/", label: t.nav.home, icon: null },
+    { path: "/events", label: t.nav.events, icon: Calendar },
+    { path: "/results", label: t.nav.results, icon: Trophy },
+    { path: "/discover", label: t.nav.discover, icon: MapPin },
+    { path: "/virtual-tour", label: t.nav.virtualTour, icon: Compass },
+    { path: "/records", label: t.nav.records, icon: TrendingUp },
+    { path: "/assistant", label: t.nav.assistant, icon: MessageCircle },
   ];
 
   const NavLinks = ({ mobile = false }: { mobile?: boolean }) => (
@@ -109,7 +117,9 @@ const Header = () => {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b-2 border-border bg-card shadow-md">
+    <header className={`sticky top-0 z-50 w-full border-b-2 border-border transition-all duration-300 ${
+      scrolled ? "bg-primary shadow-lg" : "bg-card shadow-md"
+    }`}>
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="flex items-center gap-2">
@@ -118,14 +128,35 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-2">
-          <NavLinks />
+        <nav className="hidden lg:flex items-center gap-1">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  scrolled
+                    ? isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                    : isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "text-foreground hover:bg-muted"
+                }`}
+              >
+                {Icon && <Icon className="h-4 w-4" />}
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
           
           {/* Language Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Globe className="h-4 w-4 mr-2" />
+              <Button variant={scrolled ? "ghost" : "outline"} size="sm" className={scrolled ? "text-white hover:bg-white/10" : ""}>
+                <Globe className="h-4 w-4 mr-1" />
                 {languages.find(l => l.code === language)?.name}
               </Button>
             </DropdownMenuTrigger>
@@ -150,10 +181,9 @@ const Header = () => {
                   <Button
                     variant={location.pathname === "/admin" ? "default" : "ghost"}
                     size="sm"
-                    className="flex items-center gap-2"
+                    className={`flex items-center gap-2 ${scrolled ? "text-white hover:bg-white/10" : ""}`}
                   >
                     <Shield className="h-4 w-4" />
-                    <span>Admin</span>
                   </Button>
                 </Link>
               )}
@@ -161,27 +191,25 @@ const Header = () => {
                 <Button
                   variant={location.pathname === "/profile" ? "default" : "ghost"}
                   size="sm"
-                  className="flex items-center gap-2"
+                  className={`flex items-center gap-2 ${scrolled ? "text-white hover:bg-white/10" : ""}`}
                 >
                   <User className="h-4 w-4" />
-                  <span>Profil</span>
                 </Button>
               </Link>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleLogout}
-                className="flex items-center gap-2"
+                className={`flex items-center gap-2 ${scrolled ? "text-white hover:bg-white/10" : ""}`}
               >
                 <LogOut className="h-4 w-4" />
-                <span>Déconnexion</span>
               </Button>
             </>
           ) : (
             <Link to="/auth">
-              <Button variant="default" size="sm" className="flex items-center gap-2">
+              <Button variant={scrolled ? "secondary" : "default"} size="sm" className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span>Connexion</span>
+                <span>{t.nav.login}</span>
               </Button>
             </Link>
           )}
@@ -189,8 +217,8 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         <Sheet>
-          <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon">
+          <SheetTrigger asChild className="lg:hidden">
+            <Button variant="ghost" size="icon" className={scrolled ? "text-white" : ""}>
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
@@ -200,7 +228,7 @@ const Header = () => {
               
               {/* Mobile Language Selector */}
               <div className="w-full border-t pt-4">
-                <p className="text-sm font-semibold mb-2 px-4">Langue / Language</p>
+                <p className="text-sm font-semibold mb-2 px-4">{t.nav.language}</p>
                 <div className="flex flex-col gap-2">
                   {languages.map((lang) => (
                     <Button
@@ -234,7 +262,7 @@ const Header = () => {
                       className="w-full flex items-center gap-2 text-lg"
                     >
                       <User className="h-4 w-4" />
-                      <span>Profil</span>
+                      <span>{t.nav.profile}</span>
                     </Button>
                   </Link>
                   <Button
@@ -243,14 +271,14 @@ const Header = () => {
                     className="w-full flex items-center gap-2 text-lg"
                   >
                     <LogOut className="h-4 w-4" />
-                    <span>Déconnexion</span>
+                    <span>{t.nav.logout}</span>
                   </Button>
                 </>
               ) : (
                 <Link to="/auth" className="w-full">
                   <Button variant="default" className="w-full flex items-center gap-2 text-lg">
                     <User className="h-4 w-4" />
-                    <span>Connexion</span>
+                    <span>{t.nav.login}</span>
                   </Button>
                 </Link>
               )}

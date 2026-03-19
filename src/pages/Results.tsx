@@ -1,217 +1,243 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, ChevronRight } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Trophy, Calendar, MapPin, Clock, Search, Filter, Medal, Users } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/hooks/useLanguage";
+import { joj2026Sports } from "@/data/joj2026Sports";
 
-const BASE_URL = process.env.NODE_ENV === "production"
-  ? "https://backend-dakar-go26.onrender.com"
-  : "http://localhost:5000";
+interface SportsEvent {
+  id: number;
+  sport_name: string;
+  discipline_detail: string;
+  gender_type: string;
+  event_date: string | null;
+  event_time: string | null;
+  status: string | null;
+  venue_id: number | null;
+}
 
-const MATCHES_URL = `${BASE_URL}/api/matches`;
-
+interface Venue {
+  id: number;
+  name: string;
+  city: string;
+}
 
 const Results = () => {
   const navigate = useNavigate();
-  const [matches, setMatches] = useState([]);
-  const [matchesByCompetition, setMatchesByCompetition] = useState({});
-  const [visibleMatches, setVisibleMatches] = useState({});
-  const [filterDate, setFilterDate] = useState("");
+  const { t } = useLanguage();
+  const [events, setEvents] = useState<SportsEvent[]>([]);
+  const [venues, setVenues] = useState<Venue[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-  const [searchTeam, setSearchTeam] = useState("");
+  const [filterSport, setFilterSport] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  // Fonction pour récupérer les matchs depuis le backend
-  const fetchMatches = async () => {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
     try {
-      const response = await fetch(MATCHES_URL);
-      const data = await response.json();
-      setMatches(data.matches);
-
-      // Organiser les matchs par compétition
-      const groupedMatches = data.matches.reduce((acc, match) => {
-        const competition = match.competition.name;
-        if (!acc[competition]) acc[competition] = [];
-        acc[competition].push(match);
-        return acc;
-      }, {});
-      setMatchesByCompetition(groupedMatches);
-
-      // Initialiser les matchs visibles (10 premiers par compétition)
-      const initialVisible = Object.keys(groupedMatches).reduce((acc, competition) => {
-        acc[competition] = 10;
-        return acc;
-      }, {});
-      setVisibleMatches(initialVisible);
+      const [eventsRes, venuesRes] = await Promise.all([
+        supabase.from("sports_events").select("*").order("event_date", { ascending: true }),
+        supabase.from("venues").select("*"),
+      ]);
+      if (eventsRes.data) setEvents(eventsRes.data);
+      if (venuesRes.data) setVenues(venuesRes.data);
     } catch (error) {
-      console.error("Erreur lors de la récupération des matchs :", error);
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchMatches();
-  }, []);
-
-  // Fonction pour charger plus de matchs pour une compétition
-  const loadMoreMatches = (competition) => {
-    setVisibleMatches((prev) => ({
-      ...prev,
-      [competition]: prev[competition] + 10,
-    }));
+  const getVenueName = (venueId: number | null) => {
+    if (!venueId) return "";
+    return venues.find(v => v.id === venueId)?.name || "";
   };
 
-  // Fonction pour filtrer les matchs
-  const filteredMatchesByCompetition = Object.keys(matchesByCompetition).reduce((acc, competition) => {
-    const filteredMatches = matchesByCompetition[competition].filter((match) => {
-      const matchDate = new Date(match.utcDate).toISOString().split("T")[0]; // Convertir en YYYY-MM-DD
-      const homeTeam = match.homeTeam.name.toLowerCase();
-      const awayTeam = match.awayTeam.name.toLowerCase();
+  const getStatusBadge = (status: string | null) => {
+    switch (status?.toLowerCase()) {
+      case "terminé":
+      case "finished":
+        return <Badge className="bg-primary text-white">{t.results.finished}</Badge>;
+      case "en cours":
+      case "in_play":
+        return <Badge className="bg-destructive text-white animate-pulse">{t.results.live}</Badge>;
+      case "programmé":
+      case "scheduled":
+      default:
+        return <Badge variant="outline">{t.results.scheduled}</Badge>;
+    }
+  };
 
-      // Appliquer les filtres
-      const dateMatch = !filterDate || matchDate === filterDate; // Comparer les dates normalisées
-      const statusMatch = !filterStatus || match.status.toLowerCase() === filterStatus.toLowerCase();
-      const teamMatch =
-        !searchTeam ||
-        homeTeam.includes(searchTeam.toLowerCase()) ||
-        awayTeam.includes(searchTeam.toLowerCase());
+  const getGenderIcon = (gender: string) => {
+    switch (gender) {
+      case "H": return "♂";
+      case "F": return "♀";
+      default: return "⚥";
+    }
+  };
 
-      return dateMatch && statusMatch && teamMatch;
-    });
-    acc[competition] = filteredMatches;
+  const uniqueSports = [...new Set(events.map(e => e.sport_name))].sort();
+
+  const filteredEvents = events.filter(event => {
+    const matchesSearch = !searchTerm || 
+      event.sport_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event.discipline_detail.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = !filterStatus || event.status?.toLowerCase() === filterStatus.toLowerCase();
+    const matchesSport = !filterSport || event.sport_name === filterSport;
+    return matchesSearch && matchesStatus && matchesSport;
+  });
+
+  const eventsBySport = filteredEvents.reduce((acc, event) => {
+    if (!acc[event.sport_name]) acc[event.sport_name] = [];
+    acc[event.sport_name].push(event);
     return acc;
-  }, {});
+  }, {} as Record<string, SportsEvent[]>);
+
+  const getSportIcon = (sportName: string) => {
+    const sport = joj2026Sports.find(s => s.name.toLowerCase() === sportName.toLowerCase());
+    return sport?.image;
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="container py-8">
-        <h1 className="text-4xl font-bold mb-4">Résultats</h1>
-        <p className="text-muted-foreground mb-6">Suivez tous les résultats en temps réel</p>
-
-        {/* Filtres */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          {/* Filtre par date */}
-          <div>
-            <label htmlFor="filter-date" className="block text-sm font-medium text-muted-foreground mb-2">
-              Filtrer par date :
-            </label>
-            <input
-              type="date"
-              id="filter-date"
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value)}
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
-          </div>
-
-          {/* Filtre par statut */}
-          <div>
-            <label htmlFor="filter-status" className="block text-sm font-medium text-muted-foreground mb-2">
-              Filtrer par statut :
-            </label>
-            <select
-              id="filter-status"
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="border border-gray-300 rounded-md p-2 w-full"
-            >
-              <option value="">Tous</option>
-              <option value="FINISHED">Terminé</option>
-              <option value="IN_PLAY">En direct</option>
-              <option value="SCHEDULED">Programmé</option>
-            </select>
-          </div>
-
-          {/* Barre de recherche */}
-          <div>
-            <label htmlFor="search-team" className="block text-sm font-medium text-muted-foreground mb-2">
-              Rechercher une équipe :
-            </label>
-            <input
-              type="text"
-              id="search-team"
-              value={searchTeam}
-              onChange={(e) => setSearchTeam(e.target.value)}
-              placeholder="Nom de l'équipe"
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
+      <div className="container py-8 px-4">
+        {/* Hero */}
+        <div className="rounded-2xl p-6 sm:p-8 bg-primary text-white mb-8">
+          <div className="flex items-center gap-4">
+            <Trophy className="h-10 w-10 sm:h-14 sm:w-14 flex-shrink-0" />
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold">{t.results.title}</h1>
+              <p className="text-lg opacity-90">{t.results.subtitle}</p>
+            </div>
           </div>
         </div>
 
-        {/* Affichage des matchs par compétition */}
-        {Object.keys(filteredMatchesByCompetition).map((competition) => (
-          <div key={competition} className="mb-12">
-            <h2 className="text-2xl font-bold mb-4">{competition}</h2>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {filteredMatchesByCompetition[competition]
-                .slice(0, visibleMatches[competition])
-                .map((match) => (
-                  <Card
-                    key={match.id}
-                    className="group cursor-pointer transition-all hover:shadow-xl"
-                    onClick={() => navigate(`/match/${match.id}`)}
-                  >
+        {/* Filters */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder={t.results.searchPlaceholder}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="border border-input rounded-lg px-3 py-2 bg-background text-foreground text-sm"
+          >
+            <option value="">{t.results.allStatuses}</option>
+            <option value="terminé">{t.results.finished}</option>
+            <option value="en cours">{t.results.live}</option>
+            <option value="programmé">{t.results.scheduled}</option>
+          </select>
+          <select
+            value={filterSport}
+            onChange={(e) => setFilterSport(e.target.value)}
+            className="border border-input rounded-lg px-3 py-2 bg-background text-foreground text-sm"
+          >
+            <option value="">{t.results.allSports}</option>
+            {uniqueSports.map(sport => (
+              <option key={sport} value={sport}>{sport}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+          <Card className="border border-border">
+            <CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-primary">{events.length}</p>
+              <p className="text-xs text-muted-foreground">{t.results.totalEvents}</p>
+            </CardContent>
+          </Card>
+          <Card className="border border-border">
+            <CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-primary">{uniqueSports.length}</p>
+              <p className="text-xs text-muted-foreground">{t.results.sports}</p>
+            </CardContent>
+          </Card>
+          <Card className="border border-border">
+            <CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-destructive">
+                {events.filter(e => e.status?.toLowerCase() === "en cours").length}
+              </p>
+              <p className="text-xs text-muted-foreground">{t.results.liveNow}</p>
+            </CardContent>
+          </Card>
+          <Card className="border border-border">
+            <CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-secondary">
+                {events.filter(e => e.status?.toLowerCase() === "terminé").length}
+              </p>
+              <p className="text-xs text-muted-foreground">{t.results.completed}</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Events by sport */}
+        {loading ? (
+          <div className="text-center py-12 text-muted-foreground">{t.results.loading}</div>
+        ) : Object.keys(eventsBySport).length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">{t.results.noResults}</div>
+        ) : (
+          Object.entries(eventsBySport).map(([sport, sportEvents]) => (
+            <div key={sport} className="mb-8">
+              <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Medal className="h-5 w-5 text-primary" />
+                {sport}
+                <Badge variant="outline" className="ml-2">{sportEvents.length} {t.results.events}</Badge>
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {sportEvents.map((event) => (
+                  <Card key={event.id} className="border border-border hover:shadow-md transition-shadow">
                     <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge variant="secondary">{match.status}</Badge>
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          <span className="text-sm text-muted-foreground">
-                            {new Date(match.utcDate).toLocaleString()}
-                          </span>
-                        </div>
+                      <div className="flex items-start justify-between mb-2">
+                        {getStatusBadge(event.status)}
+                        <span className="text-lg font-bold">{getGenderIcon(event.gender_type)}</span>
                       </div>
-
-                      <div className="space-y-3">
-                        {/* Home Team */}
-                        <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={match.homeTeam.crest}
-                              alt={`Logo de ${match.homeTeam.name}`}
-                              className="w-8 h-8 object-contain"
-                            />
-                            <span className="font-semibold text-lg">{match.homeTeam.name}</span>
-                          </div>
-                          {match.score.fullTime.home !== null && (
-                            <span className="text-2xl font-bold">{match.score.fullTime.home}</span>
-                          )}
-                        </div>
-
-                        {/* Away Team */}
-                        <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={match.awayTeam.crest}
-                              alt={`Logo de ${match.awayTeam.name}`}
-                              className="w-8 h-8 object-contain"
-                            />
-                            <span className="font-semibold text-lg">{match.awayTeam.name}</span>
-                          </div>
-                          {match.score.fullTime.away !== null && (
-                            <span className="text-2xl font-bold">{match.score.fullTime.away}</span>
-                          )}
-                        </div>
+                      <h3 className="font-semibold text-sm mb-3">{event.discipline_detail}</h3>
+                      <div className="space-y-1.5 text-xs text-muted-foreground">
+                        {event.event_date && (
+                          <p className="flex items-center gap-1.5">
+                            <Calendar className="h-3.5 w-3.5" />
+                            {new Date(event.event_date).toLocaleDateString(
+                              t === (undefined as any) ? 'fr-FR' : 'fr-FR'
+                            )}
+                          </p>
+                        )}
+                        {event.event_time && (
+                          <p className="flex items-center gap-1.5">
+                            <Clock className="h-3.5 w-3.5" />
+                            {event.event_time}
+                          </p>
+                        )}
+                        {event.venue_id && (
+                          <p className="flex items-center gap-1.5">
+                            <MapPin className="h-3.5 w-3.5" />
+                            {getVenueName(event.venue_id)}
+                          </p>
+                        )}
                       </div>
-
-                      <Button variant="ghost" className="w-full mt-3">
-                        Voir détails
-                        <ChevronRight className="h-4 w-4 ml-2" />
-                      </Button>
                     </CardContent>
                   </Card>
                 ))}
-            </div>
-
-            {/* Bouton "Voir plus..." */}
-            {filteredMatchesByCompetition[competition].length > visibleMatches[competition] && (
-              <div className="mt-4 text-center">
-                <Button onClick={() => loadMoreMatches(competition)}>Voir plus...</Button>
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

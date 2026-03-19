@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
-import { Send, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
+import { Send, Mic, MicOff, Volume2, VolumeX, Landmark, Medal, Theater } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-// import aiAssistantImage from "@/assets/ai-assistant.png";
+import { useLanguage } from "@/hooks/useLanguage";
+import ReactMarkdown from "react-markdown";
 import aiAssistantImage from "@/assets/IMG_0167-e1761916299674.jpeg";
 
 interface Message {
@@ -33,6 +34,7 @@ const welcomeMessages: Record<Language, string> = {
 
 const Assistant = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -79,7 +81,6 @@ const Assistant = () => {
         const transcript = event.results[0][0].transcript;
         setInputValue(transcript);
         setIsListening(false);
-        // Envoyer automatiquement après la reconnaissance vocale
         setTimeout(() => {
           sendMessage(transcript);
         }, 100);
@@ -215,12 +216,10 @@ const Assistant = () => {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantText += content;
-              // Nettoyer les ** markdown
-              const cleanText = assistantText.replace(/\*\*/g, '');
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantMessage.id
-                    ? { ...m, text: cleanText }
+                    ? { ...m, text: assistantText }
                     : m
                 )
               );
@@ -232,9 +231,8 @@ const Assistant = () => {
         }
       }
 
-      // Parler uniquement si autoSpeak est activé
       if (autoSpeak) {
-        const cleanText = assistantText.replace(/\*\*/g, '');
+        const cleanText = assistantText.replace(/[*#_~`]/g, '');
         speak(cleanText);
       }
     } catch (error) {
@@ -267,7 +265,7 @@ const Assistant = () => {
               <img src={aiAssistantImage} alt="Assistant IA" className="h-10 w-10 md:h-12 md:w-12 rounded-full" />
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold">AYO Chat</h1>
-                <p className="text-xs md:text-sm text-muted-foreground">Expert en culture sénégalaise et JOJ 2026</p>
+                <p className="text-xs md:text-sm text-muted-foreground">{t.assistant?.subtitle || "Expert en culture sénégalaise et JOJ 2026"}</p>
               </div>
             </div>
             <div className="flex gap-1.5 md:gap-2 w-full md:w-auto overflow-x-auto">
@@ -304,7 +302,13 @@ const Assistant = () => {
                         : "bg-muted"
                     }`}
                   >
-                    <p className="whitespace-pre-wrap text-sm md:text-base break-words">{message.text}</p>
+                    {message.sender === "assistant" ? (
+                      <div className="prose prose-sm max-w-none text-foreground [&_p]:mb-2 [&_ul]:mb-2 [&_ol]:mb-2 [&_li]:mb-0.5 [&_h1]:text-lg [&_h2]:text-base [&_h3]:text-sm [&_strong]:text-foreground">
+                        <ReactMarkdown>{message.text}</ReactMarkdown>
+                      </div>
+                    ) : (
+                      <p className="whitespace-pre-wrap text-sm md:text-base break-words">{message.text}</p>
+                    )}
                     <span className="text-xs opacity-70 mt-2 block">
                       {message.timestamp.toLocaleTimeString(language === "fr" ? "fr-FR" : "en-US")}
                     </span>
@@ -313,7 +317,13 @@ const Assistant = () => {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <Badge variant="secondary" className="text-xs md:text-sm">L'assistant réfléchit...</Badge>
+                  <div className="bg-muted rounded-lg p-3 flex items-center gap-2">
+                    <div className="flex gap-1">
+                      <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -328,8 +338,7 @@ const Assistant = () => {
                 className="text-xs"
               >
                 {autoSpeak ? <Volume2 className="h-3 w-3 mr-1" /> : <VolumeX className="h-3 w-3 mr-1" />}
-                <span className="hidden sm:inline">{autoSpeak ? "Lecture auto activée" : "Lecture auto désactivée"}</span>
-                <span className="sm:hidden">{autoSpeak ? "Auto" : "Manuel"}</span>
+                <span className="hidden sm:inline">{autoSpeak ? (t.assistant?.autoOn || "Lecture auto") : (t.assistant?.autoOff || "Manuel")}</span>
               </Button>
             </div>
             <div className="flex gap-1.5 md:gap-2">
@@ -337,7 +346,7 @@ const Assistant = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Posez votre question..."
+                placeholder={t.assistant?.placeholder || "Posez votre question..."}
                 className="flex-1 text-sm md:text-base"
                 disabled={isLoading}
               />
@@ -345,7 +354,6 @@ const Assistant = () => {
                 size="icon"
                 variant={isListening ? "destructive" : "outline"}
                 onClick={toggleListening}
-                title="Appuyez pour parler"
                 className="h-9 w-9 md:h-10 md:w-10 flex-shrink-0"
               >
                 {isListening ? <MicOff className="h-3.5 w-3.5 md:h-4 md:w-4" /> : <Mic className="h-3.5 w-3.5 md:h-4 md:w-4" />}
@@ -359,7 +367,6 @@ const Assistant = () => {
                     if (lastAssistantMsg) speak(lastAssistantMsg.text);
                   }
                 }}
-                title={isSpeaking ? "Arrêter la lecture" : "Lire le dernier message"}
                 className="h-9 w-9 md:h-10 md:w-10 flex-shrink-0"
               >
                 {isSpeaking ? <VolumeX className="h-3.5 w-3.5 md:h-4 md:w-4" /> : <Volume2 className="h-3.5 w-3.5 md:h-4 md:w-4" />}
@@ -378,16 +385,22 @@ const Assistant = () => {
 
         <div className="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           <Card className="p-3 md:p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Raconte-moi l'histoire de l'île de Gorée")}>
-            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">🏛️ Histoire de Gorée</h3>
-            <p className="text-xs md:text-sm text-muted-foreground">Découvrez le patrimoine UNESCO</p>
+            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base flex items-center gap-2">
+              <Landmark className="h-4 w-4 text-primary" /> {t.assistant?.goree || "Histoire de Gorée"}
+            </h3>
+            <p className="text-xs md:text-sm text-muted-foreground">{t.assistant?.goreeDesc || "Découvrez le patrimoine UNESCO"}</p>
           </Card>
           <Card className="p-3 md:p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Quels sont les sports aux JOJ Dakar 2026 ?")}>
-            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">🏅 Programme JOJ 2026</h3>
-            <p className="text-xs md:text-sm text-muted-foreground">Tous les sports olympiques</p>
+            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base flex items-center gap-2">
+              <Medal className="h-4 w-4 text-secondary" /> {t.assistant?.program || "Programme JOJ 2026"}
+            </h3>
+            <p className="text-xs md:text-sm text-muted-foreground">{t.assistant?.programDesc || "Tous les sports olympiques"}</p>
           </Card>
           <Card className="p-3 md:p-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => sendMessage("Parle-moi de la culture sénégalaise")}>
-            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">🎭 Culture Sénégalaise</h3>
-            <p className="text-xs md:text-sm text-muted-foreground">Teranga et traditions</p>
+            <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base flex items-center gap-2">
+              <Theater className="h-4 w-4 text-accent" /> {t.assistant?.culture || "Culture Sénégalaise"}
+            </h3>
+            <p className="text-xs md:text-sm text-muted-foreground">{t.assistant?.cultureDesc || "Teranga et traditions"}</p>
           </Card>
         </div>
       </div>
