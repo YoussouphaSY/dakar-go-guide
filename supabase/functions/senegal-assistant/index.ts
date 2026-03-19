@@ -49,10 +49,10 @@ serve(async (req) => {
   try {
     // Extraction des données de la requête POST
     const { messages, language } = await req.json();
-    
+
     // Récupération de la clé API Lovable AI depuis les variables d'environnement
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    
+
     // Vérification de la présence de la clé API
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
@@ -63,9 +63,9 @@ serve(async (req) => {
      * Définit comment l'IA doit répondre selon la langue sélectionnée
      */
     const languageInstructions = {
-      fr: "Tu réponds en français avec quelques expressions wolof quand c'est approprié.",
-      en: "You respond in English with some Wolof expressions when appropriate.",
-      wo: "Danga wax ci wolof, lépna géne rafet ak expressions culturelles. Utilise le wolof authentique du Sénégal."
+      fr: "Tu réponds UNIQUEMENT en français. N'utilise aucune expression dans une autre langue (pas de wolof, pas d'anglais). Reste strictement en français.",
+      en: "You respond ONLY in English. Do not use expressions from any other language (no Wolof, no French). Stay strictly in English.",
+      wo: "Danga wax REKK ci wolof bu dëgg. Bul jëfandikoo benn xarala ci yeneen làkk (fransé wala anglais). Wolof rekk."
     };
 
     /**
