@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Medal, Trophy, Award, Clock, Zap, Star, PersonStanding, Waves, Footprints } from "lucide-react";
+import { Medal, Trophy, Clock, Zap, Star, PersonStanding, Waves, Footprints, MapPin } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 
 const Records = () => {
@@ -38,97 +36,100 @@ const Records = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.08 }}
+      transition={{ delay: index * 0.07 }}
     >
-      <Card className="hover:shadow-md transition-all duration-300 border border-border">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-secondary" />
-              <Badge variant="outline" className="text-xs">#{index + 1}</Badge>
-              {record.category && (
-                <Badge className="bg-primary text-primary-foreground text-xs">{record.category}</Badge>
-              )}
+      <div className="bg-white rounded-xl border border-stone-200 shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.09)] transition-all duration-200 p-5">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-stone-400 tabular-nums">#{index + 1}</span>
+            {record.category && (
+              <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-stone-900 text-white">
+                {record.category}
+              </span>
+            )}
+          </div>
+          <Trophy className="h-4 w-4 text-stone-300 flex-shrink-0" />
+        </div>
+
+        <h3 className="font-semibold text-[15px] text-stone-900 mb-4 leading-snug">{record.event}</h3>
+
+        <div className="bg-stone-50 rounded-lg border border-stone-100 p-4 mb-3">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-[11px] text-stone-400 mb-0.5 flex items-center gap-1">
+                <Star className="h-3 w-3" /> {t.records.holder}
+              </p>
+              <p className="font-semibold text-stone-900 text-sm">{record.holder}</p>
+              <p className="text-xs text-stone-500 mt-0.5">{record.country}</p>
+            </div>
+            <div className="text-right flex-shrink-0">
+              <p className="text-[11px] text-stone-400 mb-0.5 flex items-center justify-end gap-1">
+                <Zap className="h-3 w-3" /> Record
+              </p>
+              <p className="font-black text-2xl text-stone-900 tabular-nums leading-none">{record.record}</p>
             </div>
           </div>
-          <CardTitle className="text-lg mt-2">{record.event}</CardTitle>
-        </CardHeader>
-        
-        <CardContent className="space-y-3">
-          <div className="p-4 bg-primary rounded-xl">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-primary-foreground/70 flex items-center gap-1">
-                  <Star className="h-3 w-3" /> {t.records.holder}
-                </p>
-                <p className="font-bold text-primary-foreground">{record.holder}</p>
-                <p className="text-sm text-primary-foreground/80">{record.country}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-primary-foreground/70 flex items-center justify-end gap-1">
-                  <Zap className="h-3 w-3" /> Record
-                </p>
-                <p className="font-black text-2xl text-primary-foreground">{record.record}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between text-sm text-muted-foreground px-1">
-            <span className="flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" /> {record.year}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Award className="h-3.5 w-3.5" /> {record.location}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-stone-400">
+          <span className="flex items-center gap-1.5">
+            <Clock className="h-3.5 w-3.5" /> {record.year}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5" /> {record.location}
+          </span>
+        </div>
+      </div>
     </motion.div>
   );
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
-      <div className="container py-8 px-4">
-        {/* Hero */}
-        <motion.div 
+
+      <div className="container py-10 px-4">
+        {/* Compact header */}
+        <motion.div
           className="mb-10"
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="rounded-2xl p-8 bg-primary text-white">
-            <div className="flex items-center gap-4">
-              <Medal className="h-12 w-12 sm:h-16 sm:w-16 flex-shrink-0" />
-              <div>
-                <h1 className="text-3xl sm:text-5xl font-bold mb-2">{t.records.title}</h1>
-                <p className="text-lg opacity-90">{t.records.subtitle}</p>
-              </div>
-            </div>
-          </div>
+          <p className="text-xs font-semibold tracking-widest uppercase text-stone-400 mb-2">JOJ Dakar 2026</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-1">{t.records.title}</h1>
+          <div className="w-8 h-0.5 bg-[#FFE72E] rounded-full mt-3 mb-3" />
+          <p className="text-stone-500 text-base">{t.records.subtitle}</p>
         </motion.div>
 
         {/* Tabs */}
         <Tabs defaultValue="youth" className="w-full">
-          <TabsList className="grid w-full max-w-xl mx-auto grid-cols-3 h-12">
-            <TabsTrigger value="youth" className="text-sm font-semibold flex items-center gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-white">
+          <TabsList className="grid w-full max-w-lg mx-auto grid-cols-3 h-11 bg-stone-100 p-1 rounded-xl mb-8">
+            <TabsTrigger
+              value="youth"
+              className="text-sm font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-stone-900 data-[state=active]:shadow-sm flex items-center gap-1.5"
+            >
               <Footprints className="h-4 w-4" />
               <span className="hidden sm:inline">{t.records.youth}</span>
               <span className="sm:hidden">{t.records.youthShort}</span>
             </TabsTrigger>
-            <TabsTrigger value="athletics" className="text-sm font-semibold flex items-center gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-white">
+            <TabsTrigger
+              value="athletics"
+              className="text-sm font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-stone-900 data-[state=active]:shadow-sm flex items-center gap-1.5"
+            >
               <PersonStanding className="h-4 w-4" />
               <span className="hidden sm:inline">{t.records.athletics}</span>
               <span className="sm:hidden">{t.records.athleticsShort}</span>
             </TabsTrigger>
-            <TabsTrigger value="swimming" className="text-sm font-semibold flex items-center gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-white">
+            <TabsTrigger
+              value="swimming"
+              className="text-sm font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-stone-900 data-[state=active]:shadow-sm flex items-center gap-1.5"
+            >
               <Waves className="h-4 w-4" />
               <span className="hidden sm:inline">{t.records.swimming}</span>
               <span className="sm:hidden">{t.records.swimmingShort}</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="youth" className="mt-8">
+          <TabsContent value="youth">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {youthRecords.map((record, idx) => (
                 <RecordCard key={idx} record={record} index={idx} />
@@ -136,7 +137,7 @@ const Records = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="athletics" className="mt-8">
+          <TabsContent value="athletics">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {athleticsRecords.map((record, idx) => (
                 <RecordCard key={idx} record={record} index={idx} />
@@ -144,7 +145,7 @@ const Records = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="swimming" className="mt-8">
+          <TabsContent value="swimming">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {swimmingRecords.map((record, idx) => (
                 <RecordCard key={idx} record={record} index={idx} />
@@ -154,42 +155,38 @@ const Records = () => {
         </Tabs>
 
         {/* Fun Facts */}
-        <Card className="mt-10 border border-border">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold flex items-center gap-2">
-              <Zap className="h-6 w-6 text-secondary" />
-              {t.records.didYouKnow}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="p-4 bg-muted rounded-xl">
-                <p className="font-bold text-lg mb-2 text-primary flex items-center gap-2">
-                  <PersonStanding className="h-5 w-5" /> {t.records.factSpeed}
-                </p>
-                <p className="text-sm text-foreground leading-relaxed">{t.records.factSpeedDesc}</p>
-              </div>
-              <div className="p-4 bg-muted rounded-xl">
-                <p className="font-bold text-lg mb-2 text-primary flex items-center gap-2">
-                  <Waves className="h-5 w-5" /> {t.records.factSwim}
-                </p>
-                <p className="text-sm text-foreground leading-relaxed">{t.records.factSwimDesc}</p>
-              </div>
-              <div className="p-4 bg-muted rounded-xl">
-                <p className="font-bold text-lg mb-2 text-primary flex items-center gap-2">
-                  <Medal className="h-5 w-5" /> {t.records.factYoungest}
-                </p>
-                <p className="text-sm text-foreground leading-relaxed">{t.records.factYoungestDesc}</p>
-              </div>
-              <div className="p-4 bg-muted rounded-xl">
-                <p className="font-bold text-lg mb-2 text-primary flex items-center gap-2">
-                  <Trophy className="h-5 w-5" /> {t.records.factAfrica}
-                </p>
-                <p className="text-sm text-foreground leading-relaxed">{t.records.factAfricaDesc}</p>
-              </div>
+        <div className="mt-10 bg-white rounded-xl border border-stone-200 p-6 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <h3 className="font-semibold text-[15px] text-stone-900 flex items-center gap-2 mb-6">
+            <Zap className="h-4 w-4 text-stone-400" />
+            {t.records.didYouKnow}
+          </h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-100">
+              <p className="font-semibold text-sm text-stone-800 flex items-center gap-2 mb-1.5">
+                <PersonStanding className="h-4 w-4 text-stone-400 flex-shrink-0" /> {t.records.factSpeed}
+              </p>
+              <p className="text-sm text-stone-500 leading-relaxed">{t.records.factSpeedDesc}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-100">
+              <p className="font-semibold text-sm text-stone-800 flex items-center gap-2 mb-1.5">
+                <Waves className="h-4 w-4 text-stone-400 flex-shrink-0" /> {t.records.factSwim}
+              </p>
+              <p className="text-sm text-stone-500 leading-relaxed">{t.records.factSwimDesc}</p>
+            </div>
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-100">
+              <p className="font-semibold text-sm text-stone-800 flex items-center gap-2 mb-1.5">
+                <Medal className="h-4 w-4 text-stone-400 flex-shrink-0" /> {t.records.factYoungest}
+              </p>
+              <p className="text-sm text-stone-500 leading-relaxed">{t.records.factYoungestDesc}</p>
+            </div>
+            <div className="p-4 bg-stone-50 rounded-lg border border-stone-100">
+              <p className="font-semibold text-sm text-stone-800 flex items-center gap-2 mb-1.5">
+                <Trophy className="h-4 w-4 text-stone-400 flex-shrink-0" /> {t.records.factAfrica}
+              </p>
+              <p className="text-sm text-stone-500 leading-relaxed">{t.records.factAfricaDesc}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

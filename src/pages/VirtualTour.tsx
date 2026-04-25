@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, Info, Navigation, Image as ImageIcon, Box } from "lucide-react";
 import Header from "@/components/Header";
@@ -53,16 +51,16 @@ const VirtualTour = () => {
     window.open(url, "_blank");
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      Monument: "bg-accent text-accent-foreground",
-      Musée: "bg-primary text-primary-foreground",
-      "Site Historique": "bg-secondary text-secondary-foreground",
-      Plage: "bg-blue-500 text-white",
-      Marché: "bg-orange-500 text-white",
-      Parc: "bg-green-600 text-white",
+  const getCategoryStyle = (category: string) => {
+    const styles: Record<string, string> = {
+      Monument: "bg-stone-900 text-white",
+      Musée: "bg-stone-800 text-white",
+      "Site Historique": "bg-stone-700 text-white",
+      Plage: "bg-stone-600 text-white",
+      Marché: "bg-stone-500 text-white",
+      Parc: "bg-stone-400 text-stone-900",
     };
-    return colors[category] || "bg-muted text-muted-foreground";
+    return styles[category] || "bg-stone-100 text-stone-600 border border-stone-200";
   };
 
   if (loading) {
@@ -80,67 +78,72 @@ const VirtualTour = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+        {/* Header */}
+        <div className="mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-bold text-foreground mb-2">
-                Visite Virtuelle 
-              </h1>
-              <p className="text-muted-foreground text-lg">
+              <p className="text-xs font-semibold tracking-widest uppercase text-stone-400 mb-2">Sénégal</p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-1">Visite Virtuelle</h1>
+              <div className="w-8 h-0.5 bg-[#FFE72E] rounded-full mt-3 mb-3" />
+              <p className="text-stone-500 text-base">
                 Explorez les sites emblématiques du Sénégal comme si vous y étiez
               </p>
             </div>
-            <Button asChild size="lg" className="gap-2">
+            <Button asChild variant="outline" size="sm" className="border-stone-300 text-stone-700 hover:bg-stone-100 gap-2 flex-shrink-0">
               <Link to="/museum-3d">
-                <Box className="h-5 w-5" />
-                Musée 3D Immersif
+                <Box className="h-4 w-4" />
+                Musée 3D
               </Link>
             </Button>
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {sites.map((site) => (
-            <Card
+            <div
               key={site.id}
-              className="hover:shadow-lg transition-all cursor-pointer group overflow-hidden"
+              className="group bg-white rounded-xl border border-stone-200 overflow-hidden cursor-pointer shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-200 hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)] hover:-translate-y-0.5"
               onClick={() => setSelectedSite(site)}
             >
-              <div className="h-48 overflow-hidden bg-muted">
-                {site.image_url && (
-                  <img 
-                    src={site.image_url} 
+              <div className="h-48 overflow-hidden bg-stone-100 relative">
+                {site.image_url ? (
+                  <img
+                    src={site.image_url}
                     alt={site.name}
                     loading="eager"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <ImageIcon className="h-10 w-10 text-stone-300" />
+                  </div>
                 )}
-              </div>
-              <CardHeader>
-                <div className="flex items-start justify-between mb-2">
-                  <CardTitle className="text-lg">{site.name}</CardTitle>
-                  <Badge className={getCategoryColor(site.category)}>
+                {/* Category badge overlay */}
+                <div className="absolute top-3 right-3">
+                  <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${getCategoryStyle(site.category)}`}>
                     {site.category}
-                  </Badge>
+                  </span>
                 </div>
-                <CardDescription className="flex items-center gap-1 text-sm">
-                  <MapPin className="h-4 w-4" />
+              </div>
+              <div className="p-5">
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <h3 className="font-semibold text-[15px] text-stone-900 leading-snug">{site.name}</h3>
+                </div>
+                <p className="flex items-center gap-1 text-xs text-stone-400 mb-3">
+                  <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
                   {site.city}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                  {site.description}
                 </p>
-                <Button size="sm" className="w-full">
-                  <ImageIcon className="h-4 w-4 mr-2" />
+                <p className="text-sm text-stone-500 leading-relaxed mb-4 line-clamp-2">{site.description}</p>
+                <button
+                  className="w-full py-2.5 px-4 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors duration-200 flex items-center justify-center gap-2"
+                  onClick={(e) => { e.stopPropagation(); setSelectedSite(site); }}
+                >
+                  <ImageIcon className="h-4 w-4" />
                   Visiter Virtuellement
-                </Button>
-              </CardContent>
-            </Card>
+                </button>
+              </div>
+            </div>
           ))}
         </div>
 
@@ -153,7 +156,7 @@ const VirtualTour = () => {
               <div className="flex items-center justify-between p-4 bg-background/10 backdrop-blur">
                 <div className="flex items-center gap-4">
                   <h2 className="text-xl font-bold text-white">{selectedSite.name}</h2>
-                  <Badge className={getCategoryColor(selectedSite.category)}>
+                  <Badge className={getCategoryStyle(selectedSite.category)}>
                     {selectedSite.category}
                   </Badge>
                 </div>

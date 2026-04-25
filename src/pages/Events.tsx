@@ -24,11 +24,9 @@
 
 import { useState, useMemo } from "react";
 import Header from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Search, Calendar, MapPin, Clock, Play, Trophy, Sparkles, Filter } from "lucide-react";
 import { joj2026Sports, getCompetitionSports, getMobilisationSports } from "@/data/joj2026Sports";
 import { useNavigate } from "react-router-dom";
@@ -131,63 +129,79 @@ const Events = () => {
           </TabsList>
 
           <TabsContent value={activeTab}>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredSports.map(sport => <Card key={sport.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group border-t-4 hover:-translate-y-1" style={{
-              borderTopColor: sport.color
-            }} onClick={() => navigate(`/events/${sport.id}`)}>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredSports.map(sport => (
+                <div
+                  key={sport.id}
+                  className="group bg-white rounded-xl border border-stone-200 overflow-hidden cursor-pointer shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-200 hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)] hover:-translate-y-0.5"
+                  onClick={() => navigate(`/events/${sport.id}`)}
+                >
                   {/* Sport Image Header */}
-                  <div className="h-48 relative overflow-hidden">
-                    {sport.image ? <img src={sport.image} alt={sport.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /> : <div className="h-full flex items-center justify-center" style={{
-                  background: sport.gradient
-                }}>
-                        <div className="text-7xl group-hover:scale-110 transition-transform duration-300">
+                  <div className="h-44 relative overflow-hidden bg-stone-100">
+                    {sport.image ? (
+                      <img src={sport.image} alt={sport.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    ) : (
+                      <div className="h-full flex items-center justify-center" style={{ background: sport.gradient }}>
+                        <div className="text-6xl group-hover:scale-110 transition-transform duration-300">
                           {sport.emoji}
                         </div>
-                      </div>}
-                    {sport.category === "competition" && sport.videoUrl && <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm rounded-full p-2.5 shadow-lg">
-                        <Play className="h-5 w-5 text-white" />
-                      </div>}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </div>
+                    )}
+                    {sport.category === "competition" && sport.videoUrl && (
+                      <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm rounded-full p-2 shadow">
+                        <Play className="h-4 w-4 text-white" />
+                      </div>
+                    )}
+                    {/* Venue badge overlay */}
+                    <div className="absolute bottom-3 left-3">
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/65 backdrop-blur-sm rounded-full text-white text-[11px] font-medium leading-none">
+                        <MapPin className="h-3 w-3 flex-shrink-0" />
+                        {sport.venue.split(',')[0].trim()}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 h-[3px] opacity-80" style={{ backgroundColor: sport.color }} />
                   </div>
 
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <CardTitle className="text-xl">{sport.name}</CardTitle>
-                      <Badge variant={sport.category === "competition" ? "default" : "secondary"} className="ml-2">
+                  <div className="p-5">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h3 className="font-semibold text-[15px] text-stone-900 leading-snug">{sport.name}</h3>
+                      <span className={`flex-shrink-0 px-2 py-0.5 rounded text-xs font-medium ${
+                        sport.category === "competition"
+                          ? "bg-stone-900 text-white"
+                          : "bg-stone-100 text-stone-600 border border-stone-200"
+                      }`}>
                         {sport.category === "competition" ? t.events.competition : t.events.mobilisation}
-                      </Badge>
+                      </span>
                     </div>
-                    <CardDescription className="text-base">
-                      {sport.description}
-                    </CardDescription>
-                  </CardHeader>
 
-                  <CardContent className="space-y-3">
-                    <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                      <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                      <span>{sport.venue}</span>
-                    </div>
-                    
-                    {sport.category === "competition" && sport.events.length > 0 && <div className="pt-3 border-t">
-                        <div className="flex items-center gap-2 text-sm font-semibold mb-2">
-                          <Calendar className="h-4 w-4" />
-                          <span>{sport.events.length} {t.events.events}</span>
-                        </div>
-                        <div className="flex flex-wrap gap-1">
-                          {sport.events.slice(0, 3).map(event => <Badge key={event.id} variant="outline" className="text-xs">
+                    <p className="text-sm text-stone-500 leading-relaxed mb-4 line-clamp-2">{sport.description}</p>
+
+                    {sport.category === "competition" && sport.events.length > 0 && (
+                      <div className="flex items-center gap-2 pb-4 mb-4 border-b border-stone-100 text-xs text-stone-500">
+                        <Calendar className="h-3.5 w-3.5 text-stone-400 flex-shrink-0" />
+                        <span>{sport.events.length} {t.events.events}</span>
+                        <div className="flex gap-1 ml-auto">
+                          {sport.events.slice(0, 3).map(event => (
+                            <span key={event.id} className="px-1.5 py-0.5 bg-stone-100 text-stone-600 rounded text-[11px] font-medium">
                               {event.gender}
-                            </Badge>)}
+                            </span>
+                          ))}
                         </div>
-                      </div>}
+                      </div>
+                    )}
 
-                    <Button className="w-full mt-4" onClick={e => {
-                  e.stopPropagation();
-                  navigate(`/events/${sport.id}`);
-                }}>
+                    <button
+                      className="w-full py-2.5 px-4 rounded-lg bg-stone-900 text-white text-sm font-medium hover:bg-stone-700 transition-colors duration-200"
+                      onClick={e => {
+                        e.stopPropagation();
+                        navigate(`/events/${sport.id}`);
+                      }}
+                    >
                       {sport.category === "competition" ? t.events.viewCalendar : t.events.learnMore}
-                    </Button>
-                  </CardContent>
-                </Card>)}
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {filteredSports.length === 0 && <div className="text-center py-16">

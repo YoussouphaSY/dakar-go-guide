@@ -1,0 +1,1164 @@
+[
+  {
+    "id": "resto_001",
+    "name": "La Calebasse Dorée",
+    "zone": "Plateau",
+    "lat": 14.6937,
+    "lng": -17.4441,
+    "price_range": "low",
+    "avg_price": 3500,
+    "rating": 4.5,
+    "cuisine_type": ["senegalais", "local"],
+    "tags": ["terrasse", "familial", "wifi"],
+    "dietary": ["halal"],
+    "description": "Restaurant traditionnel sénégalais au cœur du Plateau. Thiéboudienne généreuse, cadre ombragé avec terrasse. L'adresse préférée des habitués pour un déjeuner rapide et savoureux.",
+    "opening_hours": "08:00-22:00",
+    "phone": "+221 77 222 3333",
+    "menu": [
+      {
+        "name": "Thiéboudienne Royale",
+        "price": 3500,
+        "tags": ["local", "halal", "poisson", "signature"],
+        "description": "Riz au poisson façon Saint-Louis, légumes frais du marché Kermel"
+      },
+      {
+        "name": "Yassa Poulet",
+        "price": 3000,
+        "tags": ["local", "halal", "poulet"],
+        "description": "Poulet mariné aux oignons caramélisés et citron vert"
+      },
+      {
+        "name": "Mafé Bœuf",
+        "price": 3200,
+        "tags": ["local", "halal", "viande"],
+        "description": "Ragoût de bœuf à la pâte d'arachide, riz blanc"
+      },
+      {
+        "name": "Jus de Bouye",
+        "price": 500,
+        "tags": ["boisson", "local", "sans_alcool"],
+        "description": "Jus de fruit de baobab frais, sucré légèrement"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
+  },
+  {
+    "id": "resto_002",
+    "name": "Le Lagon Bleu",
+    "zone": "Almadies",
+    "lat": 14.7435,
+    "lng": -17.5139,
+    "price_range": "high",
+    "avg_price": 15000,
+    "rating": 4.7,
+    "cuisine_type": ["seafood", "international", "français"],
+    "tags": ["vue_mer", "romantique", "climatisé", "parking"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Restaurant gastronomique en bord de mer aux Almadies. Fruits de mer frais, vue panoramique sur l'océan. Cadre élégant pour un dîner spécial.",
+    "opening_hours": "12:00-23:00",
+    "phone": "+221 33 860 1234",
+    "menu": [
+      {
+        "name": "Plateau Fruits de Mer",
+        "price": 18000,
+        "tags": ["seafood", "halal", "signature"],
+        "description": "Assortiment de crevettes, langoustines et poisson grillé pour 2 personnes"
+      },
+      {
+        "name": "Filet de Thiof Grillé",
+        "price": 12000,
+        "tags": ["seafood", "halal", "poisson", "grillé"],
+        "description": "Mérou blanc grillé, sauce citron-beurre, légumes de saison"
+      },
+      {
+        "name": "Salade Océane",
+        "price": 6500,
+        "tags": ["seafood", "vegetarien", "salade"],
+        "description": "Salade fraîche avec crevettes grillées et avocat"
+      },
+      {
+        "name": "Risotto aux Légumes",
+        "price": 8000,
+        "tags": ["vegetarien", "international"],
+        "description": "Risotto crémeux aux légumes grillés, parmesan"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800"
+  },
+  {
+    "id": "resto_003",
+    "name": "Dibiterie Serigne Fallou",
+    "zone": "Médina",
+    "lat": 14.6850,
+    "lng": -17.4530,
+    "price_range": "low",
+    "avg_price": 2500,
+    "rating": 4.3,
+    "cuisine_type": ["senegalais", "grillades", "street_food"],
+    "tags": ["populaire", "rapide", "authentique"],
+    "dietary": ["halal"],
+    "description": "Dibiterie populaire de la Médina. Viande grillée au charbon devant vous, sauce piquante maison. L'expérience street food authentique de Dakar.",
+    "opening_hours": "10:00-02:00",
+    "phone": "+221 77 555 6666",
+    "menu": [
+      {
+        "name": "Dibi Agneau",
+        "price": 3000,
+        "tags": ["halal", "grillé", "viande", "agneau", "signature"],
+        "description": "Agneau grillé au charbon, oignons et moutarde, pain tapalapa"
+      },
+      {
+        "name": "Dibi Bœuf",
+        "price": 2500,
+        "tags": ["halal", "grillé", "viande", "boeuf"],
+        "description": "Bœuf braisé épicé, frites et salade"
+      },
+      {
+        "name": "Fataya Viande",
+        "price": 500,
+        "tags": ["halal", "snack", "viande"],
+        "description": "Beignet farci à la viande hachée épicée"
+      },
+      {
+        "name": "Café Touba",
+        "price": 300,
+        "tags": ["boisson", "local", "sans_alcool"],
+        "description": "Café épicé au poivre de Selim, spécialité sénégalaise"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=800"
+  },
+  {
+    "id": "resto_004",
+    "name": "Chez Ami",
+    "zone": "Mermoz",
+    "lat": 14.7050,
+    "lng": -17.4750,
+    "price_range": "mid",
+    "avg_price": 5500,
+    "rating": 4.1,
+    "cuisine_type": ["libanais", "méditerranéen"],
+    "tags": ["familial", "terrasse", "livraison", "wifi"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Restaurant libanais réputé à Mermoz. Mezze généreux, shawarma juteux, ambiance familiale. Options végétariennes variées. Livraison disponible.",
+    "opening_hours": "11:00-23:00",
+    "phone": "+221 33 864 7890",
+    "menu": [
+      {
+        "name": "Assiette Mezze",
+        "price": 5000,
+        "tags": ["vegetarien", "halal", "méditerranéen", "signature"],
+        "description": "Houmous, taboulé, falafel, baba ghanoush, pain pita chaud"
+      },
+      {
+        "name": "Shawarma Poulet",
+        "price": 4500,
+        "tags": ["halal", "poulet", "grillé"],
+        "description": "Poulet mariné rôti à la broche, sauce ail, frites"
+      },
+      {
+        "name": "Falafel Wrap",
+        "price": 3500,
+        "tags": ["vegetarien", "vegan", "halal"],
+        "description": "Falafel croustillant, crudités, sauce tahini dans un pain libanais"
+      },
+      {
+        "name": "Limonade Menthe",
+        "price": 1500,
+        "tags": ["boisson", "sans_alcool"],
+        "description": "Citron pressé frais à la menthe et glace pilée"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800"
+  },
+  {
+    "id": "resto_005",
+    "name": "Bazoff",
+    "zone": "Point E",
+    "lat": 14.6902,
+    "lng": -17.4608,
+    "price_range": "mid",
+    "avg_price": 7500,
+    "rating": 4.4,
+    "cuisine_type": ["grillades", "local", "international"],
+    "tags": ["festif", "groupe", "musique", "terrasse"],
+    "dietary": ["halal"],
+    "description": "Institution des grillades à Dakar. Poulet braisé aux épices locales, ambiance festive et chaleureuse. Idéal pour les groupes. Bonne sélection de cocktails exotiques.",
+    "opening_hours": "12:00-00:00",
+    "phone": "+221 77 111 0000",
+    "menu": [
+      {
+        "name": "Poulet Braisé Bazoff",
+        "price": 6500,
+        "tags": ["halal", "grillé", "poulet", "signature"],
+        "description": "Poulet entier mariné aux épices Bazoff, braisé au charbon de bois"
+      },
+      {
+        "name": "Brochettes Mixtes",
+        "price": 7000,
+        "tags": ["halal", "grillé", "viande"],
+        "description": "Brochettes de boeuf et agneau, sauce oignon et frites maison"
+      },
+      {
+        "name": "Thiéboudienne du Chef",
+        "price": 5500,
+        "tags": ["local", "halal", "poisson"],
+        "description": "Riz au poisson traditionnel, recette du chef Bazoff"
+      },
+      {
+        "name": "Cocktail Bissap-Gingembre",
+        "price": 2000,
+        "tags": ["boisson", "local", "sans_alcool"],
+        "description": "Jus d'hibiscus frais au gingembre, spécialité maison"
+      }
+    ],
+    "image": "https://i.pinimg.com/736x/78/5f/3e/785f3e693a934b2d486a0afd5f481d0f.jpg"
+  },
+  {
+    "id": "resto_006",
+    "name": "Blacklist Lounge",
+    "zone": "Mermoz",
+    "lat": 14.7125,
+    "lng": -17.4715,
+    "price_range": "high",
+    "avg_price": 12000,
+    "rating": 4.2,
+    "cuisine_type": ["international", "grillades", "lounge"],
+    "tags": ["rooftop", "chic", "moderne", "chicha", "tenue_exigée"],
+    "dietary": ["halal"],
+    "description": "Restaurant lounge branché à Mermoz avec rooftop panoramique sur Dakar. Spécialisé viandes du monde, ambiance sophistiquée et chic. Tenue correcte exigée. L'adresse incontournable des noctambules dakarois en quête d'élégance.",
+    "opening_hours": "12:00-01:30",
+    "phone": "+221 78 704 9192",
+    "menu": [
+      {
+        "name": "Entrecôte Black Angus",
+        "price": 15000,
+        "tags": ["grillé", "viande", "boeuf", "signature"],
+        "description": "Entrecôte Black Angus grillée, sauce au poivre, frites maison"
+      },
+      {
+        "name": "Burger Blacklist",
+        "price": 9000,
+        "tags": ["burger", "viande", "boeuf"],
+        "description": "Burger gourmet au bœuf Angus, cheddar affiné, bacon croustillant"
+      },
+      {
+        "name": "Gambas Flambées",
+        "price": 13000,
+        "tags": ["seafood", "grillé"],
+        "description": "Gambas géantes flambées à l'ail et au piment, riz basmati"
+      },
+      {
+        "name": "Cocktail Signature Blacklist",
+        "price": 5000,
+        "tags": ["boisson", "cocktail"],
+        "description": "Cocktail signature à base de rhum vieilli, fruit de la passion et gingembre"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800"
+  },
+  {
+    "id": "resto_007",
+    "name": "Le Carré",
+    "zone": "Almadies",
+    "lat": 14.7460,
+    "lng": -17.5180,
+    "price_range": "high",
+    "avg_price": 12000,
+    "rating": 4.3,
+    "cuisine_type": ["international", "seafood", "lounge"],
+    "tags": ["vue_mer", "terrasse", "DJ", "brunch", "moderne"],
+    "dietary": ["halal"],
+    "description": "Restaurant lounge en bord de mer sur la Corniche des Almadies. Décor contemporain, terrasse semi-extérieure avec vue sur les vagues et les surfeurs. Ambiance animée avec DJ en soirée. Spot prisé pour le brunch du weekend et les cocktails au coucher du soleil.",
+    "opening_hours": "10:00-02:00",
+    "phone": "+221 33 820 5555",
+    "menu": [
+      {
+        "name": "Dorade Braisée",
+        "price": 10000,
+        "tags": ["seafood", "poisson", "grillé", "signature"],
+        "description": "Dorade entière braisée aux épices locales, alloco et attiéké"
+      },
+      {
+        "name": "Seafood Boil",
+        "price": 18000,
+        "tags": ["seafood", "partage"],
+        "description": "Grand plat de fruits de mer épicés à partager : crevettes, moules, maïs"
+      },
+      {
+        "name": "Yassa Poulet Le Carré",
+        "price": 8000,
+        "tags": ["local", "halal", "poulet"],
+        "description": "Version revisitée du yassa poulet, oignons confits et riz parfumé"
+      },
+      {
+        "name": "Mojito Mangue",
+        "price": 5000,
+        "tags": ["boisson", "cocktail"],
+        "description": "Mojito frais à la mangue locale, menthe fraîche et citron vert"
+      }
+    ],
+    "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/72/5b/79/le-carre-dakar.jpg?w=1400&h=800&s=1"
+  },
+  {
+    "id": "resto_008",
+    "name": "La Parrilla",
+    "zone": "Plateau",
+    "lat": 14.6685,
+    "lng": -17.4370,
+    "price_range": "high",
+    "avg_price": 20000,
+    "rating": 4.5,
+    "cuisine_type": ["argentin", "steakhouse", "grillades"],
+    "tags": ["chic", "viande", "feu_de_bois", "romantique", "parking"],
+    "dietary": ["halal"],
+    "description": "Steakhouse argentin emblématique au Plateau, à côté du Palais Présidentiel. Viandes importées d'Amérique du Sud cuites au feu de bois. Décor élégant avec boiseries, comptoir en marbre et grill apparent. Référence absolue de la viande à Dakar. Tenue correcte exigée.",
+    "opening_hours": "12:00-00:00",
+    "phone": "+221 33 822 1500",
+    "menu": [
+      {
+        "name": "Bife de Lomo",
+        "price": 22000,
+        "tags": ["viande", "boeuf", "grillé", "signature"],
+        "description": "Filet de bœuf argentin cuit au feu de bois, sauce chimichurri"
+      },
+      {
+        "name": "Ojo de Bife",
+        "price": 24000,
+        "tags": ["viande", "boeuf", "grillé"],
+        "description": "Entrecôte argentine, cuisson à point, sauce criolla maison"
+      },
+      {
+        "name": "Empanadas Salteñas",
+        "price": 5000,
+        "tags": ["entrée", "viande"],
+        "description": "Empanadas traditionnelles à la viande coupée au couteau"
+      },
+      {
+        "name": "Duo de Volcans",
+        "price": 6000,
+        "tags": ["dessert", "signature"],
+        "description": "Fondant chocolat et fondant dulce de leche, glace vanille"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
+  },
+  {
+    "id": "resto_009",
+    "name": "Maison Madera",
+    "zone": "Almadies",
+    "lat": 14.7440,
+    "lng": -17.5150,
+    "price_range": "high",
+    "avg_price": 25000,
+    "rating": 4.6,
+    "cuisine_type": ["argentin", "gastronomique", "grillades"],
+    "tags": ["haut_de_gamme", "VIP", "cave_cigares", "terrasse", "piscine", "brunch"],
+    "dietary": ["halal"],
+    "description": "Restaurant haut de gamme niché dans une villa signée Pierre Goudiaby aux Almadies. Cuisson traditionnelle à la croix héritée d'Argentine, chefs formés par le maître Sergio González. Salons VIP, cave à cigares, terrasse avec piscine. DJ sets et performances live. La nouvelle adresse incontournable de Dakar pour les célébrités et les passionnés de gastronomie.",
+    "opening_hours": "12:00-02:00",
+    "phone": "+221 77 464 4652",
+    "menu": [
+      {
+        "name": "Côte de Bœuf à la Croix",
+        "price": 28000,
+        "tags": ["viande", "boeuf", "grillé", "signature"],
+        "description": "Côte de bœuf cuite lentement à la croix sur braise, sauce maison"
+      },
+      {
+        "name": "Agneau Rôti Basse Température",
+        "price": 22000,
+        "tags": ["viande", "agneau", "grillé"],
+        "description": "Épaule d'agneau fondante, cuite 8 heures, jus réduit aux herbes"
+      },
+      {
+        "name": "Brunch Madera",
+        "price": 18000,
+        "tags": ["brunch", "signature"],
+        "description": "Formule brunch complète : œufs, viennoiseries, jus frais, plat chaud"
+      },
+      {
+        "name": "Cocktail Madera Signature",
+        "price": 7000,
+        "tags": ["boisson", "cocktail"],
+        "description": "Cocktail exclusif au mezcal, mangue grillée et romarin fumé"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800"
+  },
+  {
+    "id": "resto_010",
+    "actif": false,
+    "name": "The Jungle",
+    "zone": "Sacré-Cœur",
+    "lat": 14.7150,
+    "lng": -17.4680,
+    "price_range": "mid",
+    "avg_price": 10000,
+    "rating": 4.4,
+    "cuisine_type": ["international", "afro_fusion", "lounge"],
+    "tags": ["décor_tropical", "immersif", "moderne", "romantique", "éclairage_tamisé"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Restaurant à l'ambiance exotique inspirée de la forêt tropicale, en plein centre de Dakar. Décoration luxuriante avec végétation, éclairages tamisés et matériaux naturels. Une aventure gastronomique immersive validée par la communauté. Note : fermé temporairement suite à un incendie en janvier 2026.",
+    "opening_hours": "12:00-01:00",
+    "phone": "+221 77 888 9999",
+    "menu": [
+      {
+        "name": "Bowl Jungle",
+        "price": 8500,
+        "tags": ["healthy", "signature"],
+        "description": "Bowl protéiné au poulet grillé, avocat, quinoa, sauce teriyaki maison"
+      },
+      {
+        "name": "Crevettes Coco-Curry",
+        "price": 12000,
+        "tags": ["seafood", "épicé"],
+        "description": "Crevettes géantes au lait de coco et curry vert, riz jasmin"
+      },
+      {
+        "name": "Burger Tropical",
+        "price": 7500,
+        "tags": ["burger", "viande"],
+        "description": "Burger au bœuf mariné, ananas grillé, sauce barbecue fumée"
+      },
+      {
+        "name": "Smoothie Détox Jungle",
+        "price": 3500,
+        "tags": ["boisson", "sans_alcool", "healthy"],
+        "description": "Smoothie mangue, épinards, banane et graines de chia"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=800"
+  },
+  {
+    "id": "resto_011",
+    "name": "Cosmo Beach Club",
+    "zone": "Almadies",
+    "lat": 14.7280,
+    "lng": -17.5020,
+    "price_range": "high",
+    "avg_price": 15000,
+    "rating": 4.1,
+    "cuisine_type": ["international", "français", "lounge"],
+    "tags": ["beach_club", "vue_mer", "terrasse", "piscine", "festif", "musique_live"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Beach club premium face à l'océan Atlantique avec vue panoramique sur le Monument de la Renaissance et le Phare des Mamelles. Terrasse en plein air, soirées à thème, musique live. Ambiance chic mais festive, prisée autant pour le brunch dominical que pour les nuits animées.",
+    "opening_hours": "10:00-05:00",
+    "phone": "+221 33 860 7777",
+    "menu": [
+      {
+        "name": "Fish & Chips Cosmo",
+        "price": 9000,
+        "tags": ["seafood", "poisson"],
+        "description": "Filet de thiof pané croustillant, frites maison et sauce tartare"
+      },
+      {
+        "name": "Salade César Gambas",
+        "price": 11000,
+        "tags": ["salade", "seafood"],
+        "description": "Salade César généreuse avec gambas grillées et parmesan"
+      },
+      {
+        "name": "Risotto Fruits de Mer",
+        "price": 14000,
+        "tags": ["seafood", "international"],
+        "description": "Risotto crémeux aux crevettes, moules et calamars"
+      },
+      {
+        "name": "Sunset Spritz",
+        "price": 5500,
+        "tags": ["boisson", "cocktail"],
+        "description": "Spritz maison au bissap et prosecco, orange et romarin"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800"
+  },
+  {
+    "id": "resto_012",
+    "name": "Bahia Beach Club",
+    "zone": "Almadies",
+    "lat": 14.7455,
+    "lng": -17.5160,
+    "price_range": "mid",
+    "avg_price": 10000,
+    "rating": 4.3,
+    "cuisine_type": ["international", "afro_fusion", "lounge"],
+    "tags": ["vue_mer", "terrasse", "cosy", "cocktails", "moderne"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Restaurant-lounge en bord de mer sur la Corniche des Almadies. Cadre lounge moderne avec terrasses ouvertes sur l'océan, cuisine internationale enrichie de touches africaines. Ambiance cozy le jour, festive en soirée. Cocktails frais et couchers de soleil mémorables.",
+    "opening_hours": "08:30-03:00",
+    "phone": "+221 33 801 9401",
+    "menu": [
+      {
+        "name": "Ceviche de Poisson",
+        "price": 8000,
+        "tags": ["seafood", "poisson", "entrée"],
+        "description": "Poisson cru mariné au citron vert, oignon rouge, coriandre et piment"
+      },
+      {
+        "name": "Poulet Braisé Afro-Fusion",
+        "price": 9500,
+        "tags": ["poulet", "grillé", "afro_fusion", "signature"],
+        "description": "Poulet braisé aux épices africaines, plantain frit et sauce oignon"
+      },
+      {
+        "name": "Tacos de Crevettes",
+        "price": 8500,
+        "tags": ["seafood", "tacos"],
+        "description": "Trois tacos de crevettes croustillantes, guacamole et salsa maison"
+      },
+      {
+        "name": "Virgin Colada Baobab",
+        "price": 3500,
+        "tags": ["boisson", "sans_alcool", "local"],
+        "description": "Piña colada sans alcool au lait de coco et poudre de baobab"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800"
+  },
+  {
+    "id": "resto_013",
+    "name": "Alkimia",
+    "zone": "Almadies",
+    "lat": 14.7390,
+    "lng": -17.5080,
+    "price_range": "high",
+    "avg_price": 15000,
+    "rating": 4.4,
+    "cuisine_type": ["méditerranéen", "français", "lounge"],
+    "tags": ["chic", "terrasse", "musique_live", "bar_lounge", "privatisation", "climatisé"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Restaurant African Chic sur la Route des Almadies. Bar feutré, lumières tamisées, terrasse avec bassins et verdure. Cuisine méditerranéenne tendance, haute en couleurs. Concerts live, expos et événements. Fait partie du Groupe La Fourchette. L'endroit pour voir et être vu aux Almadies.",
+    "opening_hours": "10:00-02:00",
+    "phone": "+221 33 820 6868",
+    "menu": [
+      {
+        "name": "Tartare de Saumon",
+        "price": 9500,
+        "tags": ["seafood", "entrée"],
+        "description": "Saumon frais haché, avocat, sésame, vinaigrette yuzu"
+      },
+      {
+        "name": "Filet de Bœuf Rossini",
+        "price": 18000,
+        "tags": ["viande", "boeuf", "grillé", "signature"],
+        "description": "Filet de bœuf poêlé, escalope de foie gras, sauce truffe"
+      },
+      {
+        "name": "Risotto aux Champignons",
+        "price": 10000,
+        "tags": ["vegetarien", "international"],
+        "description": "Risotto crémeux aux champignons de saison, copeaux de parmesan"
+      },
+      {
+        "name": "Cocktail Alchimie",
+        "price": 6000,
+        "tags": ["boisson", "cocktail", "signature"],
+        "description": "Cocktail maison au gin, basilic frais, concombre et tonic premium"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800"
+  },
+  {
+    "id": "resto_014",
+    "name": "Noliane Ristorante",
+    "zone": "Almadies",
+    "lat": 14.7420,
+    "lng": -17.5100,
+    "price_range": "high",
+    "avg_price": 22000,
+    "rating": 4.7,
+    "cuisine_type": ["italien", "méditerranéen", "gastronomique"],
+    "tags": ["raffiné", "piscine", "cave_à_vin", "romantique", "chic"],
+    "dietary": ["vegetarien"],
+    "description": "Restaurant italien raffiné aux Almadies, considéré par beaucoup comme la meilleure table de Dakar. Cadre distingué avec tables autour de la piscine. Menu changeant régulièrement, menu blanc du chef à 5 plats en dîner. Cave à vin exceptionnelle avec plus de 60 sélections d'Italie et de France. Cuisine inventive exécutée à la perfection.",
+    "opening_hours": "12:00-22:00",
+    "phone": "+221 33 820 4444",
+    "menu": [
+      {
+        "name": "Menu Blanc du Chef",
+        "price": 28000,
+        "tags": ["gastronomique", "signature", "menu"],
+        "description": "Menu dégustation 5 plats au choix du chef, accord mets et vins possible"
+      },
+      {
+        "name": "Carpaccio de Bœuf",
+        "price": 9000,
+        "tags": ["viande", "boeuf", "entrée"],
+        "description": "Fines tranches de bœuf cru, roquette, parmesan, huile de truffe"
+      },
+      {
+        "name": "Risotto alla Parmigiana",
+        "price": 12000,
+        "tags": ["vegetarien", "italien"],
+        "description": "Risotto onctueux au parmesan vieilli 24 mois, herbes fraîches"
+      },
+      {
+        "name": "Tiramisu Classique",
+        "price": 5000,
+        "tags": ["dessert", "italien"],
+        "description": "Tiramisu traditionnel au mascarpone, café et cacao amer"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=800"
+  },
+  {
+    "id": "resto_015",
+    "name": "The Lounge",
+    "zone": "Ouakam",
+    "lat": 14.7220,
+    "lng": -17.4930,
+    "price_range": "mid",
+    "avg_price": 10000,
+    "rating": 4.3,
+    "cuisine_type": ["international", "grillades", "lounge"],
+    "tags": ["piscine", "terrasse", "soirées", "musique", "moderne", "ouvert_tard"],
+    "dietary": ["halal"],
+    "description": "Restaurant lounge & grill dans le quartier des Mamelles à Ouakam. Grande terrasse autour d'une piscine, ambiance soignée et décontractée. Grillades, tapas et cocktails variés dans une atmosphère raffinée. Soirées musicales régulières, idéal pour débuter ou prolonger la soirée entre amis.",
+    "opening_hours": "12:00-03:00",
+    "phone": "+221 77 333 4444",
+    "menu": [
+      {
+        "name": "Carpaccio de Bœuf",
+        "price": 9500,
+        "tags": ["viande", "boeuf", "entrée", "signature"],
+        "description": "Fines tranches de bœuf cru, parmesan, huile d'olive, micro-pousses"
+      },
+      {
+        "name": "Salade César Poulet Grillé",
+        "price": 8000,
+        "tags": ["salade", "poulet"],
+        "description": "Laitue, poulet grillé, tomates cerises, croûtons, sauce César maison"
+      },
+      {
+        "name": "Gyozas Croustillants",
+        "price": 5000,
+        "tags": ["entrée", "viande"],
+        "description": "Raviolis garnis de viande épicée, sauce aigre-douce maison"
+      },
+      {
+        "name": "Old Fashioned Maison",
+        "price": 6000,
+        "tags": ["boisson", "cocktail"],
+        "description": "Old Fashioned au bourbon premium, zeste d'orange, cerise amarena"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800"
+  },
+  {
+    "id": "resto_016",
+    "name": "Yoka Lounge",
+    "zone": "Almadies",
+    "lat": 14.7480,
+    "lng": -17.5200,
+    "price_range": "mid",
+    "avg_price": 10000,
+    "rating": 4.2,
+    "cuisine_type": ["afro_fusion", "international", "lounge"],
+    "tags": ["musique_live", "DJ", "danse", "soirées_à_thème", "moderne"],
+    "dietary": ["halal"],
+    "description": "Restaurant et bar lounge à la Pointe des Almadies, réputé pour sa cuisine afro-fusion et son ambiance musicale dynamique. DJ sets et concerts live avec artistes locaux et internationaux. Les dimanches sont dédiés aux rythmes africains emblématiques pour une immersion culturelle complète.",
+    "opening_hours": "18:00-03:00",
+    "phone": "+221 77 666 7777",
+    "menu": [
+      {
+        "name": "Assiette Afro-Fusion",
+        "price": 11000,
+        "tags": ["afro_fusion", "signature"],
+        "description": "Mélange de saveurs africaines revisitées : brochettes, alloco, attiéké, sauce djindja"
+      },
+      {
+        "name": "Thiof en Croûte d'Épices",
+        "price": 13000,
+        "tags": ["seafood", "poisson", "grillé"],
+        "description": "Mérou blanc en croûte d'épices africaines, purée de patate douce"
+      },
+      {
+        "name": "Wings Yoka",
+        "price": 6500,
+        "tags": ["poulet", "épicé", "snack"],
+        "description": "Ailes de poulet marinées au miel et piment, sauce cacahuète"
+      },
+      {
+        "name": "Punch Coco Passion",
+        "price": 4500,
+        "tags": ["boisson", "cocktail"],
+        "description": "Rhum, lait de coco, fruit de la passion et vanille de Madagascar"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1485182708500-e8f1f318ba72?w=800"
+  },
+  {
+    "id": "resto_017",
+    "name": "Le Djoloff",
+    "zone": "Fann Hock",
+    "lat": 14.6950,
+    "lng": -17.4580,
+    "price_range": "mid",
+    "avg_price": 8000,
+    "rating": 4.0,
+    "cuisine_type": ["français", "senegalais", "seafood"],
+    "tags": ["terrasse", "jazz", "vue_mer", "charme", "éco_construit"],
+    "dietary": ["halal"],
+    "description": "Hôtel-restaurant de charme éco-construit à Fann Hock, près du port de pêche de Soumbédioune. Terrasses colorées et conviviales, cuisine de marché simple et diététique avec poissons, gambas et grillades à la plancha. Club de jazz le weekend avec orchestres locaux. Un lieu unique et apaisant à Dakar.",
+    "opening_hours": "07:00-23:00",
+    "phone": "+221 33 889 3630",
+    "menu": [
+      {
+        "name": "Gambas à la Plancha",
+        "price": 10000,
+        "tags": ["seafood", "grillé", "signature"],
+        "description": "Gambas fraîches grillées à la plancha, beurre citronné aux herbes"
+      },
+      {
+        "name": "Poisson du Jour Grillé",
+        "price": 7500,
+        "tags": ["seafood", "poisson", "grillé"],
+        "description": "Poisson frais du marché de Soumbédioune, légumes de saison"
+      },
+      {
+        "name": "Tapas Africains",
+        "price": 5500,
+        "tags": ["local", "snack", "partage"],
+        "description": "Assortiment de bouchées sénégalaises : pastels, accras, beignets"
+      },
+      {
+        "name": "Jus Frais du Jour",
+        "price": 2000,
+        "tags": ["boisson", "sans_alcool", "local"],
+        "description": "Jus de fruits frais de saison pressé à la commande"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?w=800"
+  },
+  {
+    "id": "resto_018",
+    "name": "Chez Loutcha",
+    "zone": "Plateau",
+    "lat": 14.6700,
+    "lng": -17.4400,
+    "price_range": "low",
+    "avg_price": 4500,
+    "rating": 4.5,
+    "cuisine_type": ["senegalais", "capverdien", "local"],
+    "tags": ["institution", "familial", "copieux", "authentique", "à_emporter"],
+    "dietary": ["halal"],
+    "description": "Institution dakaroise tenue par des Cap-Verdiens depuis des décennies. Portions gargantuesques, carte immense mêlant cuisine sénégalaise, créole et internationale. Probablement le meilleur poulet yassa du Plateau. Thiebou yappe le mercredi et vendredi. Serveuses en tenue traditionnelle, ambiance locale bouillonnante. Incontournable pour découvrir la vraie cuisine sénégalaise.",
+    "opening_hours": "12:00-22:00",
+    "phone": "+221 33 821 0302",
+    "menu": [
+      {
+        "name": "Thiéboudienne Loutcha",
+        "price": 4500,
+        "tags": ["local", "halal", "poisson", "signature"],
+        "description": "Riz au poisson traditionnel, légumes variés, recette cap-verdienne maison"
+      },
+      {
+        "name": "Poulet Yassa",
+        "price": 4500,
+        "tags": ["local", "halal", "poulet", "signature"],
+        "description": "Le meilleur yassa du Plateau : oignons fondants, citron, moutarde"
+      },
+      {
+        "name": "Thiebou Yappe",
+        "price": 4500,
+        "tags": ["local", "halal", "viande"],
+        "description": "Riz à la viande sénégalais, servi uniquement mercredi et vendredi"
+      },
+      {
+        "name": "Mafé Bœuf",
+        "price": 4000,
+        "tags": ["local", "halal", "viande"],
+        "description": "Ragoût de bœuf sauce arachide onctueuse, riz blanc"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=800"
+  },
+  {
+    "id": "resto_019",
+    "name": "La Calebasse",
+    "zone": "Mamelles",
+    "lat": 14.7250,
+    "lng": -17.4980,
+    "price_range": "mid",
+    "avg_price": 7000,
+    "rating": 4.5,
+    "cuisine_type": ["senegalais", "africain", "grillades"],
+    "tags": ["galerie_art", "musique_live", "terrasse", "danse", "rooftop", "feu_de_bois"],
+    "dietary": ["halal"],
+    "description": "Mi-restaurant, mi-galerie d'art africain. Entrée gardée par des sculptures en bois, escalier orné de photos et masques du continent, deux sculptures de cacahuètes géantes au centre. Musique live et danse africaine le weekend. Grillades au feu de bois exceptionnelles, avec alloco, attiéké et frites de patate douce. Un lieu qui incarne l'âme africaine.",
+    "opening_hours": "12:00-00:00",
+    "phone": "+221 33 860 6947",
+    "menu": [
+      {
+        "name": "Poulet Braisé La Calebasse",
+        "price": 6500,
+        "tags": ["halal", "grillé", "poulet", "feu_de_bois", "signature"],
+        "description": "Poulet braisé au feu de bois, accompagné d'alloco et attiéké"
+      },
+      {
+        "name": "Poisson Braisé du Jour",
+        "price": 7000,
+        "tags": ["halal", "poisson", "grillé", "feu_de_bois"],
+        "description": "Poisson frais braisé entier, sauce oignon-piment, frites de patate douce"
+      },
+      {
+        "name": "Gambas Braisées",
+        "price": 10000,
+        "tags": ["seafood", "grillé", "feu_de_bois"],
+        "description": "Gambas géantes braisées au charbon, beurre ail-persil"
+      },
+      {
+        "name": "Dibi Agneau Calebasse",
+        "price": 7500,
+        "tags": ["halal", "grillé", "viande", "agneau"],
+        "description": "Agneau grillé au feu de bois, oignons et moutarde, accompagnements au choix"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800"
+  },
+  {
+    "id": "resto_020",
+    "name": "Chez Fatou",
+    "zone": "Almadies",
+    "lat": 14.7450,
+    "lng": -17.5170,
+    "price_range": "mid",
+    "avg_price": 6500,
+    "rating": 4.4,
+    "cuisine_type": ["senegalais", "seafood", "africain"],
+    "tags": ["bord_de_plage", "familial", "vue_mer", "convivial", "coucher_soleil"],
+    "dietary": ["halal"],
+    "description": "Restaurant familial sénégalais emblématique sur la Corniche des Almadies, avec terrasse les pieds dans le sable et vue panoramique sur l'océan. Poisson braisé, yassa, thiéboudienne préparés avec des produits fraîchement pêchés. Accueil chaleureux typique de la teranga sénégalaise. Plus de 136 000 abonnés sur les réseaux — une vraie institution.",
+    "opening_hours": "08:00-23:00",
+    "phone": "+221 77 450 5050",
+    "menu": [
+      {
+        "name": "Thiéboudienne Maison",
+        "price": 5000,
+        "tags": ["local", "halal", "poisson", "signature"],
+        "description": "Thiéboudienne préparé avec le poisson du jour pêché le matin"
+      },
+      {
+        "name": "Poisson Braisé aux Épices",
+        "price": 7000,
+        "tags": ["seafood", "poisson", "grillé"],
+        "description": "Poisson entier braisé aux épices locales, riz et légumes grillés"
+      },
+      {
+        "name": "Gambas Assaisonnées",
+        "price": 9000,
+        "tags": ["seafood", "grillé", "épicé"],
+        "description": "Gambas grillées à la sauce piquante maison, alloco"
+      },
+      {
+        "name": "Brunch Continental Fatou",
+        "price": 6500,
+        "tags": ["brunch"],
+        "description": "Formule brunch complète avec spécialités sénégalaises et classiques"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800"
+  },
+  {
+    "id": "resto_021",
+    "name": "YUMA",
+    "zone": "Point E",
+    "lat": 14.6930,
+    "lng": -17.4620,
+    "price_range": "mid",
+    "avg_price": 8000,
+    "rating": 4.3,
+    "cuisine_type": ["africain", "gastronomique", "afro_fusion"],
+    "tags": ["gastronomique", "terrasse", "jardin", "lounge", "VIP", "moderne"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Restaurant gastronomique africain à Point E, dont le nom signifie 'maman' en peulh. Cuisine traditionnelle de plusieurs pays africains sublimée avec des produits de saison. Décor contemporain mêlé de charme traditionnel : terrasse, jardin, salon lounge et salon VIP. Un havre de paix au milieu de l'effervescence dakaroise. Idéal pour découvrir la diversité culinaire du continent.",
+    "opening_hours": "12:00-00:00",
+    "phone": "+221 33 859 2505",
+    "menu": [
+      {
+        "name": "Ndolé Camerounais",
+        "price": 8000,
+        "tags": ["africain", "signature"],
+        "description": "Ragoût de feuilles amères aux crevettes et arachides, plantain frit"
+      },
+      {
+        "name": "Thiéboudienne Gastronomique",
+        "price": 7000,
+        "tags": ["local", "halal", "poisson"],
+        "description": "Thiéboudienne revisité façon gastronomique, dressage soigné"
+      },
+      {
+        "name": "Poulet DG",
+        "price": 8500,
+        "tags": ["africain", "halal", "poulet"],
+        "description": "Spécialité camerounaise : poulet sauté aux plantains mûrs et légumes"
+      },
+      {
+        "name": "Jus de Gingembre Frais",
+        "price": 1500,
+        "tags": ["boisson", "sans_alcool", "local"],
+        "description": "Gingembre frais pressé, citron et menthe, légèrement sucré"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800"
+  },
+  {
+    "id": "resto_022",
+    "name": "Le Bideew",
+    "zone": "Plateau",
+    "lat": 14.6720,
+    "lng": -17.4450,
+    "price_range": "mid",
+    "avg_price": 6000,
+    "rating": 3.9,
+    "cuisine_type": ["senegalais", "français", "afro_fusion"],
+    "tags": ["jardin", "verdoyant", "wifi", "brunch", "karaoké", "livraison", "culturel"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Restaurant-café niché dans les jardins de l'Institut Français de Dakar, à l'ombre d'un majestueux fromager centenaire. Cuisine simple et variée mêlant saveurs africaines et européennes. Lieu prisé des télétravailleurs et étudiants pour son calme verdoyant. Buffet de plats sénégalais le jour de la fête nationale. Soirées karaoké et DJ live. Un cadre unique et apaisant au cœur de la ville.",
+    "opening_hours": "10:00-00:00",
+    "phone": "+221 77 220 0749",
+    "menu": [
+      {
+        "name": "Formule Déjeuner Bideew",
+        "price": 5500,
+        "tags": ["formule", "local"],
+        "description": "Entrée + plat du jour aux saveurs africaines, trois choix au menu"
+      },
+      {
+        "name": "Crêpe Sucrée Fromager",
+        "price": 3000,
+        "tags": ["dessert", "français"],
+        "description": "Crêpe sucrée garnie de chocolat, banane et chantilly"
+      },
+      {
+        "name": "Yassa Poisson Bideew",
+        "price": 6000,
+        "tags": ["local", "halal", "poisson"],
+        "description": "Poisson mariné sauce yassa aux oignons confits et citron"
+      },
+      {
+        "name": "Jus de Bissap",
+        "price": 1000,
+        "tags": ["boisson", "sans_alcool", "local"],
+        "description": "Infusion d'hibiscus fraîche, menthe et sucre de canne"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800"
+  },
+  {
+    "id": "resto_023",
+    "name": "La Cabane du Pêcheur",
+    "zone": "Ngor",
+    "lat": 14.7490,
+    "lng": -17.5190,
+    "price_range": "mid",
+    "avg_price": 7000,
+    "rating": 4.4,
+    "cuisine_type": ["senegalais", "seafood", "local"],
+    "tags": ["bord_de_mer", "pêche", "familial", "authentique", "convivial"],
+    "dietary": ["halal"],
+    "description": "Restaurant authentique à Ngor spécialisé dans le poisson frais et les fruits de mer, avec une philosophie simple : simplicité et convivialité. Poissons fraîchement pêchés par les piroguiers locaux, grillés devant vous. Ambiance familiale et sans prétention, au bord de l'eau face à l'Île de Ngor. Centre de pêche sportive également disponible.",
+    "opening_hours": "09:00-23:00",
+    "phone": "+221 77 555 8888",
+    "menu": [
+      {
+        "name": "Thiof Grillé du Pêcheur",
+        "price": 7500,
+        "tags": ["seafood", "poisson", "grillé", "signature"],
+        "description": "Mérou blanc grillé entier, sauce citron-oignon, riz et légumes"
+      },
+      {
+        "name": "Plateau Fruits de Mer Ngor",
+        "price": 12000,
+        "tags": ["seafood", "partage"],
+        "description": "Assortiment de poissons et crustacés grillés pour 2 personnes"
+      },
+      {
+        "name": "Soupe de Poisson Lakhou",
+        "price": 4000,
+        "tags": ["seafood", "local", "entrée"],
+        "description": "Soupe de poisson traditionnelle aux légumes et épices locales"
+      },
+      {
+        "name": "Jus de Ditakh",
+        "price": 1000,
+        "tags": ["boisson", "sans_alcool", "local"],
+        "description": "Jus de fruit de ditakh, fruit sauvage du Sénégal, frais et acidulé"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800"
+  },
+  {
+    "id": "resto_024",
+    "name": "Le Lagon 1",
+    "zone": "Plateau",
+    "lat": 14.6780,
+    "lng": -17.4520,
+    "price_range": "high",
+    "avg_price": 15000,
+    "rating": 4.5,
+    "cuisine_type": ["senegalais", "seafood", "gastronomique"],
+    "tags": ["vue_mer", "institution", "sur_pilotis", "romantique", "vue_gorée"],
+    "dietary": ["halal"],
+    "description": "Institution gastronomique de Dakar, construite sur pilotis au-dessus de l'océan avec vue directe sur l'Île de Gorée. Fruits de mer frais d'exception dans un cadre unique. L'une des adresses les plus emblématiques de la capitale, parfaite pour un dîner spécial face au coucher de soleil sur l'Atlantique.",
+    "opening_hours": "12:00-23:00",
+    "phone": "+221 33 823 8888",
+    "menu": [
+      {
+        "name": "Langouste Grillée",
+        "price": 22000,
+        "tags": ["seafood", "grillé", "signature"],
+        "description": "Langouste fraîche grillée au beurre d'herbes, riz pilaf"
+      },
+      {
+        "name": "Thiof en Sauce Lagon",
+        "price": 12000,
+        "tags": ["seafood", "poisson", "local"],
+        "description": "Mérou blanc sauce crémeuse aux crevettes, légumes de saison"
+      },
+      {
+        "name": "Lotte aux Épices Africaines",
+        "price": 14000,
+        "tags": ["seafood", "poisson", "africain"],
+        "description": "Queue de lotte rôtie aux épices africaines, purée de manioc"
+      },
+      {
+        "name": "Cocktail Gorée Sunset",
+        "price": 5000,
+        "tags": ["boisson", "cocktail", "signature"],
+        "description": "Cocktail maison au rhum, mangue fraîche et jus de tamarin"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800"
+  },
+  {
+    "id": "resto_025",
+    "name": "Le Cabanon",
+    "zone": "Almadies",
+    "lat": 14.7440,
+    "lng": -17.5120,
+    "price_range": "mid",
+    "avg_price": 9000,
+    "rating": 4.3,
+    "cuisine_type": ["senegalais", "seafood", "français"],
+    "tags": ["vue_mer", "coquillages", "terrasse", "romantique", "cadre_exceptionnel"],
+    "dietary": ["halal"],
+    "description": "Restaurant joliment incrusté de coquillages sur la Corniche des Almadies, avec une terrasse face à l'océan. Cadre exceptionnel qui se fond dans le paysage marin. Cuisine locale et fruits de mer dans une ambiance authentique. Sa murale en coquillages et sa vue imprenable en font un lieu iconique de Dakar.",
+    "opening_hours": "12:00-23:00",
+    "phone": "+221 33 860 3333",
+    "menu": [
+      {
+        "name": "Dorade Braisée Cabanon",
+        "price": 8000,
+        "tags": ["seafood", "poisson", "grillé", "signature"],
+        "description": "Dorade braisée entière aux épices sénégalaises, riz aux légumes"
+      },
+      {
+        "name": "Calamars Grillés",
+        "price": 7500,
+        "tags": ["seafood", "grillé"],
+        "description": "Calamars tendres grillés, sauce persil-citron, salade fraîche"
+      },
+      {
+        "name": "Yassa Poulet Cabanon",
+        "price": 7000,
+        "tags": ["local", "halal", "poulet"],
+        "description": "Poulet yassa généreux, oignons caramélisés, riz parfumé"
+      },
+      {
+        "name": "Cocktail Océan Bleu",
+        "price": 4000,
+        "tags": ["boisson", "cocktail"],
+        "description": "Cocktail frais au curaçao bleu, jus de citron et coco"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?w=800"
+  },
+  {
+    "id": "resto_026",
+    "name": "Bayékou",
+    "zone": "Ngor",
+    "lat": 14.7500,
+    "lng": -17.5170,
+    "price_range": "mid",
+    "avg_price": 9000,
+    "rating": 4.2,
+    "cuisine_type": ["afro_fusion", "méditerranéen", "seafood"],
+    "tags": ["rooftop", "vue_mer", "vue_île_ngor", "jazz_live", "apéritivo", "coucher_soleil"],
+    "dietary": ["halal", "vegetarien"],
+    "description": "Rooftop restaurant surplombant la plage de Ngor et l'Île de Ngor. Décor mêlant l'élégance du Sud de la France au charme sénégalais, tissus wax et alcôves cosy. Cuisine influencée par la Méditerranée avec des touches sud-américaines et locales. 'Bayékou' signifie 'laisse-toi aller' en wolof — la promesse est tenue. Soirées jazz le jeudi, apéritivo italien le vendredi.",
+    "opening_hours": "12:00-02:00",
+    "phone": "+221 77 900 1234",
+    "menu": [
+      {
+        "name": "Ceviche Mixte Bayékou",
+        "price": 8500,
+        "tags": ["seafood", "entrée", "signature"],
+        "description": "Ceviche de poisson et crevettes, lait de tigre, oignon rouge, coriandre"
+      },
+      {
+        "name": "Linguine aux Fruits de Mer",
+        "price": 10000,
+        "tags": ["seafood", "international"],
+        "description": "Pâtes fraîches aux crevettes, calamars et moules, sauce tomate basilic"
+      },
+      {
+        "name": "Poulet Braisé Sénégalais",
+        "price": 7000,
+        "tags": ["local", "halal", "poulet", "grillé"],
+        "description": "Poulet braisé aux épices locales, alloco et attiéké"
+      },
+      {
+        "name": "Aperol Spritz Bayékou",
+        "price": 5000,
+        "tags": ["boisson", "cocktail"],
+        "description": "Aperol Spritz classique à l'italienne, servi glacé face au coucher de soleil"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1544148103-0773bf10d330?w=800"
+  },
+  {
+    "id": "resto_027",
+    "name": "Ayoka",
+    "zone": "Fann",
+    "lat": 14.6960,
+    "lng": -17.4630,
+    "price_range": "mid",
+    "avg_price": 10000,
+    "rating": 4.1,
+    "cuisine_type": ["afro_fusion", "lounge", "international"],
+    "tags": ["lounge_bar", "vue_mer", "moderne", "DJ", "terrasse", "Noom_Hotel"],
+    "dietary": ["halal"],
+    "description": "Restaurant et lounge bar afro-fusion situé au sein du Noom Hotel sur la Corniche Ouest. Cuisine créative mêlant saveurs africaines et touches internationales dans un cadre moderne et élégant face à l'océan. Soirées DJ les vendredis et samedis, ambiance branchée mais accessible. Ouvert tard, idéal pour prolonger la soirée.",
+    "opening_hours": "12:00-03:00",
+    "phone": "+221 33 869 6969",
+    "menu": [
+      {
+        "name": "Bowl Afro-Fusion",
+        "price": 8500,
+        "tags": ["afro_fusion", "healthy", "signature"],
+        "description": "Bowl de riz parfumé, poulet yassa déstructuré, légumes grillés, sauce maison"
+      },
+      {
+        "name": "Tataki de Thon Sénégalais",
+        "price": 11000,
+        "tags": ["seafood", "poisson"],
+        "description": "Thon mi-cuit au sésame, vinaigrette au bissap et gingembre"
+      },
+      {
+        "name": "Côtes d'Agneau Épicées",
+        "price": 13000,
+        "tags": ["viande", "agneau", "grillé"],
+        "description": "Côtes d'agneau grillées au piment et miel, purée de patate douce"
+      },
+      {
+        "name": "Cocktail Teranga",
+        "price": 5500,
+        "tags": ["boisson", "cocktail", "local"],
+        "description": "Rhum arrangé au bouye, gingembre et citron vert — signature Ayoka"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800"
+  }
+]

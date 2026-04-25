@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Calendar, MapPin, Clock, Search, Filter, Medal, Users } from "lucide-react";
@@ -109,14 +107,27 @@ const Results = () => {
     switch (status?.toLowerCase()) {
       case "terminé":
       case "finished":
-        return <Badge className="bg-primary text-white">{t.results.finished}</Badge>;
+        return (
+          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-200">
+            {t.results.finished}
+          </span>
+        );
       case "en cours":
       case "in_play":
-        return <Badge className="bg-destructive text-white animate-pulse">{t.results.live}</Badge>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-wide text-red-600 bg-red-50 border border-red-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+            {t.results.live}
+          </span>
+        );
       case "programmé":
       case "scheduled":
       default:
-        return <Badge variant="outline">{t.results.scheduled}</Badge>;
+        return (
+          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-wide text-stone-500 bg-stone-50 border border-stone-200">
+            {t.results.scheduled}
+          </span>
+        );
     }
   };
 
@@ -200,34 +211,29 @@ const Results = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-          <Card className="border border-border">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-primary">{events.length}</p>
-              <p className="text-xs text-muted-foreground">{t.results.totalEvents}</p>
-            </CardContent>
-          </Card>
-          <Card className="border border-border">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-primary">{uniqueSports.length}</p>
-              <p className="text-xs text-muted-foreground">{t.results.sports}</p>
-            </CardContent>
-          </Card>
-          <Card className="border border-border">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-destructive">
+          <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+            <p className="text-2xl font-bold text-stone-900 tabular-nums">{events.length}</p>
+            <p className="text-xs text-stone-500 mt-1 font-medium">{t.results.totalEvents}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+            <p className="text-2xl font-bold text-stone-900 tabular-nums">{uniqueSports.length}</p>
+            <p className="text-xs text-stone-500 mt-1 font-medium">{t.results.sports}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+            <div className="flex items-center gap-2">
+              <p className="text-2xl font-bold text-red-600 tabular-nums">
                 {events.filter(e => e.status?.toLowerCase() === "en cours").length}
               </p>
-              <p className="text-xs text-muted-foreground">{t.results.liveNow}</p>
-            </CardContent>
-          </Card>
-          <Card className="border border-border">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-secondary">
-                {events.filter(e => e.status?.toLowerCase() === "terminé").length}
-              </p>
-              <p className="text-xs text-muted-foreground">{t.results.completed}</p>
-            </CardContent>
-          </Card>
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+            </div>
+            <p className="text-xs text-stone-500 mt-1 font-medium">{t.results.liveNow}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+            <p className="text-2xl font-bold text-emerald-700 tabular-nums">
+              {events.filter(e => e.status?.toLowerCase() === "terminé").length}
+            </p>
+            <p className="text-xs text-stone-500 mt-1 font-medium">{t.results.completed}</p>
+          </div>
         </div>
 
         {/* Events by sport */}
@@ -239,47 +245,45 @@ const Results = () => {
           Object.entries(eventsBySport).map(([sport, sportEvents]) => (
             <div key={sport} className="mb-8">
               <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Medal className="h-5 w-5 text-primary" />
-                {sport}
-                <Badge variant="outline" className="ml-2">{sportEvents.length} {t.results.events}</Badge>
+                <Medal className="h-5 w-5 text-stone-700" />
+                <span className="text-stone-900">{sport}</span>
+                <span className="ml-1 px-2 py-0.5 rounded text-xs font-medium text-stone-500 bg-white border border-stone-200">
+                  {sportEvents.length} {t.results.events}
+                </span>
               </h2>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {sportEvents.map((event) => (
-                  <Card
+                  <div
                     key={event.id}
-                    className="border border-border hover:shadow-lg transition-all cursor-pointer hover:-translate-y-1"
+                    className="group bg-white rounded-xl border border-stone-200 p-4 cursor-pointer shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 hover:border-stone-300"
                     onClick={() => navigate(`/match/${event.id}`)}
                   >
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        {getStatusBadge(event.status)}
-                        <span className="text-lg font-bold">{getGenderIcon(event.gender_type)}</span>
-                      </div>
-                      <h3 className="font-semibold text-sm mb-3">{event.discipline_detail}</h3>
-                      <div className="space-y-1.5 text-xs text-muted-foreground">
-                        {event.event_date && (
-                          <p className="flex items-center gap-1.5">
-                            <Calendar className="h-3.5 w-3.5" />
-                            {new Date(event.event_date).toLocaleDateString(
-                              t === (undefined as any) ? 'fr-FR' : 'fr-FR'
-                            )}
-                          </p>
-                        )}
-                        {event.event_time && (
-                          <p className="flex items-center gap-1.5">
-                            <Clock className="h-3.5 w-3.5" />
-                            {event.event_time}
-                          </p>
-                        )}
-                        {event.venue_id && (
-                          <p className="flex items-center gap-1.5">
-                            <MapPin className="h-3.5 w-3.5" />
-                            {getVenueName(event.venue_id)}
-                          </p>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
+                    <div className="flex items-start justify-between mb-3">
+                      {getStatusBadge(event.status)}
+                      <span className="text-sm font-semibold text-stone-400">{getGenderIcon(event.gender_type)}</span>
+                    </div>
+                    <h3 className="font-semibold text-[13px] text-stone-800 mb-3 leading-snug">{event.discipline_detail}</h3>
+                    <div className="space-y-1.5 text-xs text-stone-500">
+                      {event.event_date && (
+                        <p className="flex items-center gap-1.5">
+                          <Calendar className="h-3.5 w-3.5 text-stone-400 flex-shrink-0" />
+                          {new Date(event.event_date).toLocaleDateString('fr-FR')}
+                        </p>
+                      )}
+                      {event.event_time && (
+                        <p className="flex items-center gap-1.5">
+                          <Clock className="h-3.5 w-3.5 text-stone-400 flex-shrink-0" />
+                          {event.event_time}
+                        </p>
+                      )}
+                      {event.venue_id && (
+                        <p className="flex items-center gap-1.5">
+                          <MapPin className="h-3.5 w-3.5 text-stone-400 flex-shrink-0" />
+                          {getVenueName(event.venue_id)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
