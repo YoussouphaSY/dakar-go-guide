@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import { useLanguage } from "@/hooks/useLanguage";
 import {
@@ -95,7 +96,11 @@ const Pagination = ({ page, total, onChange }: { page: number; total: number; on
 /* ════════════════════ MAIN COMPONENT ════════════════════ */
 const Discover = () => {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<"restaurants" | "attractions" | "transport">("restaurants");
+  const { search } = useLocation();
+  const [activeTab, setActiveTab] = useState<"restaurants" | "attractions" | "transport">(() => {
+    const tab = new URLSearchParams(search).get("tab");
+    return (tab === "attractions" || tab === "transport") ? tab : "restaurants";
+  });
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState("Toutes");
   const [selected, setSelected] = useState<{ type: string; data: any } | null>(null);

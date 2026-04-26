@@ -228,7 +228,7 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-6">
             <div
               className="group bg-white rounded-xl border border-stone-200 overflow-hidden cursor-pointer shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-200 hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)] hover:-translate-y-0.5"
-              onClick={() => navigate('/discover')}
+              onClick={() => navigate('/discover?tab=restaurants')}
             >
               <div className="h-48 overflow-hidden">
                 <img src={restaurantImg} alt="Restaurants de Dakar" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -246,7 +246,7 @@ const Index = () => {
 
             <div
               className="group bg-white rounded-xl border border-stone-200 overflow-hidden cursor-pointer shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-200 hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)] hover:-translate-y-0.5"
-              onClick={() => navigate('/discover')}
+              onClick={() => navigate('/discover?tab=attractions')}
             >
               <div className="h-48 overflow-hidden">
                 <img src={attractionImg} alt="Attractions de Dakar" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -264,7 +264,7 @@ const Index = () => {
 
             <div
               className="group bg-white rounded-xl border border-stone-200 overflow-hidden cursor-pointer shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-200 hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)] hover:-translate-y-0.5"
-              onClick={() => navigate('/discover')}
+              onClick={() => navigate('/discover?tab=transport')}
             >
               <div className="h-48 overflow-hidden">
                 <img src={transportImg} alt="Transport à Dakar" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -313,32 +313,32 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-5 px-4 bg-primary text-white">
+      <footer className="py-5 px-4 bg-primary">
         <div className="container mx-auto">
           <div className="flex items-center justify-between gap-6 flex-wrap">
             <div className="flex items-center gap-4">
               <div>
-                <p className="font-semibold text-xs text-white">JOJ Dakar 2026</p>
-                <p className="text-white/50 text-[11px]">Jeux Olympiques de la Jeunesse</p>
+                <p className="font-semibold text-xs text-stone-900">JOJ Dakar 2026</p>
+                <p className="text-stone-600 text-[11px]">Jeux Olympiques de la Jeunesse</p>
               </div>
-              <span className="w-px h-6 bg-white/20" />
+              <span className="w-px h-6 bg-stone-900/20" />
               <div className="flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-[#FFE72E]" />
-                <p className="text-white/50 text-[11px]">Dakar, Sénégal</p>
+                <span className="w-1 h-1 rounded-full bg-stone-900" />
+                <p className="text-stone-600 text-[11px]">Dakar, Sénégal</p>
               </div>
             </div>
 
             <div className="flex items-center gap-6 flex-wrap">
-              <div className="flex items-center gap-1 text-[11px] text-white/40 font-semibold uppercase tracking-wider">Compétitions</div>
-              <Link to="/events" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Programme</Link>
-              <Link to="/results" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Résultats</Link>
-              <Link to="/records" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Records</Link>
-              <span className="w-px h-4 bg-white/20" />
-              <div className="flex items-center gap-1 text-[11px] text-white/40 font-semibold uppercase tracking-wider">Explorer</div>
-              <Link to="/discover" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Dakar</Link>
-              <Link to="/virtual-tour" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Visite Virtuelle</Link>
-              <Link to="/museum-3d" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Musée 3D</Link>
-              <Link to="/assistant" className="text-white/70 hover:text-white text-xs transition-colors duration-150">AYO Chat</Link>
+              <div className="flex items-center gap-1 text-[11px] text-stone-500 font-semibold uppercase tracking-wider">Compétitions</div>
+              <Link to="/events" className="text-stone-700 hover:text-stone-900 text-xs transition-colors duration-150">Programme</Link>
+              <Link to="/results" className="text-stone-700 hover:text-stone-900 text-xs transition-colors duration-150">Résultats</Link>
+              <Link to="/records" className="text-stone-700 hover:text-stone-900 text-xs transition-colors duration-150">Records</Link>
+              <span className="w-px h-4 bg-stone-900/20" />
+              <div className="flex items-center gap-1 text-[11px] text-stone-500 font-semibold uppercase tracking-wider">Explorer</div>
+              <Link to="/discover" className="text-stone-700 hover:text-stone-900 text-xs transition-colors duration-150">Dakar</Link>
+              <Link to="/virtual-tour" className="text-stone-700 hover:text-stone-900 text-xs transition-colors duration-150">Visite Virtuelle</Link>
+              <Link to="/museum-3d" className="text-stone-700 hover:text-stone-900 text-xs transition-colors duration-150">Musée 3D</Link>
+              <Link to="/assistant" className="text-stone-700 hover:text-stone-900 text-xs transition-colors duration-150">AYO Chat</Link>
             </div>
           </div>
         </div>
