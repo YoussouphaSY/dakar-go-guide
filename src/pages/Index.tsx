@@ -293,7 +293,7 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-16 px-4 bg-[rgba(232,228,220,1)]">
         <div className="container mx-auto text-center max-w-2xl">
-          <h2 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-3 leading-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-3 leading-tight">
             {t.home.ctaTitle}
           </h2>
           <p className="text-base text-stone-500 leading-relaxed mb-8">
@@ -313,32 +313,32 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-5 px-4 bg-stone-900 text-white">
+      <footer className="py-5 px-4 bg-primary text-white">
         <div className="container mx-auto">
           <div className="flex items-center justify-between gap-6 flex-wrap">
             <div className="flex items-center gap-4">
               <div>
                 <p className="font-semibold text-xs text-white">JOJ Dakar 2026</p>
-                <p className="text-stone-500 text-[11px]">Jeux Olympiques de la Jeunesse</p>
+                <p className="text-white/50 text-[11px]">Jeux Olympiques de la Jeunesse</p>
               </div>
-              <span className="w-px h-6 bg-stone-700" />
+              <span className="w-px h-6 bg-white/20" />
               <div className="flex items-center gap-1.5">
                 <span className="w-1 h-1 rounded-full bg-[#FFE72E]" />
-                <p className="text-stone-500 text-[11px]">Dakar, Sénégal</p>
+                <p className="text-white/50 text-[11px]">Dakar, Sénégal</p>
               </div>
             </div>
 
             <div className="flex items-center gap-6 flex-wrap">
-              <div className="flex items-center gap-1 text-[11px] text-stone-500 font-semibold uppercase tracking-wider">Compétitions</div>
-              <Link to="/events" className="text-stone-400 hover:text-white text-xs transition-colors duration-150">Programme</Link>
-              <Link to="/results" className="text-stone-400 hover:text-white text-xs transition-colors duration-150">Résultats</Link>
-              <Link to="/records" className="text-stone-400 hover:text-white text-xs transition-colors duration-150">Records</Link>
-              <span className="w-px h-4 bg-stone-700" />
-              <div className="flex items-center gap-1 text-[11px] text-stone-500 font-semibold uppercase tracking-wider">Explorer</div>
-              <Link to="/discover" className="text-stone-400 hover:text-white text-xs transition-colors duration-150">Dakar</Link>
-              <Link to="/virtual-tour" className="text-stone-400 hover:text-white text-xs transition-colors duration-150">Visite Virtuelle</Link>
-              <Link to="/museum-3d" className="text-stone-400 hover:text-white text-xs transition-colors duration-150">Musée 3D</Link>
-              <Link to="/assistant" className="text-stone-400 hover:text-white text-xs transition-colors duration-150">AYO Chat</Link>
+              <div className="flex items-center gap-1 text-[11px] text-white/40 font-semibold uppercase tracking-wider">Compétitions</div>
+              <Link to="/events" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Programme</Link>
+              <Link to="/results" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Résultats</Link>
+              <Link to="/records" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Records</Link>
+              <span className="w-px h-4 bg-white/20" />
+              <div className="flex items-center gap-1 text-[11px] text-white/40 font-semibold uppercase tracking-wider">Explorer</div>
+              <Link to="/discover" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Dakar</Link>
+              <Link to="/virtual-tour" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Visite Virtuelle</Link>
+              <Link to="/museum-3d" className="text-white/70 hover:text-white text-xs transition-colors duration-150">Musée 3D</Link>
+              <Link to="/assistant" className="text-white/70 hover:text-white text-xs transition-colors duration-150">AYO Chat</Link>
             </div>
           </div>
         </div>

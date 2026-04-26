@@ -229,7 +229,7 @@ const VirtualTour = () => {
                     </Button>
                     <p className="text-white/60 text-xs text-center">
                       <MapPin className="h-3 w-3 inline mr-1" />
-                      {selectedSite.city} • {selectedSite.latitude.toFixed(4)}°N, {selectedSite.longitude.toFixed(4)}°W
+                      {selectedSite.city}{selectedSite.latitude != null ? ` • ${selectedSite.latitude.toFixed(4)}°N, ${selectedSite.longitude.toFixed(4)}°W` : ""}
                     </p>
                   </div>
                 </div>

@@ -222,7 +222,7 @@
         "address": "Sud de Saint-Louis, fleuve Sénégal",
         "coordinates": { "lat": 15.9833, "lng": -16.5167 }
       },
-      "images": [],
+      "images": ["https://i.pinimg.com/1200x/d2/23/27/d22327edd6ac30a641f84278096c4a73.jpg"],
       "opening_hours": {
         "open": "07:00",
         "close": "18:00",
