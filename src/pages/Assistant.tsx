@@ -254,7 +254,7 @@ const Assistant = () => {
     }
   };
 
-  const WHATSAPP_NUMBER = "221338200000";
+  const WHATSAPP_NUMBER = "221763269249";
 
   return (
     <div className="min-h-screen bg-background">
