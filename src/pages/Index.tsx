@@ -346,7 +346,7 @@ const Index = () => {
 
       {/* eSIM Modal */}
       <Dialog open={esimStep !== "closed"} onOpenChange={(open) => !open && resetEsim()}>
-        <DialogContent className={esimStep === "plans" ? "sm:max-w-2xl p-0 overflow-hidden" : "sm:max-w-sm p-0 overflow-hidden"}>
+        <DialogContent className={`p-0 ${esimStep === "plans" ? "sm:max-w-2xl" : "sm:max-w-sm"} max-h-[90dvh] overflow-y-auto`}>
 
           {/* Step 1 — Choose plan */}
           {esimStep === "plans" && (
