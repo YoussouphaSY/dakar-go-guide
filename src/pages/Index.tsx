@@ -300,11 +300,11 @@ const Index = () => {
             {t.home.ctaSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button size="lg" onClick={() => navigate('/assistant')} className="text-sm px-8 py-5 bg-stone-900 text-white hover:bg-stone-700 transition-colors duration-200">
+            <Button size="lg" onClick={() => navigate('/assistant')} className="text-sm px-8 py-5 bg-primary hover:bg-primary/90 transition-colors duration-200 font-bold">
               <MessageCircle className="mr-2 h-4 w-4" />
               {t.home.talkToAssistant}
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/profile')} className="text-sm px-8 py-5 border-stone-300 text-stone-700 hover:bg-stone-100 transition-colors duration-200">
+            <Button size="lg" onClick={() => navigate('/profile')} className="text-sm px-8 py-5 bg-primary hover:bg-primary/90 transition-colors duration-200 font-bold">
               <User className="mr-2 h-4 w-4" />
               {t.home.createProfile}
             </Button>

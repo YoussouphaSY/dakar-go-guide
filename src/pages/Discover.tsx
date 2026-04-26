@@ -3,8 +3,9 @@ import Header from "@/components/Header";
 import { useLanguage } from "@/hooks/useLanguage";
 import {
   Search, Heart, ArrowLeft, MapPin, Clock, Phone, Star, Navigation,
-  Utensils, Landmark, Tag, ChevronLeft, ChevronRight,
+  Utensils, Landmark, Tag, ChevronLeft, ChevronRight, Bus,
 } from "lucide-react";
+import TransportPlanner from "@/components/TransportPlanner";
 import restaurantsRaw from "@/data/restaurants.json";
 import attractionsFile from "@/data/attractions_senegal.json";
 
@@ -94,14 +95,21 @@ const Pagination = ({ page, total, onChange }: { page: number; total: number; on
 /* ════════════════════ MAIN COMPONENT ════════════════════ */
 const Discover = () => {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<"restaurants" | "attractions">("restaurants");
+  const [activeTab, setActiveTab] = useState<"restaurants" | "attractions" | "transport">("restaurants");
   const [searchQuery, setSearchQuery] = useState("");
+  const [regionFilter, setRegionFilter] = useState("Toutes");
   const [selected, setSelected] = useState<{ type: string; data: any } | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(0);
 
-  /* Reset page on tab / search change */
-  useEffect(() => { setPage(0); }, [activeTab, searchQuery]);
+  /* Build unique region list from attractions data */
+  const regions = ["Toutes", ...Array.from(new Set(attractions.map((a: any) => a.location.region as string))).sort()];
+
+  /* Reset page + region on tab change */
+  useEffect(() => { setPage(0); setRegionFilter("Toutes"); }, [activeTab]);
+  useEffect(() => { setPage(0); }, [searchQuery, regionFilter]);
+
+  const isTransport = activeTab === "transport";
 
   const toggleFav = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -114,10 +122,11 @@ const Discover = () => {
     r.cuisine_type.some((c: string) => c.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const filteredAttractions = attractions.filter(a =>
-    a.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    a.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    a.location.city.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredAttractions = attractions.filter((a: any) =>
+    (regionFilter === "Toutes" || a.location.region === regionFilter) &&
+    (a.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     a.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     a.location.city.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const currentList = activeTab === "restaurants" ? filteredRestaurants : filteredAttractions;
@@ -126,14 +135,13 @@ const Discover = () => {
 
   /* ── RESTAURANT CARD ── */
   const RestaurantCard = ({ r }: { r: any }) => {
-    const score = matchScore(r.rating, r.id);
     const cuisine = r.cuisine_type.slice(0, 2).map((c: string) => c.charAt(0).toUpperCase() + c.slice(1)).join(" · ");
     const dish = r.menu[0];
     return (
       <div className="bg-white rounded-xl overflow-hidden border border-stone-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] cursor-pointer hover:shadow-[0_6px_20px_rgba(0,0,0,0.10)] hover:-translate-y-0.5 transition-all duration-200" onClick={() => setSelected({ type: "restaurant", data: r })}>
         <div className="relative h-40 overflow-hidden bg-stone-100">
           <img src={r.image} alt={r.name} className="w-full h-full object-cover" loading="lazy" />
-          <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-primary">{score}% match</span>
+          <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-stone-900/80 backdrop-blur-sm flex items-center gap-0.5"><MapPin size={9} />{r.zone}</span>
           <button onClick={(e) => toggleFav(r.id, e)} className="absolute top-2 right-2 w-7 h-7 bg-white/90 rounded-full flex items-center justify-center">
             <Heart size={12} className={favorites.has(r.id) ? "fill-red-500 text-red-500" : "text-stone-400"} />
           </button>
@@ -170,13 +178,12 @@ const Discover = () => {
 
   /* ── ATTRACTION CARD ── */
   const AttractionCard = ({ a }: { a: any }) => {
-    const score = matchScore(a.rating, a.id);
     const img = attImage(a);
     return (
       <div className="bg-white rounded-xl overflow-hidden border border-stone-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] cursor-pointer hover:shadow-[0_6px_20px_rgba(0,0,0,0.10)] hover:-translate-y-0.5 transition-all duration-200" onClick={() => setSelected({ type: "attraction", data: a })}>
         <div className="relative h-40 overflow-hidden bg-stone-200">
           <img src={img} alt={a.name} className="w-full h-full object-cover" loading="lazy" />
-          <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-primary">{score}% match</span>
+          <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-stone-900/80 backdrop-blur-sm flex items-center gap-0.5"><MapPin size={9} />{a.location.city}</span>
           <button onClick={(e) => toggleFav(a.id, e)} className="absolute top-2 right-2 w-7 h-7 bg-white/90 rounded-full flex items-center justify-center">
             <Heart size={12} className={favorites.has(a.id) ? "fill-red-500 text-red-500" : "text-stone-400"} />
           </button>
@@ -412,37 +419,63 @@ const Discover = () => {
               onClick={() => setActiveTab("attractions")}
               className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 ${activeTab === "attractions" ? "bg-stone-900 text-white" : "bg-white border border-stone-200 text-stone-600 hover:bg-stone-50"}`}
             ><Landmark size={14} /> Attractions</button>
+            <button
+              onClick={() => setActiveTab("transport")}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 ${activeTab === "transport" ? "bg-stone-900 text-white" : "bg-white border border-stone-200 text-stone-600 hover:bg-stone-50"}`}
+            ><Bus size={14} /> Transport</button>
           </div>
 
-          {/* Compact search */}
-          <div className="relative w-48 flex-shrink-0">
-            <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-stone-400" />
-            <input
-              type="text"
-              placeholder="Rechercher…"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="w-full h-9 pl-8 pr-3 rounded-lg border border-stone-200 bg-white text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-200"
-            />
-          </div>
+          {/* Search + region filter — hidden on transport tab */}
+          {!isTransport && (
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {activeTab === "attractions" && (
+                <select
+                  value={regionFilter}
+                  onChange={e => setRegionFilter(e.target.value)}
+                  className="h-9 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-semibold text-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-200 appearance-none cursor-pointer"
+                >
+                  {regions.map(r => <option key={r} value={r}>{r}</option>)}
+                </select>
+              )}
+              <div className="relative w-40">
+                <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-stone-400" />
+                <input
+                  type="text"
+                  placeholder="Rechercher…"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="w-full h-9 pl-8 pr-3 rounded-lg border border-stone-200 bg-white text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-200"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* 2-column grid — 4 items only */}
-        {pageSlice.length === 0
-          ? <p className="text-center text-stone-400 py-16">Aucun résultat trouvé.</p>
-          : (
-            <div className="grid grid-cols-2 gap-4">
-              {pageSlice.map((item: any) =>
-                activeTab === "restaurants"
-                  ? <RestaurantCard key={item.id} r={item} />
-                  : <AttractionCard key={item.id} a={item} />
-              )}
-            </div>
-          )
-        }
+        {/* Transport planner */}
+        {isTransport ? (
+          <div className="max-w-lg mx-auto">
+            <TransportPlanner />
+          </div>
+        ) : (
+          <>
+            {/* 2-column grid — 4 items only */}
+            {pageSlice.length === 0
+              ? <p className="text-center text-stone-400 py-16">Aucun résultat trouvé.</p>
+              : (
+                <div className="grid grid-cols-2 gap-4">
+                  {pageSlice.map((item: any) =>
+                    activeTab === "restaurants"
+                      ? <RestaurantCard key={item.id} r={item} />
+                      : <AttractionCard key={item.id} a={item} />
+                  )}
+                </div>
+              )
+            }
 
-        {/* Pagination */}
-        <Pagination page={page} total={totalPages} onChange={setPage} />
+            {/* Pagination */}
+            <Pagination page={page} total={totalPages} onChange={setPage} />
+          </>
+        )}
       </div>
 
       {/* Detail overlay */}
