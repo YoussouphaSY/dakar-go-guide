@@ -12,7 +12,7 @@ interface FloatingChatProps {
   onClose: () => void;
 }
 
-const WHATSAPP_NUMBER = "221338200000";
+const WHATSAPP_NUMBER = "221763269249";
 
 const WaIcon = () => (
   <svg viewBox="0 0 24 24" width="14" height="14" fill="white" xmlns="http://www.w3.org/2000/svg">
