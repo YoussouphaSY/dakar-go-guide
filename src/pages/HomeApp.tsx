@@ -6,6 +6,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
 import Logo from "@/components/Logo";
+import HomeMapCard from "@/components/HomeMapCard";
 
 /*
   HomeApp — Accueil de l'interface APP mobile (PWA standalone).
@@ -102,6 +103,9 @@ const HomeApp = () => {
             </button>
           ))}
         </section>
+
+        {/* Carte filtrable (compétitions / activités / festivités / tourisme) */}
+        <HomeMapCard />
 
         {/* En direct & à venir */}
         <SectionHead title="En direct & à venir" action="Tout voir" onAction={() => navigate("/programme")} />

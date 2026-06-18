@@ -24,8 +24,8 @@ const ICON_PATH: Record<PoiType, string> = {
   poi: '<path d="M12 3l2.4 5.4 5.6.5-4.2 3.8 1.2 5.6L12 16l-5 2.3 1.2-5.6L4 8.9l5.6-.5z"/>',
 };
 
-const makeIcon = (type: PoiType, selected: boolean) => {
-  const color = PIN_COLOR[type];
+const makeIcon = (type: PoiType, selected: boolean, override?: string) => {
+  const color = override ?? PIN_COLOR[type];
   const size = selected ? 46 : 38;
   return L.divIcon({
     className: "dg-pin",
@@ -39,23 +39,45 @@ const makeIcon = (type: PoiType, selected: boolean) => {
   });
 };
 
-/* Recentre la carte quand le POI sélectionné change. */
-const Recenter = ({ poi }: { poi: Poi }) => {
+/* Recentre/zoome sur la sélection. */
+const Recenter = ({ poi }: { poi: Poi | null }) => {
   const map = useMap();
   useEffect(() => {
-    map.flyTo([poi.lat, poi.lng], Math.max(map.getZoom(), 13), { duration: 0.6 });
+    if (poi) map.flyTo([poi.lat, poi.lng], Math.max(map.getZoom(), 13), { duration: 0.6 });
   }, [poi, map]);
   return null;
 };
 
+/* Ajuste la vue pour englober tous les POI affichés (quand la liste change). */
+const FitBounds = ({ pois }: { pois: Poi[] }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (pois.length === 0) return;
+    if (pois.length === 1) { map.setView([pois[0].lat, pois[0].lng], 12); return; }
+    const bounds = L.latLngBounds(pois.map((p) => [p.lat, p.lng] as [number, number]));
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
+  }, [pois, map]);
+  return null;
+};
+
 interface MapViewProps {
-  visibleTypes: Record<PoiType, boolean>;
-  selectedId: string;
+  /** Liste explicite de POI à afficher (prioritaire). */
+  pois?: Poi[];
+  /** Sinon, filtre par type visible (page Mobilité). */
+  visibleTypes?: Record<PoiType, boolean>;
+  selectedId?: string | null;
   onSelect: (id: string) => void;
+  /** Couleur de pin forcée (par filtre carte). */
+  pinColor?: string;
+  /** Recadrer automatiquement sur la liste (accueil). */
+  fit?: boolean;
+  /** Afficher les étiquettes de nom. */
+  tooltips?: boolean;
 }
 
-const MapView = ({ visibleTypes, selectedId, onSelect }: MapViewProps) => {
-  const selected = POIS.find((p) => p.id === selectedId) ?? POIS[0];
+const MapView = ({ pois, visibleTypes, selectedId, onSelect, pinColor, fit, tooltips = true }: MapViewProps) => {
+  const list = pois ?? POIS.filter((p) => (visibleTypes ? visibleTypes[p.type] : true));
+  const selected = selectedId ? list.find((p) => p.id === selectedId) ?? null : null;
   return (
     <MapContainer
       center={MAP_CENTER}
@@ -68,18 +90,20 @@ const MapView = ({ visibleTypes, selectedId, onSelect }: MapViewProps) => {
         attribution='&copy; OpenStreetMap &copy; CARTO'
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
       />
-      <Recenter poi={selected} />
-      {POIS.filter((p) => visibleTypes[p.type]).map((p) => (
+      {fit ? <FitBounds pois={list} /> : <Recenter poi={selected} />}
+      {list.map((p) => (
         <Marker
           key={p.id}
           position={[p.lat, p.lng]}
-          icon={makeIcon(p.type, p.id === selectedId)}
+          icon={makeIcon(p.type, p.id === selectedId, pinColor)}
           eventHandlers={{ click: () => onSelect(p.id) }}
           zIndexOffset={p.id === selectedId ? 1000 : 0}
         >
-          <Tooltip direction="top" offset={[0, -38]} permanent className="dg-tooltip">
-            {p.name}
-          </Tooltip>
+          {tooltips && (
+            <Tooltip direction="top" offset={[0, -38]} permanent className="dg-tooltip">
+              {p.name}
+            </Tooltip>
+          )}
         </Marker>
       ))}
     </MapContainer>
