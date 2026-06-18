@@ -133,6 +133,12 @@
   to { transform: translateX(-50%); }
 }
 
+/* Bottom-sheet mobile (filtres Planner) */
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
 /* Étiquettes de nom des lieux sur la carte (Leaflet tooltip) */
 .dg-tooltip.leaflet-tooltip {
   background: hsl(var(--background));

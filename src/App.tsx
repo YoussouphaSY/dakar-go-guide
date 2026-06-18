@@ -12,6 +12,7 @@ import Onboarding from "@/pages/Onboarding";
 import Home from "@/pages/Home";
 import HomeApp from "@/pages/HomeApp";
 import Programme from "@/pages/Programme";
+import ProgrammeApp from "@/pages/ProgrammeApp";
 import Mobilite from "@/pages/Mobilite";
 
 const queryClient = new QueryClient();
@@ -59,7 +60,7 @@ const AppRoutes = () => (
     </Route>
     <Route element={<AppTabsLayout />}>
       <Route path="/" element={<HomeApp />} />
-      <Route path="/programme" element={<Placeholder title="Planner" />} />
+      <Route path="/programme" element={<ProgrammeApp />} />
       <Route path="/carte" element={<Placeholder title="Carte" />} />
       <Route path="/ayo" element={<Placeholder title="AYO" />} />
       <Route path="/profil" element={<Placeholder title="Profil" />} />
