@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {
   CalendarDays, MapPin, Ticket, MessageCircle, Star, Bell, ChevronDown,
-  Plus, Check, Play, ArrowRight,
+  Plus, Check, ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
@@ -10,12 +10,7 @@ import HomeMapCard from "@/components/HomeMapCard";
 
 /*
   HomeApp — Accueil de l'interface APP mobile (PWA standalone).
-  Reproduction fidèle de la maquette Claude "Écrans · 05".
 */
-
-const HERO_VIDEO = "/media/hero-dakar2026.mp4";
-const OPENING = new Date("2026-10-31T19:00:00");
-const daysToGo = Math.max(0, Math.ceil((OPENING.getTime() - Date.now()) / 86_400_000));
 
 const QUICK = [
   { label: "Programme", icon: CalendarDays, to: "/programme" },
@@ -63,26 +58,8 @@ const HomeApp = () => {
 
       {/* Scroll content */}
       <div className="flex-1 overflow-y-auto px-[18px] pb-4">
-        {/* Hero vidéo */}
-        <section className="relative rounded-[20px] overflow-hidden h-[194px] flex items-end">
-          <video className="absolute inset-0 w-full h-full object-cover" src={HERO_VIDEO} autoPlay loop muted playsInline />
-          <span className="absolute top-3.5 left-3.5 bg-white/[0.14] backdrop-blur-sm text-white font-mono text-[10px] font-semibold tracking-[0.08em] px-2.5 py-[5px] rounded-full">
-            J–{daysToGo}
-          </span>
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[72%] h-12 w-12 rounded-full border-[1.5px] border-white/40 bg-white/[0.08] flex items-center justify-center">
-            <Play className="h-[17px] w-[17px] text-white fill-white" />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 to-transparent to-[65%]" />
-          <div className="relative p-4 text-white">
-            <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/80">Cérémonie d'ouverture</div>
-            <div className="font-display font-extrabold text-[23px] leading-tight mt-1" style={{ fontStretch: "86%" }}>
-              Bienvenue à Dakar 2026
-            </div>
-          </div>
-        </section>
-
         {/* Accès rapides */}
-        <section className="flex justify-between mt-[18px]">
+        <section className="flex justify-between mt-4">
           {QUICK.map((q) => (
             <button key={q.label} onClick={() => navigate(q.to)} className="flex flex-col items-center gap-[7px] flex-1">
               {q.ayo ? (

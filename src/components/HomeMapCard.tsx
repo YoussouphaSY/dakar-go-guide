@@ -36,7 +36,23 @@ const HomeMapCard = () => {
   });
 
   return (
-    <section className="mt-6">
+    <section className="mt-4">
+      {/* Filtres (un seul actif) — au-dessus de la carte */}
+      <div className="flex gap-2 mb-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {MAP_FILTERS.map((f) => {
+          const on = f.id === filter;
+          return (
+            <button key={f.id} onClick={() => changeFilter(f.id)} className={cn(
+              "flex-shrink-0 inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-[12.5px] font-semibold transition-base",
+              on ? "bg-foreground text-background border-foreground" : "bg-card border-border text-foreground/80",
+            )}>
+              <span className="h-2 w-2 rounded-full" style={{ background: on ? f.color : "#C4C4BD" }} />
+              {f.short}
+            </button>
+          );
+        })}
+      </div>
+
       {/* Carte */}
       <div className="relative rounded-[20px] overflow-hidden h-[230px] border border-border isolate">
         <MapView
@@ -54,22 +70,6 @@ const HomeMapCard = () => {
             {active.label} · {pois.length}
           </span>
         </div>
-      </div>
-
-      {/* Filtres (un seul actif) */}
-      <div className="flex gap-2 mt-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {MAP_FILTERS.map((f) => {
-          const on = f.id === filter;
-          return (
-            <button key={f.id} onClick={() => changeFilter(f.id)} className={cn(
-              "flex-shrink-0 inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-[12.5px] font-semibold transition-base",
-              on ? "bg-foreground text-background border-foreground" : "bg-card border-border text-foreground/80",
-            )}>
-              <span className="h-2 w-2 rounded-full" style={{ background: on ? f.color : "#C4C4BD" }} />
-              {f.short}
-            </button>
-          );
-        })}
       </div>
 
       {/* Bottom-sheet détails */}
