@@ -5,6 +5,9 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // GitHub Pages sert le site sous /dakar-go-guide/.
+  // En dev (et sur Vercel via VITE_BASE=/) on garde la racine.
+  base: mode === "production" ? (process.env.VITE_BASE ?? "/dakar-go-guide/") : "/",
   server: {
     host: "::",
     port: 8080,

@@ -2,91 +2,104 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/*
+  Dakar-Go-26 — Design System v1.0
+  "Noir & blanc. La couleur vient du terrain."
+
+  Base monochrome (blanc/noir) façon olympics.com ; les accents du drapeau
+  sénégalais — vert (action/success), or (highlight/eSIM), rouge (live/alerte) —
+  restent FONCTIONNELS, jamais décoratifs.
+
+  Toutes les couleurs sont en HSL (compatibles shadcn/ui).
+  Typo : Archivo (display, titres) + Inter (corps de texte).
 */
 
 @layer base {
   :root {
-    --background: 40 21% 89%;
-    --foreground: 158 100% 15%;
+    /* — Base monochrome — */
+    --background: 0 0% 100%;          /* #FFFFFF */
+    --foreground: 90 8% 5%;           /* #0E0F0C */
     --card: 0 0% 100%;
-    --card-foreground: 158 100% 15%;
+    --card-foreground: 90 8% 5%;
     --popover: 0 0% 100%;
-    --popover-foreground: 158 100% 15%;
-    
-    /* Dakar 2026 Colors - Based on Official Logo */
-    --primary: 158 100% 21%; /* Green */
-    --primary-foreground: 43 98% 54%;
-    --primary-glow: 158 100% 35%;
-    
-    --secondary: 43 98% 54%; /* Yellow/Gold */
-    --secondary-foreground: 158 100% 15%;
-    
-    --accent: 27 92% 57%; /* Orange */
-    --accent-foreground: 0 0% 100%;
-    
-    --success: 158 100% 21%;
-    --success-foreground: 0 0% 100%;
-    
-    --destructive: 358 80% 51%; /* Red */
-    --destructive-foreground: 0 0% 100%;
-    
-    --muted: 40 18% 93%;
-    --muted-foreground: 33 20% 40%;
-    --border: 40 14% 80%;
-    --input: 40 14% 80%;
-    --ring: 43 98% 54%;
-    --radius: 0.75rem;
-    
-    --bronze: 33 33% 41%; /* Bronze/Brown accent */
+    --popover-foreground: 90 8% 5%;
 
-    /* Professional solid colors - no gradients */
-    
-    /* Shadows */
-    --shadow-sm: 0 2px 8px hsla(158, 60%, 21%, 0.08);
-    --shadow-md: 0 8px 24px hsla(158, 60%, 21%, 0.12);
-    --shadow-lg: 0 16px 48px hsla(158, 60%, 21%, 0.16);
-    
-    /* Transitions */
-    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    /* — Action principale : vert Sénégal — */
+    --primary: 148 100% 26%;          /* #00853F */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 147 69% 39%;      /* #1FA85A */
+
+    /* — Secondaire : noir (boutons sombres) — */
+    --secondary: 90 8% 5%;            /* #0E0F0C */
+    --secondary-foreground: 0 0% 100%;
+
+    /* — Accent or (highlight, eSIM, soulignés) — */
+    --accent: 48 100% 50%;            /* #FFCD00 */
+    --accent-foreground: 90 8% 5%;
+
+    /* — Succès (= vert) — */
+    --success: 148 100% 26%;
+    --success-foreground: 0 0% 100%;
+
+    /* — Live / destructif : rouge Sénégal — */
+    --destructive: 358 79% 50%;       /* #E31B23 */
+    --destructive-foreground: 0 0% 100%;
+    --live: 358 79% 50%;
+    --live-foreground: 0 0% 100%;
+
+    /* — Neutres UI — */
+    --muted: 60 14% 95%;              /* #F4F4F1 */
+    --muted-foreground: 60 3% 42%;    /* #6E6E68 */
+    --border: 48 11% 88%;             /* #E4E4DF */
+    --input: 48 11% 88%;
+    --ring: 148 100% 26%;             /* focus = vert */
+    --radius: 0.75rem;                /* champs 12px ; cartes 18px via rounded-2xl */
+
+    /* — Ombres (sm · md cartes · lg sheets) — */
+    --shadow-sm: 0 1px 2px hsla(90, 8%, 5%, 0.06), 0 1px 3px hsla(90, 8%, 5%, 0.05);
+    --shadow-md: 0 4px 14px hsla(90, 8%, 5%, 0.08), 0 2px 5px hsla(90, 8%, 5%, 0.05);
+    --shadow-lg: 0 12px 34px hsla(90, 8%, 5%, 0.14), 0 4px 10px hsla(90, 8%, 5%, 0.07);
+
+    /* — Transitions — */
+    --transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 158 100% 8%;
-    --foreground: 43 98% 90%;
-    --card: 158 100% 12%;
-    --card-foreground: 43 98% 90%;
-    --popover: 158 100% 12%;
-    --popover-foreground: 43 98% 90%;
-    
-    --primary: 43 98% 54%;
-    --primary-foreground: 158 100% 8%;
-    --primary-glow: 43 98% 65%;
-    
-    --secondary: 158 100% 30%;
-    --secondary-foreground: 0 0% 100%;
-    
-    --accent: 27 92% 57%;
-    --accent-foreground: 0 0% 100%;
-    
-    --success: 158 100% 30%;
+    --background: 90 8% 5%;           /* #0E0F0C */
+    --foreground: 60 16% 95%;         /* #F4F4F1 */
+    --card: 30 3% 9%;                 /* #18191A */
+    --card-foreground: 60 16% 95%;
+    --popover: 30 3% 9%;
+    --popover-foreground: 60 16% 95%;
+
+    --primary: 147 69% 39%;           /* #1FA85A (vert plus lumineux en sombre) */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 147 60% 50%;
+
+    --secondary: 60 16% 95%;          /* clair sur fond sombre */
+    --secondary-foreground: 90 8% 5%;
+
+    --accent: 48 100% 57%;            /* #FFD426 */
+    --accent-foreground: 90 8% 5%;
+
+    --success: 147 69% 39%;
     --success-foreground: 0 0% 100%;
-    
-    --destructive: 358 80% 51%;
-    --destructive-foreground: 0 0% 100%;
-    --muted: 158 50% 15%;
-    --muted-foreground: 33 20% 70%;
-    --border: 158 50% 18%;
-    --input: 158 50% 18%;
-    --ring: 43 98% 54%;
-    
-    /* Professional solid colors - no gradients */
-    
-    --shadow-sm: 0 2px 8px hsla(0, 0%, 0%, 0.3);
-    --shadow-md: 0 8px 24px hsla(0, 0%, 0%, 0.4);
-    --shadow-lg: 0 16px 48px hsla(0, 0%, 0%, 0.5);
+
+    --destructive: 357 86% 64%;       /* #F2545B */
+    --destructive-foreground: 90 8% 5%;
+    --live: 357 86% 64%;
+    --live-foreground: 90 8% 5%;
+
+    --muted: 60 2% 12%;               /* #1F2021 */
+    --muted-foreground: 60 4% 58%;    /* #9A9A93 */
+    --border: 60 2% 17%;              /* #2A2B2C */
+    --input: 60 2% 17%;
+    --ring: 147 69% 39%;
+
+    --shadow-sm: 0 1px 2px hsla(0, 0%, 0%, 0.4), 0 1px 3px hsla(0, 0%, 0%, 0.3);
+    --shadow-md: 0 4px 14px hsla(0, 0%, 0%, 0.5), 0 2px 5px hsla(0, 0%, 0%, 0.35);
+    --shadow-lg: 0 12px 34px hsla(0, 0%, 0%, 0.6), 0 4px 10px hsla(0, 0%, 0%, 0.45);
   }
 }
 
@@ -97,5 +110,40 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Titres & chiffres-clés : Archivo condensé */
+  .font-display,
+  h1, h2, h3 {
+    font-family: Archivo, system-ui, sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: hsl(var(--primary));
+    color: #fff;
   }
 }
+
+/* Marquee (bandeau live défilant de la landing) */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Étiquettes de nom des lieux sur la carte (Leaflet tooltip) */
+.dg-tooltip.leaflet-tooltip {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(14, 15, 12, 0.12);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+.dg-tooltip.leaflet-tooltip::before { display: none; } /* retire la flèche */

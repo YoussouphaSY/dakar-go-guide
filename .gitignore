@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 .venv/
+
+# Secrets (ne jamais pousser)
+.env
+.env.local
+
+# Médias lourds (vidéo hero > limite GitHub) — servis autrement en prod
+public/media/*.mp4
