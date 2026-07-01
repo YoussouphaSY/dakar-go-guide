@@ -16,10 +16,12 @@ interface AppShellProps {
   variant?: "web" | "app";
   /** Affiche le TopNav desktop (variante web, écrans principaux). */
   withTopNav?: boolean;
+  /** Couche transverse app (sheets, AYO flottant, toast), positionnée sur le cadre. */
+  overlays?: ReactNode;
   className?: string;
 }
 
-const AppShell = ({ children, bottomNav, variant = "web", withTopNav = true, className }: AppShellProps) => {
+const AppShell = ({ children, bottomNav, variant = "web", withTopNav = true, overlays, className }: AppShellProps) => {
   if (variant === "app") {
     // Interface app : cadre largeur mobile, plein écran en PWA, centré si testé sur desktop.
     return (
@@ -29,6 +31,7 @@ const AppShell = ({ children, bottomNav, variant = "web", withTopNav = true, cla
             {children}
           </main>
           {bottomNav}
+          {overlays}
         </div>
       </div>
     );

@@ -139,6 +139,33 @@
   to { transform: translateY(0); }
 }
 
+/* Toast (confirmation « ajouté à l'agenda », etc.) */
+@keyframes toastUp {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Apparition douce (messages AYO, bulles) */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulsation « LIVE » */
+@keyframes livep {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.anim-sheet { animation: sheetUp 0.24s ease; }
+.anim-toast { animation: toastUp 0.2s ease; }
+.anim-fade { animation: fadeUp 0.25s ease; }
+.anim-live { animation: livep 1.4s infinite; }
+
+/* Masquer la scrollbar (carrousels, listes) */
+.scr { scrollbar-width: none; }
+.scr::-webkit-scrollbar { display: none; }
+
 /* Étiquettes de nom des lieux sur la carte (Leaflet tooltip) */
 .dg-tooltip.leaflet-tooltip {
   background: hsl(var(--background));

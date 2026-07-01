@@ -1,144 +1,292 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, ChevronDown, ChevronRight, MapPin, Plus, ArrowRight } from "lucide-react";
+import {
+  Bell, ChevronDown, MapPin, Plus, Check, Maximize2, ArrowRight,
+  SmartphoneCharging, ChevronRight,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useI18n } from "@/lib/i18n";
-import Logo from "@/components/Logo";
+import { useApp } from "@/store/appStore";
+import {
+  HOME_FILTERS, DISCOVER, NEWS, LIVE_BANNER, type HomeFilter, type NewsKind,
+} from "@/data/appMock";
+import MiniMap, { CAT_COLOR } from "@/components/app/MiniMap";
 
 /*
-  HomeApp — Accueil mobile, refonte "Simple & clean" (maquette Claude Refonte Mobile).
-  Diaporama photo auto en haut + En direct & à venir + encart eSIM discret.
+  HomeApp — accueil de l'interface app (mobile), révision Prototype-2 :
+  header, diapo actualités (résultats/records/actus), bannière live &
+  prochains matchs, carte à pins filtrable (pop-up ancré au-dessus du point),
+  en direct & à venir, découvrir Dakar, encart eSIM SONATEL.
+  (La rangée d'accès rapides Programme/Carte/Billets/AYO a été retirée.)
 */
 
-const SLIDES = [
-  { label: "Compétition", img: "/media/slides/athletisme.jpg", title: "Finale 200 m — ce soir 18:00", cta: "Voir le programme", to: "/programme" },
-  { label: "Festivité", img: "/media/slides/fanzone.jpg", title: "Fan Zone Corniche · concerts gratuits", cta: "Ajouter à mon agenda", to: "/programme" },
-  { label: "À faire à Dakar", img: "/media/slides/goree.jpg", title: "Île de Gorée, mémoire & patrimoine", cta: "Découvrir Dakar", to: "/carte" },
-  { label: "Compétition", img: "/media/slides/natation.jpg", title: "Finale 100 m nage libre · demain", cta: "Voir le programme", to: "/programme" },
-];
+const NEWS_ACCENT: Record<NewsKind, string> = {
+  resultat: "#00853F",
+  record: "#C77A1E",
+  athlete: "#E2571E",
+  actu: "#0E0F0C",
+};
 
 const HomeApp = () => {
-  const navigate = useNavigate();
-  const { lang } = useI18n();
-  const [slide, setSlide] = useState(0);
+  const nav = useNavigate();
+  const lang = useApp((s) => s.lang);
+  const mapFilter = useApp((s) => s.mapFilter);
+  const setMapFilter = useApp((s) => s.setMapFilter);
+  const setLangOpen = useApp((s) => s.setLangOpen);
+  const pushToast = useApp((s) => s.pushToast);
 
-  // Défilement auto du diaporama
+  const shownCount = HOME_FILTERS.find((f) => f.id === mapFilter)?.name ?? "";
+
+  /* diapo actus : défilement auto */
+  const [slide, setSlide] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const id = setInterval(() => setSlide((s) => (s + 1) % SLIDES.length), 4200);
-    return () => clearInterval(id);
+    const t = setInterval(() => setSlide((s) => (s + 1) % NEWS.length), 4200);
+    return () => clearInterval(t);
   }, []);
+  useEffect(() => {
+    trackRef.current?.scrollTo({ left: slide * trackRef.current.clientWidth, behavior: "smooth" });
+  }, [slide]);
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 bg-background">
-      {/* Header */}
-      <div className="flex-shrink-0 px-[22px]">
-        <div className="flex items-center justify-between py-2.5">
-          <div className="flex items-center gap-2.5">
-            <Logo className="h-[26px] w-auto" />
-            <span className="font-display font-extrabold text-lg">Dakar 2026</span>
+    <div className="scr flex-1 overflow-y-auto px-[22px] pb-5">
+      {/* status bar */}
+      <div className="flex justify-between items-center pt-3.5 pb-1.5 text-[13px] font-semibold">
+        <span>9:41</span>
+        <span className="font-mono text-[11px]">▂▄▆ ⵛ ⏻</span>
+      </div>
+
+      {/* header */}
+      <div className="flex items-center justify-between pt-2 pb-4">
+        <div className="flex items-center gap-2.5">
+          <div className="w-10 h-10 border-[1.4px] border-dashed border-border rounded-[11px] flex items-center justify-center font-mono text-[7px] text-muted-foreground">
+            LOGO
           </div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex items-center gap-1.5 border border-border rounded-full px-2.5 py-1.5 text-xs font-semibold">
-              {lang.toUpperCase()} <ChevronDown className="h-2 w-2 text-muted-foreground" />
-            </span>
-            <button className="relative h-10 w-10 rounded-full border border-border flex items-center justify-center">
-              <Bell className="h-[19px] w-[19px]" strokeWidth={1.8} />
-              <span className="absolute top-2 right-[9px] h-[7px] w-[7px] rounded-full bg-live border-[1.5px] border-background" />
-            </button>
+          <div>
+            <div className="font-display font-bold text-[18px] tracking-tight leading-none">Dakar 2026</div>
+            <div className="text-xs text-muted-foreground mt-0.5">Bonjour 👋</div>
           </div>
+        </div>
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={() => setLangOpen(true)}
+            className="flex items-center gap-1.5 border border-border bg-background rounded-full px-2.5 py-[7px] text-xs font-semibold"
+          >
+            {lang}
+            <ChevronDown className="w-2.5 h-2.5 text-muted-foreground" />
+          </button>
+          <button
+            onClick={() => nav("/profil")}
+            aria-label="Profil"
+            className="w-10 h-10 rounded-full border border-border bg-background flex items-center justify-center relative"
+          >
+            <Bell className="w-[19px] h-[19px]" strokeWidth={1.8} />
+            <span className="absolute top-2 right-[9px] w-[7px] h-[7px] rounded-full bg-destructive border-[1.5px] border-background" />
+          </button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-[22px] pb-5">
-        {/* Greeting */}
-        <h1 className="font-display font-extrabold text-[30px] leading-tight mt-1.5" style={{ fontStretch: "86%" }}>
-          Bienvenue à Dakar
-        </h1>
-        <p className="text-[14.5px] text-muted-foreground mt-1.5">Explorez les Jeux et la ville, d'un seul geste.</p>
-
-        {/* Diaporama photo */}
-        <div className="mt-6 relative rounded-3xl overflow-hidden shadow-md">
-          <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${slide * 100}%)` }}>
-            {SLIDES.map((s, i) => (
-              <div key={i} className="flex-[0_0_100%] relative h-[248px]">
-                <img src={s.img} alt={s.title} className="absolute inset-0 w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 to-transparent to-[64%]" />
-                <div className="absolute inset-x-0 bottom-0 p-5 text-white">
-                  <span className="inline-block bg-white/[0.18] backdrop-blur-sm text-[11px] font-semibold px-2.5 py-1.5 rounded-full">{s.label}</span>
-                  <div className="font-display font-extrabold text-[22px] leading-tight mt-2.5 max-w-[280px]" style={{ fontStretch: "90%" }}>{s.title}</div>
-                  <button onClick={() => navigate(s.to)} className="mt-3.5 inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold text-sm px-4 py-2.5 rounded-xl">
-                    {s.cta} <ArrowRight className="h-[15px] w-[15px]" strokeWidth={2.3} />
-                  </button>
+      {/* diapo actualités */}
+      <div ref={trackRef} className="scr flex overflow-x-auto snap-x snap-mandatory rounded-[22px]">
+        {NEWS.map((n) => (
+          <div key={n.id} className="min-w-full snap-center">
+            <div className="relative h-[168px] rounded-[22px] overflow-hidden bg-foreground text-background">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.04)_0_14px,transparent_14px_28px)]" />
+              <div className="relative h-full p-5 flex flex-col justify-end">
+                <span
+                  className="self-start text-[10px] font-bold uppercase tracking-wide px-2.5 py-[5px] rounded-full text-background"
+                  style={{ background: NEWS_ACCENT[n.kind] }}
+                >
+                  {n.tag}
+                </span>
+                <div className="font-display font-extrabold text-[19px] leading-[1.12] tracking-tight mt-2.5 max-w-[280px]">
+                  {n.title}
                 </div>
+                <div className="text-[12.5px] text-muted-foreground mt-1.5">{n.sub}</div>
               </div>
-            ))}
+            </div>
           </div>
-          {/* Dots */}
-          <div className="absolute top-3.5 right-3.5 flex gap-1.5">
-            {SLIDES.map((_, i) => (
-              <button key={i} onClick={() => setSlide(i)} className="h-1.5 rounded-full transition-all"
-                style={{ width: i === slide ? 16 : 6, background: i === slide ? "#fff" : "rgba(255,255,255,.5)" }} />
-            ))}
-          </div>
-        </div>
+        ))}
+      </div>
+      {/* dots */}
+      <div className="flex justify-center gap-1.5 mt-2.5">
+        {NEWS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setSlide(i)}
+            aria-label={`Actu ${i + 1}`}
+            className={cn("h-1.5 rounded-full transition-all", i === slide ? "w-4 bg-foreground" : "w-1.5 bg-border")}
+          />
+        ))}
+      </div>
 
-        {/* En direct & à venir */}
-        <div className="flex items-center justify-between mt-7">
-          <h2 className="font-display font-extrabold text-[19px]">En direct & à venir</h2>
-          <button onClick={() => navigate("/programme")} className="text-[13px] font-semibold text-primary">Tout voir</button>
-        </div>
+      {/* bannière live & prochains matchs */}
+      <div className="scr flex gap-2.5 mt-4 overflow-x-auto pb-0.5">
+        {LIVE_BANNER.map((b) => (
+          <div
+            key={b.id}
+            className={cn(
+              "flex-shrink-0 min-w-[188px] rounded-[16px] p-3 border",
+              b.state === "live" ? "bg-destructive/5 border-destructive/20" : "bg-background border-border",
+            )}
+          >
+            <div className="flex items-center gap-1.5">
+              {b.state === "live" ? (
+                <span className="inline-flex items-center gap-[5px] text-[9.5px] font-bold text-destructive">
+                  <span className="w-[5px] h-[5px] rounded-full bg-destructive anim-live" />LIVE
+                </span>
+              ) : (
+                <span className="text-[9.5px] font-bold text-muted-foreground">{b.when}</span>
+              )}
+              <span className="font-mono text-[9.5px] text-muted-foreground uppercase tracking-wide">{b.sport}</span>
+            </div>
+            <div className="font-display font-bold text-[14px] leading-[1.15] mt-1.5">{b.title}</div>
+            {b.state === "live" ? (
+              <div className="font-display font-extrabold text-[17px] text-primary mt-1">{b.score}</div>
+            ) : (
+              <div className="text-[11.5px] text-muted-foreground mt-1 inline-flex items-center gap-1">
+                Prochainement<ChevronRight className="w-3 h-3" strokeWidth={2.4} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
 
-        {/* Carte live */}
-        <div className="mt-3.5 bg-card border border-border rounded-[22px] p-[18px] shadow-sm">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 bg-live/10 text-live text-[11px] font-bold tracking-wide px-2.5 py-[5px] rounded-full">
-              <span className="h-1.5 w-1.5 rounded-full bg-live animate-pulse" /> EN DIRECT
-            </span>
-            <span className="text-[12px] text-muted-foreground">Natation</span>
-          </div>
-          <div className="font-display font-extrabold text-[22px] leading-tight mt-3" style={{ fontStretch: "90%" }}>Demi-finale 100 m nage libre</div>
-          <div className="flex items-center gap-1.5 text-[13.5px] text-muted-foreground mt-2.5">
-            <MapPin className="h-[15px] w-[15px]" /> Arène olympique · Diamniadio
-          </div>
-        </div>
+      {/* map filter chips */}
+      <div className="scr flex gap-2 mt-4 overflow-x-auto pb-0.5">
+        {HOME_FILTERS.map((f) => {
+          const on = f.id === mapFilter;
+          return (
+            <button
+              key={f.id}
+              onClick={() => setMapFilter(f.id as HomeFilter)}
+              className={cn(
+                "flex-shrink-0 inline-flex items-center gap-[7px] rounded-full px-3.5 py-[9px] text-[13px] font-semibold whitespace-nowrap border transition-base",
+                on ? "bg-foreground text-background border-foreground" : "bg-background text-muted-foreground border-border",
+              )}
+            >
+              <span className="w-[7px] h-[7px] rounded-full" style={{ background: CAT_COLOR[f.id as HomeFilter] }} />
+              {f.name}
+            </button>
+          );
+        })}
+      </div>
 
-        {/* Carte à venir */}
-        <div className="mt-3 bg-card border border-border rounded-[22px] p-[18px] shadow-sm flex items-center gap-4">
-          <div className="text-center flex-shrink-0">
-            <div className="font-display font-extrabold text-2xl leading-none">18:30</div>
-            <div className="text-[11px] text-muted-foreground mt-0.5">Aujourd'hui</div>
-          </div>
-          <div className="w-px self-stretch bg-border" />
-          <div className="flex-1 min-w-0">
-            <div className="text-[12px] text-muted-foreground">Athlétisme</div>
-            <div className="font-display font-bold text-[17px] mt-0.5 leading-tight">Finale 200 m — hommes</div>
-          </div>
-          <button onClick={() => navigate("/programme")} className="h-[42px] w-[42px] rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-            <Plus className="h-5 w-5 text-primary" strokeWidth={2.2} />
+      {/* mini map (pop-up ancré au-dessus du point) */}
+      <div className="mt-3.5 relative h-[248px] rounded-[24px] overflow-hidden shadow-md bg-[#EEEFEA]">
+        <MiniMap />
+        <div className="absolute top-3 left-3 bg-background rounded-full px-3 py-[7px] font-mono text-[11px] font-bold tracking-wide flex items-center gap-[7px] shadow-md z-[6]">
+          <span className="w-[7px] h-[7px] rounded-full" style={{ background: CAT_COLOR[mapFilter] }} />
+          {shownCount.toUpperCase()}
+        </div>
+      </div>
+
+      {/* en direct & à venir */}
+      <SectionHeader title="En direct & à venir" action="Tout voir" onAction={() => nav("/programme")} />
+      <LiveCard
+        day="04" month="NOV" time="16:40" live sport="Natation"
+        title="Demi-finale 100 m nage libre" venue="Arène · Diamniadio"
+        onAdd={() => pushToast("Ajouté à mon agenda")}
+      />
+      <LiveCard
+        day="05" month="NOV" time="09:00" sport="Athlétisme"
+        title="Séries 200 m — hommes" venue="Stade L. S. Senghor" added
+        onAdd={() => pushToast("Ajouté à mon agenda")}
+      />
+
+      {/* découvrir Dakar */}
+      <SectionHeader title="Découvrir Dakar" action="Explorer" onAction={() => setMapFilter("faire")} />
+      <div className="scr flex gap-3 mt-3.5 overflow-x-auto pb-1">
+        {DISCOVER.map((d) => (
+          <button key={d.id} onClick={() => setMapFilter("faire")} className="flex-shrink-0 w-[150px] text-left">
+            <div className="h-[120px] rounded-2xl overflow-hidden bg-[repeating-linear-gradient(135deg,#E7E7E2_0_11px,#F1F1EC_11px_22px)] relative">
+              <div className="absolute inset-0 flex items-center justify-center font-mono text-[9px] text-muted-foreground">
+                photo · {d.name}
+              </div>
+            </div>
+            <div className="font-mono text-[9.5px] text-muted-foreground uppercase tracking-wide mt-2.5">{d.cat}</div>
+            <div className="font-display font-bold text-[15px] mt-0.5 leading-[1.15]">{d.name}</div>
           </button>
-        </div>
+        ))}
+      </div>
 
-        {/* eSIM discret */}
-        <button onClick={() => navigate("/profil")} className="mt-5 w-full flex items-center gap-3.5 px-4 py-[15px] border border-border rounded-[20px] text-left">
-          <div className="h-[42px] w-[42px] rounded-[13px] bg-muted flex items-center justify-center flex-shrink-0">
-            <SimIcon />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="font-semibold text-[14px]">Restez connecté · eSIM</div>
-            <div className="text-[12px] text-muted-foreground mt-0.5">SONATEL · dès l'aéroport</div>
-          </div>
-          <ChevronRight className="h-[19px] w-[19px] text-muted-foreground/60" />
+      {/* eSIM SONATEL */}
+      <div className="mt-6 bg-foreground rounded-[22px] p-[18px] text-background relative overflow-hidden">
+        <div className="flex items-center gap-[7px]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00C46A]" />
+          <span className="font-mono text-[10px] tracking-wide text-muted-foreground uppercase">SONATEL · Partenaire</span>
+        </div>
+        <div className="font-display font-extrabold text-[19px] tracking-tight mt-2.5 max-w-[230px] leading-[1.1]">
+          Restez connecté dès l'aéroport
+        </div>
+        <div className="text-[12.5px] text-muted-foreground mt-1.5">eSIM data · activation en 2 min</div>
+        <button
+          onClick={() => pushToast("Forfaits eSIM bientôt disponibles")}
+          className="mt-4 bg-primary text-primary-foreground font-semibold text-sm px-4 py-2.5 rounded-xl inline-flex items-center gap-2"
+        >
+          Voir les forfaits
+          <ArrowRight className="w-[15px] h-[15px]" strokeWidth={2.3} />
         </button>
+        <div className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center">
+          <SmartphoneCharging className="w-5 h-5 text-muted-foreground" strokeWidth={1.7} />
+        </div>
       </div>
     </div>
   );
 };
 
-const SimIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="text-foreground">
-    <rect x="5" y="3" width="14" height="18" rx="2.5" />
-    <path d="M9 3v6M5 9h4" />
-  </svg>
+const SectionHeader = ({ title, action, onAction }: { title: string; action: string; onAction: () => void }) => (
+  <div className="flex items-center justify-between mt-7">
+    <h3 className="font-display font-extrabold text-[19px] tracking-tight">{title}</h3>
+    <button onClick={onAction} className="text-[13px] font-semibold text-primary">{action}</button>
+  </div>
+);
+
+const LiveCard = ({
+  day, month, time, live, sport, title, venue, added, onAdd,
+}: {
+  day: string; month: string; time: string; live?: boolean;
+  sport: string; title: string; venue: string; added?: boolean; onAdd: () => void;
+}) => (
+  <div className="mt-3.5 bg-background border border-border rounded-[20px] p-3.5 shadow-sm flex items-center gap-3.5">
+    <div className="text-center flex-shrink-0 w-[42px]">
+      <div className="font-display font-extrabold text-[21px] leading-none">{day}</div>
+      <div className="font-mono text-[9px] text-muted-foreground tracking-wide">{month}</div>
+      <div className="text-[11px] font-semibold mt-[3px]">{time}</div>
+    </div>
+    <div className="w-px self-stretch bg-border flex-shrink-0" />
+    <div className="flex-1 min-w-0">
+      <div className="flex items-center gap-[7px]">
+        {live ? (
+          <span className="inline-flex items-center gap-[5px] bg-destructive/10 text-destructive text-[9.5px] font-bold tracking-wide px-[7px] py-[3px] rounded-[5px]">
+            <span className="w-[5px] h-[5px] rounded-full bg-destructive anim-live" />
+            LIVE
+          </span>
+        ) : (
+          <span className="bg-muted text-muted-foreground text-[9.5px] font-bold tracking-wide px-[7px] py-[3px] rounded-[5px]">À VENIR</span>
+        )}
+        <span className="font-mono text-[10px] text-muted-foreground uppercase tracking-wide">{sport}</span>
+      </div>
+      <div className="font-display font-bold text-base leading-[1.2] mt-1.5">{title}</div>
+      <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1.5">
+        <MapPin className="w-3 h-3" strokeWidth={2} />
+        {venue}
+      </div>
+    </div>
+    <button
+      onClick={onAdd}
+      aria-label="Ajouter à l'agenda"
+      className={cn(
+        "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 active:scale-95 transition-base",
+        added ? "bg-primary" : "bg-primary/10",
+      )}
+    >
+      {added ? (
+        <Check className="w-[18px] h-[18px] text-primary-foreground" strokeWidth={2.6} />
+      ) : (
+        <Plus className="w-[18px] h-[18px] text-primary" strokeWidth={2.4} />
+      )}
+    </button>
+  </div>
 );
 
 export default HomeApp;

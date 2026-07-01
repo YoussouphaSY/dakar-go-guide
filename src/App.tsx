@@ -7,13 +7,20 @@ import { useDisplayMode } from "@/hooks/useDisplayMode";
 import AppShell from "@/components/layout/AppShell";
 import BottomNav from "@/components/layout/BottomNav";
 import WebPageLayout from "@/components/layout/WebPageLayout";
+import AppOverlays from "@/components/app/AppOverlays";
 import Placeholder from "@/pages/Placeholder";
 import Onboarding from "@/pages/Onboarding";
 import Home from "@/pages/Home";
 import HomeApp from "@/pages/HomeApp";
 import Programme from "@/pages/Programme";
-import ProgrammeApp from "@/pages/ProgrammeApp";
 import Mobilite from "@/pages/Mobilite";
+/* — Écrans interface APP (mobile, fidèles au prototype) — */
+import ProgrammeApp from "@/pages/ProgrammeApp";
+import MobiliteApp from "@/pages/MobiliteApp";
+import AgendaApp from "@/pages/AgendaApp";
+import ProfilApp from "@/pages/ProfilApp";
+import AyoApp from "@/pages/AyoApp";
+import AppGate from "@/pages/app/AppGate";
 
 const queryClient = new QueryClient();
 
@@ -24,12 +31,14 @@ const WebFullLayout = () => (
   </AppShell>
 );
 
-/* — Layouts APP (mobile, cadre téléphone, nav basse) — */
+/* — Layout APP à onglets : nav basse + couche transverse (sheets, AYO, toast). — */
 const AppTabsLayout = () => (
-  <AppShell variant="app" bottomNav={<BottomNav />}>
+  <AppShell variant="app" bottomNav={<BottomNav />} overlays={<AppOverlays />}>
     <Outlet />
   </AppShell>
 );
+
+/* — Layout APP plein écran (onboarding, AYO) : pas de nav basse. — */
 const AppFullLayout = () => (
   <AppShell variant="app">
     <Outlet />
@@ -52,18 +61,19 @@ const WebRoutes = () => (
   </Routes>
 );
 
-/* — Interface APP (PWA installée) : accueil mobile + nav basse — */
+/* — Interface APP (PWA installée) : nav basse 5 onglets + AYO plein écran. — */
 const AppRoutes = () => (
   <Routes>
     <Route element={<AppFullLayout />}>
       <Route path="/onboarding" element={<Onboarding />} />
+      <Route path="/ayo" element={<AyoApp />} />
     </Route>
     <Route element={<AppTabsLayout />}>
       <Route path="/" element={<HomeApp />} />
       <Route path="/programme" element={<ProgrammeApp />} />
-      <Route path="/carte" element={<Placeholder title="Carte" />} />
-      <Route path="/ayo" element={<Placeholder title="AYO" />} />
-      <Route path="/profil" element={<Placeholder title="Profil" />} />
+      <Route path="/agenda" element={<AgendaApp />} />
+      <Route path="/mobilite" element={<MobiliteApp />} />
+      <Route path="/profil" element={<ProfilApp />} />
     </Route>
     <Route path="*" element={<Placeholder title="Page introuvable" />} />
   </Routes>
@@ -71,7 +81,14 @@ const AppRoutes = () => (
 
 const Shell = () => {
   const mode = useDisplayMode();
-  return mode === "app" ? <AppRoutes /> : <WebRoutes />;
+  if (mode === "app") {
+    return (
+      <AppGate>
+        <AppRoutes />
+      </AppGate>
+    );
+  }
+  return <WebRoutes />;
 };
 
 const App = () => (
