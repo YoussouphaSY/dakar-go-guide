@@ -58,6 +58,10 @@ interface AppState {
   authed: boolean;
   setAuthed: (v: boolean) => void;
 
+  /* — Notifications activées (cloche de l'accueil) — */
+  notifOn: boolean;
+  toggleNotif: () => void;
+
   setLang: (l: LangId) => void;
   setProgDay: (d: string) => void;
   setProgVenue: (v: string) => void;
@@ -103,6 +107,16 @@ export const useApp = create<AppState>((set, get) => ({
   setAuthed: (v) => {
     try { localStorage.setItem("dakargo-authed", v ? "1" : "0"); } catch { /* ignore */ }
     set({ authed: v });
+  },
+
+  notifOn: (() => {
+    try { return localStorage.getItem("dakargo-notif") !== "0"; } catch { return true; }
+  })(),
+  toggleNotif: () => {
+    const next = !get().notifOn;
+    try { localStorage.setItem("dakargo-notif", next ? "1" : "0"); } catch { /* ignore */ }
+    set({ notifOn: next });
+    get().pushToast(next ? "Notifications activées" : "Notifications désactivées");
   },
 
   setLang: (lang) => set({ lang, langOpen: false }),

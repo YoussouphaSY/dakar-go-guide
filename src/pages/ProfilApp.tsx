@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Download, MessageCircle, ChevronRight } from "lucide-react";
+import { Download, MessageCircle, ChevronRight, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { LANGS, INTERESTS, SETTINGS, qrCells, type LangId } from "@/data/appMock";
@@ -31,7 +31,13 @@ const ProfilApp = () => {
   const toggleInterest = useApp((s) => s.toggleInterest);
   const reminders = useApp((s) => s.reminders);
   const toggleReminder = useApp((s) => s.toggleReminder);
+  const setAuthed = useApp((s) => s.setAuthed);
   const settings = SETTINGS.filter((s) => s.id !== "notif");
+
+  const logout = () => {
+    setAuthed(false);
+    nav("/");
+  };
 
   return (
     <div className="scr flex-1 overflow-y-auto px-[22px] pb-5 pt-2">
@@ -157,6 +163,15 @@ const ProfilApp = () => {
           );
         })}
       </div>
+
+      {/* déconnexion */}
+      <button
+        onClick={logout}
+        className="mt-6 w-full flex items-center justify-center gap-2 border border-destructive/30 text-destructive font-semibold text-[14.5px] py-3.5 rounded-[14px] active:scale-[0.99] transition-base"
+      >
+        <LogOut className="w-[18px] h-[18px]" strokeWidth={2} />
+        Se déconnecter
+      </button>
     </div>
   );
 };

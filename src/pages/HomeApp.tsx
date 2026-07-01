@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Bell, ChevronDown, MapPin, Plus, Check, Maximize2, ArrowRight,
-  SmartphoneCharging, ChevronRight,
+  Bell, BellOff, ChevronDown, MapPin, Plus, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import {
-  HOME_FILTERS, DISCOVER, NEWS, LIVE_BANNER, type HomeFilter, type NewsKind,
+  HOME_FILTERS, DISCOVER, NEWS, type HomeFilter, type NewsKind,
 } from "@/data/appMock";
 import MiniMap, { CAT_COLOR } from "@/components/app/MiniMap";
 
@@ -33,6 +32,8 @@ const HomeApp = () => {
   const setMapFilter = useApp((s) => s.setMapFilter);
   const setLangOpen = useApp((s) => s.setLangOpen);
   const pushToast = useApp((s) => s.pushToast);
+  const notifOn = useApp((s) => s.notifOn);
+  const toggleNotif = useApp((s) => s.toggleNotif);
 
   const shownCount = HOME_FILTERS.find((f) => f.id === mapFilter)?.name ?? "";
 
@@ -75,12 +76,22 @@ const HomeApp = () => {
             <ChevronDown className="w-2.5 h-2.5 text-muted-foreground" />
           </button>
           <button
-            onClick={() => nav("/profil")}
-            aria-label="Profil"
-            className="w-10 h-10 rounded-full border border-border bg-background flex items-center justify-center relative"
+            onClick={toggleNotif}
+            aria-label={notifOn ? "Désactiver les notifications" : "Activer les notifications"}
+            aria-pressed={notifOn}
+            className={cn(
+              "w-10 h-10 rounded-full border flex items-center justify-center relative transition-base",
+              notifOn ? "border-border bg-background" : "border-border bg-muted text-muted-foreground",
+            )}
           >
-            <Bell className="w-[19px] h-[19px]" strokeWidth={1.8} />
-            <span className="absolute top-2 right-[9px] w-[7px] h-[7px] rounded-full bg-destructive border-[1.5px] border-background" />
+            {notifOn ? (
+              <>
+                <Bell className="w-[19px] h-[19px]" strokeWidth={1.8} />
+                <span className="absolute top-2 right-[9px] w-[7px] h-[7px] rounded-full bg-destructive border-[1.5px] border-background" />
+              </>
+            ) : (
+              <BellOff className="w-[19px] h-[19px]" strokeWidth={1.8} />
+            )}
           </button>
         </div>
       </div>
@@ -104,49 +115,6 @@ const HomeApp = () => {
                 <div className="text-[12.5px] text-muted-foreground mt-1.5">{n.sub}</div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-      {/* dots */}
-      <div className="flex justify-center gap-1.5 mt-2.5">
-        {NEWS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setSlide(i)}
-            aria-label={`Actu ${i + 1}`}
-            className={cn("h-1.5 rounded-full transition-all", i === slide ? "w-4 bg-foreground" : "w-1.5 bg-border")}
-          />
-        ))}
-      </div>
-
-      {/* bannière live & prochains matchs */}
-      <div className="scr flex gap-2.5 mt-4 overflow-x-auto pb-0.5">
-        {LIVE_BANNER.map((b) => (
-          <div
-            key={b.id}
-            className={cn(
-              "flex-shrink-0 min-w-[188px] rounded-[16px] p-3 border",
-              b.state === "live" ? "bg-destructive/5 border-destructive/20" : "bg-background border-border",
-            )}
-          >
-            <div className="flex items-center gap-1.5">
-              {b.state === "live" ? (
-                <span className="inline-flex items-center gap-[5px] text-[9.5px] font-bold text-destructive">
-                  <span className="w-[5px] h-[5px] rounded-full bg-destructive anim-live" />LIVE
-                </span>
-              ) : (
-                <span className="text-[9.5px] font-bold text-muted-foreground">{b.when}</span>
-              )}
-              <span className="font-mono text-[9.5px] text-muted-foreground uppercase tracking-wide">{b.sport}</span>
-            </div>
-            <div className="font-display font-bold text-[14px] leading-[1.15] mt-1.5">{b.title}</div>
-            {b.state === "live" ? (
-              <div className="font-display font-extrabold text-[17px] text-primary mt-1">{b.score}</div>
-            ) : (
-              <div className="text-[11.5px] text-muted-foreground mt-1 inline-flex items-center gap-1">
-                Prochainement<ChevronRight className="w-3 h-3" strokeWidth={2.4} />
-              </div>
-            )}
           </div>
         ))}
       </div>
@@ -193,43 +161,29 @@ const HomeApp = () => {
         onAdd={() => pushToast("Ajouté à mon agenda")}
       />
 
-      {/* découvrir Dakar */}
+      {/* découvrir Dakar — carrousel défilant en boucle */}
       <SectionHeader title="Découvrir Dakar" action="Explorer" onAction={() => setMapFilter("faire")} />
-      <div className="scr flex gap-3 mt-3.5 overflow-x-auto pb-1">
-        {DISCOVER.map((d) => (
-          <button key={d.id} onClick={() => setMapFilter("faire")} className="flex-shrink-0 w-[150px] text-left">
-            <div className="h-[120px] rounded-2xl overflow-hidden bg-[repeating-linear-gradient(135deg,#E7E7E2_0_11px,#F1F1EC_11px_22px)] relative">
-              <div className="absolute inset-0 flex items-center justify-center font-mono text-[9px] text-muted-foreground">
-                photo · {d.name}
+      <div className="mt-3.5 overflow-hidden">
+        <div className="flex gap-3 w-max animate-[marquee_26s_linear_infinite] hover:[animation-play-state:paused] pb-1">
+          {[...DISCOVER, ...DISCOVER].map((d, i) => (
+            <button
+              key={`${d.id}-${i}`}
+              onClick={() => setMapFilter("faire")}
+              className="flex-shrink-0 w-[150px] text-left"
+            >
+              <div className="h-[120px] rounded-2xl overflow-hidden bg-[repeating-linear-gradient(135deg,#E7E7E2_0_11px,#F1F1EC_11px_22px)] relative">
+                <div className="absolute inset-0 flex items-center justify-center font-mono text-[9px] text-muted-foreground">
+                  photo · {d.name}
+                </div>
               </div>
-            </div>
-            <div className="font-mono text-[9.5px] text-muted-foreground uppercase tracking-wide mt-2.5">{d.cat}</div>
-            <div className="font-display font-bold text-[15px] mt-0.5 leading-[1.15]">{d.name}</div>
-          </button>
-        ))}
+              <div className="font-mono text-[9.5px] text-muted-foreground uppercase tracking-wide mt-2.5">{d.cat}</div>
+              <div className="font-display font-bold text-[15px] mt-0.5 leading-[1.15]">{d.name}</div>
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* eSIM SONATEL */}
-      <div className="mt-6 bg-foreground rounded-[22px] p-[18px] text-background relative overflow-hidden">
-        <div className="flex items-center gap-[7px]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00C46A]" />
-          <span className="font-mono text-[10px] tracking-wide text-muted-foreground uppercase">SONATEL · Partenaire</span>
-        </div>
-        <div className="font-display font-extrabold text-[19px] tracking-tight mt-2.5 max-w-[230px] leading-[1.1]">
-          Restez connecté dès l'aéroport
-        </div>
-        <div className="text-[12.5px] text-muted-foreground mt-1.5">eSIM data · activation en 2 min</div>
-        <button
-          onClick={() => pushToast("Forfaits eSIM bientôt disponibles")}
-          className="mt-4 bg-primary text-primary-foreground font-semibold text-sm px-4 py-2.5 rounded-xl inline-flex items-center gap-2"
-        >
-          Voir les forfaits
-          <ArrowRight className="w-[15px] h-[15px]" strokeWidth={2.3} />
-        </button>
-        <div className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center">
-          <SmartphoneCharging className="w-5 h-5 text-muted-foreground" strokeWidth={1.7} />
-        </div>
-      </div>
+      <div className="h-2" />
     </div>
   );
 };
