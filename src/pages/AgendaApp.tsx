@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertTriangle, MapPin, ArrowRight, Trash2, CalendarPlus, Download } from "lucide-react";
+import { AlertTriangle, MapPin, ArrowRight, Trash2, CalendarPlus, Download, CalendarClock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { useT, dayLabelT } from "@/lib/useT";
 import { findEvent } from "@/data/appMock";
 import { downloadAgendaPdf } from "@/lib/agendaPdf";
+import { downloadAgendaIcs } from "@/lib/agendaIcs";
 
 /*
   AgendaApp — écran Agenda (mobile). Affiche les ÉPREUVES RÉELLEMENT AJOUTÉES
@@ -82,6 +83,16 @@ const AgendaApp = () => {
     pushToast(t("ag.downloaded"));
   };
 
+  const addToCalendar = () => {
+    const entries = days.flatMap((d) =>
+      groups[d].map((e) => ({
+        id: e.id, day: e.day, time: e.time, sport: e.sport, title: e.title, venue: e.venue,
+      })),
+    );
+    downloadAgendaIcs(entries);
+    pushToast(t("ag.calAdded"));
+  };
+
   return (
     <div className="scr flex-1 overflow-y-auto px-[22px] pb-5 pt-2">
       <div className="flex justify-between items-center pt-1.5 pb-3 text-[13px] font-semibold">
@@ -89,23 +100,31 @@ const AgendaApp = () => {
         <span className="font-mono text-[11px]">▂▄▆ ⵛ ⏻</span>
       </div>
 
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <h2 className="font-display font-extrabold text-[30px] tracking-tight">{t("ag.title")}</h2>
-          <p className="text-[14.5px] text-muted-foreground mt-1.5">
-            {empty ? t("ag.none") : t("ag.count", { n: agenda.length })}
-          </p>
-        </div>
-        {!empty && (
+      <h2 className="font-display font-extrabold text-[30px] tracking-tight">{t("ag.title")}</h2>
+      <p className="text-[14.5px] text-muted-foreground mt-1.5">
+        {empty ? t("ag.none") : t("ag.count", { n: agenda.length })}
+      </p>
+
+      {/* actions : ajout au calendrier du téléphone + export PDF */}
+      {!empty && (
+        <div className="mt-4 flex gap-2.5">
+          <button
+            onClick={addToCalendar}
+            className="flex-1 flex items-center justify-center gap-2 bg-primary/10 text-primary font-semibold text-[13.5px] py-3 rounded-[14px] active:scale-[0.98] transition-base"
+          >
+            <CalendarClock className="w-[18px] h-[18px]" strokeWidth={2} />
+            {t("ag.addCal")}
+          </button>
           <button
             onClick={downloadPdf}
             aria-label={t("ag.download")}
-            className="mt-1 w-11 h-11 flex-shrink-0 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-base"
+            className="flex items-center justify-center gap-2 bg-background border border-border text-foreground font-semibold text-[13.5px] px-4 py-3 rounded-[14px] active:scale-[0.98] transition-base"
           >
-            <Download className="w-[21px] h-[21px]" strokeWidth={2} />
+            <Download className="w-[18px] h-[18px]" strokeWidth={2} />
+            {t("ag.pdf")}
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* conflict banner */}
       {hasConflict && (

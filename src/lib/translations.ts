@@ -83,6 +83,9 @@ const D = {
   "ag.removeAria": ["Supprimer de l'agenda", "Remove from agenda", "Quitar de la agenda", "إزالة من الأجندة", "Dindi ko ci ajanda"],
   "ag.download": ["Télécharger l'agenda (PDF)", "Download agenda (PDF)", "Descargar agenda (PDF)", "تنزيل الأجندة (PDF)", "Yebbi ajanda (PDF)"],
   "ag.downloaded": ["Agenda téléchargé", "Agenda downloaded", "Agenda descargada", "تم تنزيل الأجندة", "Yebbi nañu ajanda bi"],
+  "ag.pdf": ["PDF", "PDF", "PDF", "PDF", "PDF"],
+  "ag.addCal": ["Ajouter au calendrier", "Add to calendar", "Añadir al calendario", "أضف إلى التقويم", "Yokk ci kalandriye"],
+  "ag.calAdded": ["Calendrier exporté (.ics)", "Calendar exported (.ics)", "Calendario exportado (.ics)", "تم تصدير التقويم (.ics)", "Kalandriye bi génn (.ics)"],
 
   /* — Mobilité — */
   "mo.title": ["Mobilité", "Mobility", "Movilidad", "التنقل", "Tukki"],
