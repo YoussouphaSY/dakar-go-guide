@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertTriangle, MapPin, ArrowRight, Trash2, CalendarPlus } from "lucide-react";
+import { AlertTriangle, MapPin, ArrowRight, Trash2, CalendarPlus, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { useT, dayLabelT } from "@/lib/useT";
 import { findEvent } from "@/data/appMock";
+import { downloadAgendaPdf } from "@/lib/agendaPdf";
 
 /*
   AgendaApp — écran Agenda (mobile). Affiche les ÉPREUVES RÉELLEMENT AJOUTÉES
@@ -41,6 +42,7 @@ const AgendaApp = () => {
   const { t, lang } = useT();
   const agenda = useApp((s) => s.agenda);
   const toggleAgenda = useApp((s) => s.toggleAgenda);
+  const pushToast = useApp((s) => s.pushToast);
 
   /* Résout les IDs en épreuves + détecte les chevauchements (± 45 min). */
   const { groups, days } = useMemo(() => {
@@ -69,6 +71,17 @@ const AgendaApp = () => {
   const hasConflict = days.some((d) => groups[d].some((e) => e.conflict));
   const empty = agenda.length === 0;
 
+  const downloadPdf = () => {
+    const entries = days.flatMap((d) =>
+      groups[d].map((e) => ({
+        day: e.day, time: e.time, sport: e.sport, title: e.title,
+        venue: e.venue, depart: e.depart, conflict: e.conflict,
+      })),
+    );
+    downloadAgendaPdf(entries, lang);
+    pushToast(t("ag.downloaded"));
+  };
+
   return (
     <div className="scr flex-1 overflow-y-auto px-[22px] pb-5 pt-2">
       <div className="flex justify-between items-center pt-1.5 pb-3 text-[13px] font-semibold">
@@ -76,10 +89,23 @@ const AgendaApp = () => {
         <span className="font-mono text-[11px]">▂▄▆ ⵛ ⏻</span>
       </div>
 
-      <h2 className="font-display font-extrabold text-[30px] tracking-tight">{t("ag.title")}</h2>
-      <p className="text-[14.5px] text-muted-foreground mt-1.5">
-        {empty ? t("ag.none") : t("ag.count", { n: agenda.length })}
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <h2 className="font-display font-extrabold text-[30px] tracking-tight">{t("ag.title")}</h2>
+          <p className="text-[14.5px] text-muted-foreground mt-1.5">
+            {empty ? t("ag.none") : t("ag.count", { n: agenda.length })}
+          </p>
+        </div>
+        {!empty && (
+          <button
+            onClick={downloadPdf}
+            aria-label={t("ag.download")}
+            className="mt-1 w-11 h-11 flex-shrink-0 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-base"
+          >
+            <Download className="w-[21px] h-[21px]" strokeWidth={2} />
+          </button>
+        )}
+      </div>
 
       {/* conflict banner */}
       {hasConflict && (
