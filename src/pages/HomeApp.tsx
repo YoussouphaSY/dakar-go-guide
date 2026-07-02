@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { cn, asset } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
+import logoDakar from "@/assets/brand/logo-dakar2026.png";
 import { NEWS, DISCOVER, type NewsKind } from "@/data/appMock";
 import { MAP_FILTERS, type MapFilter } from "@/data/mobility";
 import { useT } from "@/lib/useT";
@@ -59,12 +60,13 @@ const HomeApp = () => {
       {/* header */}
       <div className="flex items-center justify-between pt-2 pb-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-10 h-10 border-[1.4px] border-dashed border-border rounded-[11px] flex items-center justify-center font-mono text-[7px] text-muted-foreground">
-            LOGO
-          </div>
-          <div>
-            <div className="font-display font-bold text-[18px] tracking-tight leading-none">Dakar 2026</div>
-            <div className="text-xs text-muted-foreground mt-0.5">{t("home.greeting")}</div>
+          <div className="flex flex-col gap-1">
+            <img
+              src={logoDakar}
+              alt="Dakar 2026 · Youth Olympic Games"
+              className="h-[26px] w-auto object-contain self-start"
+            />
+            <div className="text-xs text-muted-foreground">{t("home.greeting")}</div>
           </div>
         </div>
         <div className="flex items-center gap-2.5">
