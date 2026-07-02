@@ -9,6 +9,7 @@ import { NEWS, DISCOVER, type NewsKind } from "@/data/appMock";
 import { MAP_FILTERS, type MapFilter } from "@/data/mobility";
 import { useT } from "@/lib/useT";
 import MiniMap from "@/components/app/MiniMap";
+import LangPopover from "@/components/app/LangPopover";
 
 /*
   HomeApp — accueil de l'interface app (mobile) :
@@ -30,6 +31,7 @@ const HomeApp = () => {
   const lang = useApp((s) => s.lang);
   const mapFilter = useApp((s) => s.mapFilter);
   const setMapFilter = useApp((s) => s.setMapFilter);
+  const langOpen = useApp((s) => s.langOpen);
   const setLangOpen = useApp((s) => s.setLangOpen);
   const pushToast = useApp((s) => s.pushToast);
   const notifOn = useApp((s) => s.notifOn);
@@ -66,13 +68,24 @@ const HomeApp = () => {
           </div>
         </div>
         <div className="flex items-center gap-2.5">
-          <button
-            onClick={() => setLangOpen(true)}
-            className="flex items-center gap-1.5 border border-border bg-background rounded-full px-2.5 py-[7px] text-xs font-semibold"
-          >
-            {lang}
-            <ChevronDown className="w-2.5 h-2.5 text-muted-foreground" />
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              aria-label={t("lang.choose")}
+              className={cn(
+                "flex items-center gap-1.5 border rounded-full px-2.5 py-[7px] text-xs font-semibold transition-base",
+                langOpen ? "border-primary bg-primary/5 text-primary" : "border-border bg-background",
+              )}
+            >
+              {lang}
+              <ChevronDown className={cn("w-2.5 h-2.5 transition-transform", langOpen ? "text-primary rotate-180" : "text-muted-foreground")} />
+            </button>
+            <LangPopover
+              open={langOpen}
+              onClose={() => setLangOpen(false)}
+              className="right-0 top-[42px]"
+            />
+          </div>
           <button
             onClick={toggleNotif}
             aria-label={notifOn ? t("home.notifOffAria") : t("home.notifOnAria")}

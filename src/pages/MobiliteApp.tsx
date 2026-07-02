@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  ChevronRight, PersonStanding, Bus, Car, Clock, Check, MapPin,
-  BusFront, TrainFront, Ship, CarTaxiFront, Wallet,
+  ChevronRight, ChevronDown, PersonStanding, Bus, Car, Clock, Check, MapPin,
+  BusFront, TrainFront, Ship, CarTaxiFront, Wallet, Info,
   ParkingSquare, Cross, Accessibility,
 } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Polyline, useMap } from "react-leaflet";
@@ -76,6 +76,7 @@ const MobiliteApp = () => {
   const moDest = useApp((s) => s.moDest);
   const setMoDest = useApp((s) => s.setMoDest);
   const [destOpen, setDestOpen] = useState(false);
+  const [infosOpen, setInfosOpen] = useState(false);
 
   const dest = VENUES.find((v) => v.id === moDest) ?? VENUES[0];
   const routes = useMemo(() => routesFor(dest), [dest]);
@@ -221,41 +222,64 @@ const MobiliteApp = () => {
         })}
       </div>
 
-      {/* réseaux de transport */}
-      <h3 className="font-display font-extrabold text-lg mt-[26px]">{t("mo.network")}</h3>
-      <div className="mt-3.5 flex flex-col gap-2.5">
-        {TRANSIT_LINES.map((l) => {
-          const Icon = TRANSIT_ICON[l.id];
-          return (
-            <div key={l.id} className="bg-background border border-border rounded-[18px] p-4 flex items-start gap-3.5 shadow-sm">
-              <div className="w-[42px] h-[42px] rounded-[13px] flex items-center justify-center flex-shrink-0" style={{ background: `${l.color}1A` }}>
-                <Icon className="w-[21px] h-[21px]" strokeWidth={2} style={{ color: l.color }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-[14.5px]">{t(`transit.${l.id}.n` as Parameters<typeof t>[0])}</div>
-                <div className="text-[12.5px] text-muted-foreground mt-0.5 leading-[1.45]">{t(`transit.${l.id}.d` as Parameters<typeof t>[0])}</div>
-                <div className="text-[11.5px] font-semibold mt-1.5" style={{ color: l.color }}>{t(`transit.${l.id}.f` as Parameters<typeof t>[0])}</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {/* infos utiles — section repliable (réseaux + conseils) */}
+      <button
+        onClick={() => setInfosOpen((o) => !o)}
+        aria-expanded={infosOpen}
+        className="mt-[26px] w-full flex items-center gap-3 bg-background border border-border rounded-[18px] px-4 py-[15px] active:scale-[0.99] transition-base"
+      >
+        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+          <Info className="w-[19px] h-[19px] text-primary" strokeWidth={2} />
+        </div>
+        <div className="flex-1 text-left min-w-0">
+          <div className="font-display font-extrabold text-[16px] leading-tight">{t("mo.infos")}</div>
+          <div className="text-[12px] text-muted-foreground mt-0.5 truncate">{t("mo.infosSub")}</div>
+        </div>
+        <ChevronDown
+          className={cn("w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform", infosOpen && "rotate-180")}
+          strokeWidth={2}
+        />
+      </button>
 
-      {/* conseils visiteurs */}
-      <h3 className="font-display font-extrabold text-lg mt-[26px]">{t("mo.tips")}</h3>
-      <div className="mt-3.5 flex flex-col gap-2.5">
-        {TIPS.map(({ id, icon: Icon }) => (
-          <div key={id} className="flex items-start gap-3.5 bg-muted/50 rounded-[16px] px-3.5 py-3">
-            <div className="w-9 h-9 rounded-[11px] bg-background border border-border flex items-center justify-center flex-shrink-0">
-              <Icon className="w-[17px] h-[17px]" strokeWidth={1.9} />
-            </div>
-            <div className="flex-1">
-              <div className="font-semibold text-[13.5px]">{t(`tip.${id}.t` as Parameters<typeof t>[0])}</div>
-              <div className="text-[12.5px] text-muted-foreground mt-0.5 leading-[1.45]">{t(`tip.${id}.b` as Parameters<typeof t>[0])}</div>
-            </div>
+      {infosOpen && (
+        <div className="anim-fade">
+          {/* réseaux de transport */}
+          <h3 className="font-display font-extrabold text-[15px] mt-4 text-muted-foreground uppercase tracking-wide">{t("mo.network")}</h3>
+          <div className="mt-3 flex flex-col gap-2.5">
+            {TRANSIT_LINES.map((l) => {
+              const Icon = TRANSIT_ICON[l.id];
+              return (
+                <div key={l.id} className="bg-background border border-border rounded-[18px] p-4 flex items-start gap-3.5 shadow-sm">
+                  <div className="w-[42px] h-[42px] rounded-[13px] flex items-center justify-center flex-shrink-0" style={{ background: `${l.color}1A` }}>
+                    <Icon className="w-[21px] h-[21px]" strokeWidth={2} style={{ color: l.color }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-[14.5px]">{t(`transit.${l.id}.n` as Parameters<typeof t>[0])}</div>
+                    <div className="text-[12.5px] text-muted-foreground mt-0.5 leading-[1.45]">{t(`transit.${l.id}.d` as Parameters<typeof t>[0])}</div>
+                    <div className="text-[11.5px] font-semibold mt-1.5" style={{ color: l.color }}>{t(`transit.${l.id}.f` as Parameters<typeof t>[0])}</div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ))}
-      </div>
+
+          {/* conseils visiteurs */}
+          <h3 className="font-display font-extrabold text-[15px] mt-6 text-muted-foreground uppercase tracking-wide">{t("mo.tips")}</h3>
+          <div className="mt-3 flex flex-col gap-2.5">
+            {TIPS.map(({ id, icon: Icon }) => (
+              <div key={id} className="flex items-start gap-3.5 bg-muted/50 rounded-[16px] px-3.5 py-3">
+                <div className="w-9 h-9 rounded-[11px] bg-background border border-border flex items-center justify-center flex-shrink-0">
+                  <Icon className="w-[17px] h-[17px]" strokeWidth={1.9} />
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-[13.5px]">{t(`tip.${id}.t` as Parameters<typeof t>[0])}</div>
+                  <div className="text-[12.5px] text-muted-foreground mt-0.5 leading-[1.45]">{t(`tip.${id}.b` as Parameters<typeof t>[0])}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* choix de destination */}
       <BottomSheet open={destOpen} onClose={() => setDestOpen(false)} scrollable className="p-[22px]">

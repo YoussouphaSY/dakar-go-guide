@@ -100,6 +100,8 @@ const D = {
   "mo.onSite": ["Sur place", "On site", "En el lugar", "في الموقع", "Ci bérab bi"],
   "mo.network": ["Se déplacer à Dakar", "Getting around Dakar", "Moverse por Dakar", "التنقل في داكار", "Tukki ci Ndakaaru"],
   "mo.tips": ["Bon à savoir", "Good to know", "Conviene saber", "معلومات مفيدة", "Li nga war a xam"],
+  "mo.infos": ["Infos utiles", "Useful info", "Info útil", "معلومات مفيدة", "Xibaar yu am solo"],
+  "mo.infosSub": ["Réseaux de transport & conseils visiteurs", "Transit networks & visitor tips", "Redes de transporte y consejos", "شبكات النقل ونصائح للزوار", "Réseau transport ak conseil yi"],
   "mo.next": ["Prochains passages", "Next departures", "Próximas salidas", "المغادرات القادمة", "Yi ciy topp"],
   "mo.free": ["Gratuit", "Free", "Gratis", "مجاني", "Amul fay"],
   "mode.walk": ["À pied", "Walking", "A pie", "سيراً", "Ci tànk"],
