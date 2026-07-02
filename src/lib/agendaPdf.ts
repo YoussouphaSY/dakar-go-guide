@@ -38,6 +38,18 @@ function dayLabel(key: string, lang: LangId): string {
   return `${tr(lang, `day.${d.dow}` as TrKey)} ${d.dayNum} ${tr(lang, "month.nov")}`;
 }
 
+/*
+  jsPDF (Helvetica) ne rend que le latin-1 : les signes typographiques
+  comme le moins mathématique − (U+2212) deviennent des glyphes cassés.
+  On normalise les cas fréquents des titres d'épreuves.
+*/
+function pdfSafe(s: string): string {
+  return s
+    .replace(/[−–—]/g, "-")  // − – — → -
+    .replace(/[‘’]/g, "'")        // ' ' → '
+    .replace(/[“”]/g, '"');       // " " → "
+}
+
 export function downloadAgendaPdf(entries: PdfEntry[], uiLang: LangId): void {
   // Arabe → repli anglais (police latine seulement dans jsPDF).
   const lang: LangId = uiLang === "AR" ? "EN" : uiLang;
@@ -78,7 +90,8 @@ export function downloadAgendaPdf(entries: PdfEntry[], uiLang: LangId): void {
   const days = Object.keys(byDay).sort();
 
   for (const day of days) {
-    ensureSpace(16);
+    // réserver l'en-tête + la 1re carte pour éviter un titre de jour orphelin
+    ensureSpace(16 + 30);
     // en-tête de jour
     doc.setTextColor(...GREEN);
     doc.setFont("helvetica", "bold");
@@ -111,7 +124,8 @@ export function downloadAgendaPdf(entries: PdfEntry[], uiLang: LangId): void {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(...GREY);
-      const sportShort = e.sport.length > 12 ? e.sport.slice(0, 11) + "…" : e.sport;
+      const sportSafe = pdfSafe(e.sport);
+      const sportShort = sportSafe.length > 12 ? sportSafe.slice(0, 11) + "…" : sportSafe;
       doc.text(sportShort, margin + 3 + (timeColW - 3) / 2, y + 18, { align: "center" });
 
       // corps (titre + lieu + départ)
@@ -122,7 +136,7 @@ export function downloadAgendaPdf(entries: PdfEntry[], uiLang: LangId): void {
       doc.setTextColor(...INK);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11.5);
-      const titleLines = doc.splitTextToSize(e.title, bodyW - 22);
+      const titleLines = doc.splitTextToSize(pdfSafe(e.title), bodyW - 22);
       doc.text(titleLines[0], bodyX, ty);
 
       // badges LIVE / conflit à droite
@@ -140,7 +154,7 @@ export function downloadAgendaPdf(entries: PdfEntry[], uiLang: LangId): void {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9.5);
       doc.setTextColor(...GREY);
-      const venueLines = doc.splitTextToSize(e.venue, bodyW);
+      const venueLines = doc.splitTextToSize(pdfSafe(e.venue), bodyW);
       doc.text(venueLines[0], bodyX, ty);
 
       ty += 6.5;
