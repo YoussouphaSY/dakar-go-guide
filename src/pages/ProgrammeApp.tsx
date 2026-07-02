@@ -1,8 +1,7 @@
-import { Search, CalendarDays, MapPin, Plus, Check, ChevronRight, Clock } from "lucide-react";
+import { Search, CalendarDays, MapPin, Plus, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { useT, dayLabelT } from "@/lib/useT";
-import { sportVisual } from "@/lib/sportVisual";
 import AnchoredPopover from "@/components/app/AnchoredPopover";
 import { PROG_EVENTS, jojDays, PROG_VENUE_INFO } from "@/data/appMock";
 
@@ -160,31 +159,22 @@ const ProgrammeApp = () => {
                   onClick={() => setEventId(e.id)}
                   className="cursor-pointer flex-1 flex items-center gap-3.5 min-w-0"
                 >
-                  {(() => {
-                    const { Icon, color } = sportVisual(e.sport);
-                    return (
-                      <div
-                        className="relative w-[50px] h-[50px] rounded-[14px] flex items-center justify-center flex-shrink-0"
-                        style={{ background: `${color}1A` }}
-                      >
-                        <Icon className="w-[24px] h-[24px]" strokeWidth={2} style={{ color }} />
-                        {e.live && (
-                          <span className="absolute -top-1 -right-1 w-[13px] h-[13px] rounded-full bg-destructive border-2 border-background anim-live" />
-                        )}
+                  <div className="text-center flex-shrink-0 w-[46px]">
+                    <div className={cn("font-display font-extrabold text-[18px] leading-none", e.live ? "text-destructive" : "text-foreground")}>
+                      {e.time}
+                    </div>
+                    {e.live && (
+                      <div className="inline-flex items-center gap-[3px] mt-1.5 text-[9px] font-bold text-destructive">
+                        <span className="w-[5px] h-[5px] rounded-full bg-destructive anim-live" />
+                        LIVE
                       </div>
-                    );
-                  })()}
+                    )}
+                  </div>
+                  <div className="w-px self-stretch bg-border flex-shrink-0 min-h-[46px]" />
                   <div className="flex-1 min-w-0">
                     <div className="text-xs text-muted-foreground">{e.sport}</div>
                     <div className="font-display font-bold text-[16.5px] leading-[1.2] mt-0.5">{e.title}</div>
-                    <div className="flex items-center gap-1.5 text-[12.5px] mt-[3px]">
-                      <span className={cn("inline-flex items-center gap-1 font-semibold", e.live ? "text-destructive" : "text-primary")}>
-                        <Clock className="w-3 h-3" strokeWidth={2.2} />
-                        {e.live ? t("ev.live") : e.time}
-                      </span>
-                      <span className="text-muted-foreground/50">·</span>
-                      <span className="text-muted-foreground truncate">{e.venue}</span>
-                    </div>
+                    <div className="text-[12.5px] text-muted-foreground mt-[3px]">{e.venue}</div>
                   </div>
                   <ChevronRight className="w-[18px] h-[18px] text-border flex-shrink-0" strokeWidth={2} />
                 </div>
