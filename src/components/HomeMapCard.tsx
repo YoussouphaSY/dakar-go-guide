@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Clock, Navigation, Plus, Check, X } from "lucide-react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn, asset } from "@/lib/utils";
 import MapView from "@/components/MapView";
 import { MAP_FILTERS, poisByFilter, type MapFilter, type Poi } from "@/data/mobility";
 
@@ -97,7 +97,7 @@ const PoiSheet = ({ poi, inAgenda, onClose, onToggleAgenda }: {
       {/* Image d'aperçu */}
       <div className="relative h-36 bg-muted">
         {poi.image ? (
-          <img src={poi.image} alt={poi.name} className="absolute inset-0 w-full h-full object-cover" />
+          <img src={asset(poi.image)} alt={poi.name} className="absolute inset-0 w-full h-full object-cover" />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-muted-foreground">photo · {poi.name}</div>
         )}

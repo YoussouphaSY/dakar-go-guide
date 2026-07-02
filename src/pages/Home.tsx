@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Wifi } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, asset } from "@/lib/utils";
 import { useI18n, LANGUAGES } from "@/lib/i18n";
 import Logo from "@/components/Logo";
 
@@ -79,7 +79,7 @@ const Hero = () => (
   <section className="relative bg-foreground text-background overflow-hidden">
     <div className="max-w-[1240px] mx-auto px-5 lg:px-8 pt-10 lg:pt-16">
       <div className="relative rounded-3xl overflow-hidden min-h-[440px] lg:min-h-[560px] flex items-end bg-foreground">
-        <video className="absolute inset-0 w-full h-full object-cover" src={HERO_VIDEO} autoPlay loop muted playsInline />
+        <video className="absolute inset-0 w-full h-full object-cover" src={asset(HERO_VIDEO)} autoPlay loop muted playsInline />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/45 to-transparent" />
         <div className="relative z-[2] p-7 lg:p-13 max-w-3xl" style={{ padding: "clamp(28px,4vw,52px)" }}>
           <div className="inline-flex items-center gap-2 bg-white/[0.08] border border-white/15 rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[#9CE6BC]">
@@ -181,7 +181,7 @@ const SectionPortals = () => (
           {/* Image (gauche) */}
           <div className="relative h-44 sm:h-auto sm:min-h-[200px] bg-muted overflow-hidden">
             {p.img ? (
-              <img src={p.img} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img src={asset(p.img)} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-muted-foreground">photo · {p.title}</div>
             )}

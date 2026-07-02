@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Bell, BellOff, ChevronDown, MapPin, Plus, Check,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, asset } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { NEWS, DISCOVER, type NewsKind } from "@/data/appMock";
 import { MAP_FILTERS, type MapFilter } from "@/data/mobility";
@@ -186,7 +186,7 @@ const HomeApp = () => {
             >
               <div className="h-[120px] rounded-2xl overflow-hidden bg-[repeating-linear-gradient(135deg,#E7E7E2_0_11px,#F1F1EC_11px_22px)] relative">
                 {d.img ? (
-                  <img src={d.img} alt={d.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <img src={asset(d.img)} alt={d.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center font-mono text-[9px] text-muted-foreground">
                     photo · {d.name}

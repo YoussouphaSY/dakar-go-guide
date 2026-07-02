@@ -3,7 +3,7 @@ import {
   Navigation, PersonStanding, Bus, Car, MapPin,
   ParkingSquare, Utensils, Plus, Accessibility, X, Building2,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, asset } from "@/lib/utils";
 import { SectionHeader } from "@/pages/Home";
 import MapView from "@/components/MapView";
 import {
@@ -98,7 +98,7 @@ const InfoPanel = ({ poi, onRoute, onSite }: { poi: Poi; onRoute: () => void; on
     {/* Image d'aperçu + titre en overlay */}
     <div className="relative h-40 bg-muted">
       {poi.image ? (
-        <img src={poi.image} alt={poi.name} className="absolute inset-0 w-full h-full object-cover" />
+        <img src={asset(poi.image)} alt={poi.name} className="absolute inset-0 w-full h-full object-cover" />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-muted-foreground">photo · {poi.name}</div>
       )}

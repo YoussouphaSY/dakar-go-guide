@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 import { X, Clock, MapPin, Navigation, Plus } from "lucide-react";
 import { useApp } from "@/store/appStore";
 import { useT } from "@/lib/useT";
+import { asset } from "@/lib/utils";
 import {
   POIS, MAP_FILTERS, MAP_CENTER, MAP_ZOOM, USER_POS,
   poisByFilter, poiDesc, type Poi,
@@ -118,7 +119,7 @@ const MiniMap = () => {
             <div className="flex gap-2.5">
               {active.image ? (
                 <img
-                  src={active.image}
+                  src={asset(active.image)}
                   alt={active.name}
                   className="w-[76px] h-[76px] rounded-[13px] object-cover flex-shrink-0"
                 />
