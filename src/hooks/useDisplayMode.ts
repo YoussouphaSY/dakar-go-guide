@@ -1,27 +1,18 @@
 import { useEffect, useState } from "react";
 
 /*
-  useDisplayMode — détecte si l'app tourne en PWA installée (standalone)
-  ou dans un onglet navigateur classique (browser).
+  useDisplayMode — choisit l'interface à afficher.
 
-  Règle produit : standalone → interface APP mobile ; browser → interface WEB desktop.
+  Règle produit (2026-07) : l'interface APP mobile est l'interface PAR DÉFAUT,
+  partout (y compris dans un onglet navigateur). La version WEB desktop n'est
+  affichée que sur demande explicite.
 
-  Overrides de test (sans installer la PWA) :
-    ?app=1     force le mode app
+  Overrides (mémorisés en sessionStorage pour survivre à la navigation) :
     ?web=1     force le mode web
-  Le choix est mémorisé en sessionStorage pour survivre à la navigation.
+    ?app=1     force le mode app (revient au défaut)
 */
 
 export type DisplayMode = "app" | "web";
-
-const STANDALONE_QUERY = "(display-mode: standalone)";
-
-const detectStandalone = (): boolean => {
-  if (typeof window === "undefined") return false;
-  // iOS Safari expose navigator.standalone ; les autres via matchMedia.
-  const iosStandalone = (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
-  return window.matchMedia?.(STANDALONE_QUERY).matches || iosStandalone;
-};
 
 const getOverride = (): DisplayMode | null => {
   if (typeof window === "undefined") return null;
@@ -32,22 +23,10 @@ const getOverride = (): DisplayMode | null => {
 };
 
 export const useDisplayMode = (): DisplayMode => {
-  const [mode, setMode] = useState<DisplayMode>(() => {
-    const override = getOverride();
-    if (override) return override;
-    return detectStandalone() ? "app" : "web";
-  });
+  const [mode, setMode] = useState<DisplayMode>(() => getOverride() ?? "app");
 
   useEffect(() => {
-    const override = getOverride();
-    if (override) {
-      setMode(override);
-      return;
-    }
-    const mql = window.matchMedia(STANDALONE_QUERY);
-    const update = () => setMode(detectStandalone() ? "app" : "web");
-    mql.addEventListener("change", update);
-    return () => mql.removeEventListener("change", update);
+    setMode(getOverride() ?? "app");
   }, []);
 
   return mode;

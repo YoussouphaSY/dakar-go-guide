@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Bell, BellOff, ChevronDown, MapPin, Plus, Check,
+  Bell, BellOff, ChevronDown, Plus, Check, Clock,
 } from "lucide-react";
 import { cn, asset } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
+import { sportVisual } from "@/lib/sportVisual";
 import logoDakar from "@/assets/brand/logo-dakar2026.png";
 import { NEWS, DISCOVER, type NewsKind } from "@/data/appMock";
 import { MAP_FILTERS, type MapFilter } from "@/data/mobility";
@@ -231,12 +232,18 @@ const LiveCard = ({
   upcomingLabel: string; addAria: string;
 }) => (
   <div className="mt-3.5 bg-background border border-border rounded-[20px] p-3.5 shadow-sm flex items-center gap-3.5">
-    <div className="text-center flex-shrink-0 w-[42px]">
-      <div className="font-display font-extrabold text-[21px] leading-none">{day}</div>
-      <div className="font-mono text-[9px] text-muted-foreground tracking-wide">{month}</div>
-      <div className="text-[11px] font-semibold mt-[3px]">{time}</div>
-    </div>
-    <div className="w-px self-stretch bg-border flex-shrink-0" />
+    {(() => {
+      const { Icon, color } = sportVisual(sport);
+      return (
+        <div
+          className="relative w-[52px] h-[52px] rounded-[15px] flex items-center justify-center flex-shrink-0"
+          style={{ background: `${color}1A` }}
+        >
+          <Icon className="w-[25px] h-[25px]" strokeWidth={2} style={{ color }} />
+          {live && <span className="absolute -top-1 -right-1 w-[13px] h-[13px] rounded-full bg-destructive border-2 border-background anim-live" />}
+        </div>
+      );
+    })()}
     <div className="flex-1 min-w-0">
       <div className="flex items-center gap-[7px]">
         {live ? (
@@ -250,9 +257,13 @@ const LiveCard = ({
         <span className="font-mono text-[10px] text-muted-foreground uppercase tracking-wide">{sport}</span>
       </div>
       <div className="font-display font-bold text-base leading-[1.2] mt-1.5">{title}</div>
-      <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1.5">
-        <MapPin className="w-3 h-3" strokeWidth={2} />
-        {venue}
+      <div className="flex items-center gap-1.5 text-xs mt-1.5">
+        <span className="inline-flex items-center gap-1 font-semibold text-primary">
+          <Clock className="w-3 h-3" strokeWidth={2.2} />
+          {day} {month} · {time}
+        </span>
+        <span className="text-muted-foreground/50">·</span>
+        <span className="text-muted-foreground truncate">{venue}</span>
       </div>
     </div>
     <button

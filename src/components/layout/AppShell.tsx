@@ -24,9 +24,10 @@ interface AppShellProps {
 const AppShell = ({ children, bottomNav, variant = "web", withTopNav = true, overlays, className }: AppShellProps) => {
   if (variant === "app") {
     // Interface app : cadre largeur mobile, plein écran en PWA, centré si testé sur desktop.
+    // Hauteur FIXE (h-[100dvh]) : seul le <main> scrolle, la nav du bas reste figée.
     return (
-      <div className="min-h-[100dvh] w-full bg-muted/30 flex justify-center">
-        <div className="relative w-full max-w-[440px] min-h-[100dvh] bg-background flex flex-col overflow-hidden">
+      <div className="h-[100dvh] w-full bg-muted/30 flex justify-center overflow-hidden">
+        <div className="relative w-full max-w-[440px] h-[100dvh] bg-background flex flex-col overflow-hidden">
           <main className={cn("flex-1 flex flex-col min-h-0 overflow-hidden", className)}>
             {children}
           </main>

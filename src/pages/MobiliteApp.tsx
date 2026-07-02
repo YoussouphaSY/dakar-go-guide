@@ -10,9 +10,10 @@ import "leaflet/dist/leaflet.css";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { useT } from "@/lib/useT";
+import { useRoute } from "@/hooks/useRoute";
 import {
   VENUES, USER_POS, routesFor, departureFor, kmOf,
-  TRANSIT_LINES, NEXT_DEPARTURES, MAP_FILTERS, type Poi, type RouteOption,
+  TRANSIT_LINES, NEXT_DEPARTURES, MAP_FILTERS, type RouteOption,
 } from "@/data/mobility";
 import { dropPin, userDot } from "@/components/app/mapIcons";
 import DestPopover from "@/components/app/DestPopover";
@@ -56,13 +57,13 @@ const TIPS = [
   { id: "shuttle", icon: BusFront },
 ] as const;
 
-/* Recadre la carte sur le trajet quand la destination change. */
-const FitRoute = ({ dest }: { dest: Poi }) => {
+/* Recadre la carte sur toute la géométrie du trajet quand elle change. */
+const FitLine = ({ line }: { line: [number, number][] }) => {
   const map = useMap();
   useEffect(() => {
-    const bounds = L.latLngBounds([USER_POS, [dest.lat, dest.lng]]);
-    map.fitBounds(bounds, { padding: [30, 30] });
-  }, [dest, map]);
+    if (line.length < 2) return;
+    map.fitBounds(L.latLngBounds(line), { padding: [26, 26] });
+  }, [line, map]);
   return null;
 };
 
@@ -82,7 +83,10 @@ const MobiliteApp = () => {
   const routes = useMemo(() => routesFor(dest), [dest]);
   const selected = routes.find((r) => r.id === moMode && r.mins != null) ?? routes.find((r) => r.mins != null)!;
   const departAt = departureFor(NEXT_EVENT_START, selected.mins ?? 0);
-  const km = kmOf(dest);
+
+  /* Vrai itinéraire routier (OSRM) entre la position et le lieu choisi. */
+  const route = useRoute(USER_POS, [dest.lat, dest.lng]);
+  const km = route.real && route.distanceKm != null ? route.distanceKm : kmOf(dest);
 
   return (
     <div className="scr flex-1 overflow-y-auto px-[22px] pb-5 pt-2">
@@ -140,10 +144,18 @@ const MobiliteApp = () => {
           style={{ background: "#E7F0F2" }}
         >
           <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
-          <FitRoute dest={dest} />
+          <FitLine line={route.line} />
+          {/* halo blanc + tracé coloré, façon itinéraire GPS */}
+          <Polyline positions={route.line} pathOptions={{ color: "#ffffff", weight: 6, opacity: 0.9, lineCap: "round", lineJoin: "round" }} />
           <Polyline
-            positions={[USER_POS, [dest.lat, dest.lng]]}
-            pathOptions={{ color: "#16B5C4", weight: 3, dashArray: "6 8", lineCap: "round" }}
+            positions={route.line}
+            pathOptions={{
+              color: "#16B5C4",
+              weight: 3.5,
+              lineCap: "round",
+              lineJoin: "round",
+              dashArray: route.real ? undefined : "6 8",
+            }}
           />
           <Marker position={USER_POS} icon={userDot()} interactive={false} />
           <Marker position={[dest.lat, dest.lng]} icon={dropPin(VENUE_COLOR, 34, { selected: true })} interactive={false} />
