@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  ChevronRight, ChevronDown, PersonStanding, Bus, Car, Clock, Check, MapPin,
+  ChevronDown, PersonStanding, Bus, Car, Clock, Ban,
   BusFront, TrainFront, Ship, CarTaxiFront, Wallet, Info,
   ParkingSquare, Cross, Accessibility,
 } from "lucide-react";
@@ -15,7 +15,7 @@ import {
   TRANSIT_LINES, NEXT_DEPARTURES, MAP_FILTERS, type Poi, type RouteOption,
 } from "@/data/mobility";
 import { dropPin, userDot } from "@/components/app/mapIcons";
-import BottomSheet from "@/components/app/BottomSheet";
+import DestPopover from "@/components/app/DestPopover";
 
 /*
   MobiliteApp — écran Mobilité (mobile), version vivante :
@@ -95,23 +95,36 @@ const MobiliteApp = () => {
       <p className="text-[14.5px] text-muted-foreground mt-1.5">{t("mo.subtitle")}</p>
 
       {/* from / to */}
-      <div className="mt-[18px] bg-background border border-border rounded-[20px] px-4 py-1.5 shadow-sm">
-        <div className="flex items-center gap-3.5 py-3.5">
-          <span className="w-[11px] h-[11px] rounded-full border-[3px] border-primary flex-shrink-0" />
-          <div className="flex-1">
-            <div className="text-[11px] text-muted-foreground">{t("mo.from")}</div>
-            <div className="font-semibold text-[14.5px]">{t("mo.myPos")}</div>
+      <div className="relative mt-[18px]">
+        <div className="bg-background border border-border rounded-[20px] px-4 py-1.5 shadow-sm">
+          <div className="flex items-center gap-3.5 py-3.5">
+            <span className="w-[11px] h-[11px] rounded-full border-[3px] border-primary flex-shrink-0" />
+            <div className="flex-1">
+              <div className="text-[11px] text-muted-foreground">{t("mo.from")}</div>
+              <div className="font-semibold text-[14.5px]">{t("mo.myPos")}</div>
+            </div>
           </div>
+          <div className="h-px bg-border ml-6" />
+          <button
+            onClick={() => setDestOpen((o) => !o)}
+            aria-expanded={destOpen}
+            className="w-full text-left flex items-center gap-3.5 py-3.5"
+          >
+            <span className="w-[11px] h-[11px] bg-foreground flex-shrink-0" style={{ borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg)" }} />
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] text-muted-foreground">{t("mo.to")}</div>
+              <div className="font-semibold text-[14.5px] truncate">{dest.name} · {dest.city}</div>
+            </div>
+            <ChevronDown className={cn("w-[18px] h-[18px] text-muted-foreground flex-shrink-0 transition-transform", destOpen && "rotate-180")} strokeWidth={2} />
+          </button>
         </div>
-        <div className="h-px bg-border ml-6" />
-        <button onClick={() => setDestOpen(true)} className="w-full text-left flex items-center gap-3.5 py-3.5">
-          <span className="w-[11px] h-[11px] bg-foreground flex-shrink-0" style={{ borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg)" }} />
-          <div className="flex-1">
-            <div className="text-[11px] text-muted-foreground">{t("mo.to")}</div>
-            <div className="font-semibold text-[14.5px]">{dest.name} · {dest.city}</div>
-          </div>
-          <ChevronRight className="w-[18px] h-[18px] text-muted-foreground" strokeWidth={2} />
-        </button>
+        <DestPopover
+          open={destOpen}
+          onClose={() => setDestOpen(false)}
+          activeId={dest.id}
+          onSelect={setMoDest}
+          className="left-0 right-0 w-auto top-[calc(100%+6px)]"
+        />
       </div>
 
       {/* carte du trajet */}
@@ -189,8 +202,14 @@ const MobiliteApp = () => {
                 <div className="text-[12.5px] text-muted-foreground mt-0.5">{detail}</div>
               </div>
               <div className="text-right flex-shrink-0">
-                <div className="font-display font-extrabold text-[18px]">{r.mins != null ? fmtMins(r.mins) : "—"}</div>
-                {!off && <div className="text-xs text-muted-foreground">{cost}</div>}
+                {r.mins != null ? (
+                  <>
+                    <div className="font-display font-extrabold text-[18px]">{fmtMins(r.mins)}</div>
+                    <div className="text-xs text-muted-foreground">{cost}</div>
+                  </>
+                ) : (
+                  <Ban className="w-[18px] h-[18px] text-muted-foreground/60 ml-auto" strokeWidth={2} />
+                )}
               </div>
             </button>
           );
@@ -281,34 +300,6 @@ const MobiliteApp = () => {
         </div>
       )}
 
-      {/* choix de destination */}
-      <BottomSheet open={destOpen} onClose={() => setDestOpen(false)} scrollable className="p-[22px]">
-        <div className="font-display font-extrabold text-xl tracking-tight">{t("mo.chooseDest")}</div>
-        <div className="mt-4 flex flex-col gap-2">
-          {VENUES.map((v) => {
-            const on = v.id === dest.id;
-            return (
-              <button
-                key={v.id}
-                onClick={() => { setMoDest(v.id); setDestOpen(false); }}
-                className={cn(
-                  "text-left border-[1.5px] rounded-[14px] px-4 py-[13px] flex items-center gap-3 transition-base",
-                  on ? "border-primary bg-primary/5" : "border-border bg-background",
-                )}
-              >
-                <MapPin className={cn("w-[18px] h-[18px] flex-shrink-0", on ? "text-primary" : "text-muted-foreground")} strokeWidth={2} />
-                <div className="flex-1 min-w-0">
-                  <div className={cn("font-semibold text-[14.5px] truncate", on && "text-primary")}>{v.name}</div>
-                  <div className="text-[11.5px] text-muted-foreground truncate">
-                    {v.city} · {(v.tags ?? []).slice(0, 3).join(" · ")}
-                  </div>
-                </div>
-                {on && <Check className="w-[18px] h-[18px] text-primary flex-shrink-0" strokeWidth={2.6} />}
-              </button>
-            );
-          })}
-        </div>
-      </BottomSheet>
     </div>
   );
 };

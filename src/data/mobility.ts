@@ -40,11 +40,11 @@ export interface Poi {
 export const POIS: Poi[] = [
   /* ── Compétitions (sites JOJ) ── */
   { id: "arene", name: "Dakar Arena", type: "venue", filter: "competition", lat: 14.7390, lng: -17.1900, dist: "14 km", time: "22 min", city: "Diamniadio",
-    desc: "Salle multisport de 15 000 places — basket 3×3 et futsal. Pôle olympique de Diamniadio.",
+    desc: "Salle multisport de 15 000 places : basket 3×3 et futsal. Pôle olympique de Diamniadio.",
     i18n: {
-      en: "15,000-seat multisport arena — 3×3 basketball and futsal. Diamniadio Olympic hub.",
-      es: "Pabellón multideporte de 15 000 plazas — baloncesto 3×3 y futsal. Polo olímpico de Diamniadio.",
-      ar: "صالة متعددة الرياضات تتسع لـ15000 متفرج — كرة السلة 3×3 وكرة الصالات. القطب الأولمبي بديامنياديو.",
+      en: "15,000-seat multisport arena: 3×3 basketball and futsal. Diamniadio Olympic hub.",
+      es: "Pabellón multideporte de 15 000 plazas: baloncesto 3×3 y futsal. Polo olímpico de Diamniadio.",
+      ar: "صالة متعددة الرياضات تتسع لـ15000 متفرج: كرة السلة 3×3 وكرة الصالات. القطب الأولمبي بديامنياديو.",
     },
     tags: ["Basket 3×3", "Futsal"], schedule: "Badminton & Futsal · 1er–12 nov" },
   { id: "expo", name: "Dakar Expo Center", type: "venue", filter: "competition", lat: 14.7330, lng: -17.1840, dist: "13 km", time: "21 min", city: "Diamniadio",
@@ -102,11 +102,11 @@ export const POIS: Poi[] = [
     image: "/assets/venues/saly.jpg",
     tags: ["Beach-volley", "Lutte", "Voile", "Triathlon"], schedule: "2–13 nov · selon discipline" },
   { id: "equestre", name: "Centre équestre", type: "venue", filter: "competition", lat: 14.7280, lng: -17.1950, dist: "13 km", time: "21 min", city: "Diamniadio",
-    desc: "Saut d'obstacles — épreuve d'équitation.",
+    desc: "Saut d'obstacles : l'épreuve d'équitation.",
     i18n: {
-      en: "Show jumping — the equestrian event.",
-      es: "Salto de obstáculos — la prueba ecuestre.",
-      ar: "قفز الحواجز — منافسة الفروسية.",
+      en: "Show jumping: the equestrian event.",
+      es: "Salto de obstáculos: la prueba ecuestre.",
+      ar: "قفز الحواجز: منافسة الفروسية.",
     },
     image: "/assets/venues/equestre.jpg",
     tags: ["Équitation"], schedule: "Équitation · 3–6 nov" },
@@ -175,11 +175,11 @@ export const POIS: Poi[] = [
 
   /* ── Restos / sites touristiques ── */
   { id: "teranga", name: "Resto Teranga", type: "food", filter: "tourisme", lat: 14.6840, lng: -17.4520, dist: "600 m", time: "3 min", city: "Dakar",
-    desc: "Cuisine sénégalaise — thiéboudienne et yassa, à deux pas du centre-ville.",
+    desc: "Cuisine sénégalaise : thiéboudienne et yassa, à deux pas du centre-ville.",
     i18n: {
-      en: "Senegalese cuisine — thieboudienne and yassa, right by the city centre.",
-      es: "Cocina senegalesa — thieboudienne y yassa, a dos pasos del centro.",
-      ar: "مطبخ سنغالي — تشيبوجين وياسا على بعد خطوات من وسط المدينة.",
+      en: "Senegalese cuisine: thieboudienne and yassa, right by the city centre.",
+      es: "Cocina senegalesa: thieboudienne y yassa, a dos pasos del centro.",
+      ar: "مطبخ سنغالي: تشيبوجين وياسا على بعد خطوات من وسط المدينة.",
     },
     tags: ["Thiéboudienne", "Yassa"], schedule: "Tous les jours · 12:00–23:00" },
   { id: "renaissance", name: "Mon. de la Renaissance", type: "poi", filter: "tourisme", lat: 14.7237, lng: -17.4900, dist: "4 km", time: "12 min", city: "Dakar",
@@ -235,7 +235,7 @@ export interface TransportMode {
 }
 
 export const MODES: TransportMode[] = [
-  { id: "walk", label: "Marche", sub: "3,8 km · itinéraire piéton", dur: "52 min", cost: "—" },
+  { id: "walk", label: "Marche", sub: "3,8 km · itinéraire piéton", dur: "52 min", cost: "Gratuit" },
   { id: "transit", label: "Transport", sub: "BRT ligne 1 + 6 min à pied", dur: "28 min", cost: "500 FCFA" },
   { id: "taxi", label: "Taxi-VTC", sub: "14 km · via autoroute", dur: "22 min", cost: "≈ 3 500 FCFA" },
 ];

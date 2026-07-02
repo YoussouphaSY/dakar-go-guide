@@ -57,8 +57,8 @@ export const PROG_EVENTS: Record<string, ProgEvent[]> = {
   "11-08": [
     { id: "e-tir", time: "10:00", sport: "Tir à l'arc", title: "Finale · Tir à l'arc", venue: "Stade A. Wade" },
     { id: "e-gym", time: "17:00", sport: "Gymnastique", title: "Finale · Sol & agrès", venue: "Centre des Expositions" },
-    { id: "e-200", time: "18:00", sport: "Athlétisme", title: "Finale 200 m — hommes", venue: "Iba Mar Diop", live: true },
-    { id: "e-fleuret", time: "18:30", sport: "Escrime", title: "Finale fleuret — femmes", venue: "Centre des Expositions" },
+    { id: "e-200", time: "18:00", sport: "Athlétisme", title: "Finale 200 m · hommes", venue: "Iba Mar Diop", live: true },
+    { id: "e-fleuret", time: "18:30", sport: "Escrime", title: "Finale fleuret · femmes", venue: "Centre des Expositions" },
   ],
   "11-06": [
     { id: "e-relais", time: "18:00", sport: "Natation", title: "Finale relais 4×100 m", venue: "Tour de l'Œuf" },
@@ -164,9 +164,9 @@ export interface RecentResult {
 }
 
 export const RECENT_RESULTS: RecentResult[] = [
-  { sport: "Natation", event: "Finale 100 m nage libre — F", who: "A. Diallo · SEN", medal: "or", score: "53,71 s" },
+  { sport: "Natation", event: "Finale 100 m nage libre · F", who: "A. Diallo · SEN", medal: "or", score: "53,71 s" },
   { sport: "Judo", event: "Finale −60 kg", who: "Y. Cissé · SEN", medal: "argent", score: "Waza-ari" },
-  { sport: "Rugby à 7", event: "Finale — F", who: "Sénégal", medal: "or", score: "24–12" },
+  { sport: "Rugby à 7", event: "Finale · F", who: "Sénégal", medal: "or", score: "24 · 12" },
 ];
 
 export interface MedalRow {
@@ -216,9 +216,9 @@ export interface LiveBanner {
 }
 
 export const LIVE_BANNER: LiveBanner[] = [
-  { id: "b-live", state: "live", sport: "Basket 3×3", title: "Sénégal — Serbie", score: "14 — 11" },
-  { id: "b-next1", state: "next", sport: "Athlétisme", title: "Finale 200 m — hommes", when: "18:00" },
-  { id: "b-next2", state: "next", sport: "Escrime", title: "Finale fleuret — femmes", when: "18:30" },
+  { id: "b-live", state: "live", sport: "Basket 3×3", title: "Sénégal · Serbie", score: "14 · 11" },
+  { id: "b-next1", state: "next", sport: "Athlétisme", title: "Finale 200 m · hommes", when: "18:00" },
+  { id: "b-next2", state: "next", sport: "Escrime", title: "Finale fleuret · femmes", when: "18:30" },
 ];
 
 /* — Découvrir Dakar (carrousel accueil) — cat = clé de traduction, filter = filtre carte ciblé — */

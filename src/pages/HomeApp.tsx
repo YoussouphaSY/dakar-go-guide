@@ -169,7 +169,7 @@ const HomeApp = () => {
       />
       <LiveCard
         day="05" month="NOV" time="09:00" sport="Athlétisme"
-        title="Séries 200 m — hommes" venue="Stade L. S. Senghor" added
+        title="Séries 200 m · hommes" venue="Stade L. S. Senghor" added
         upcomingLabel={t("home.upcoming")} addAria={t("home.addAgendaAria")}
         onAdd={() => pushToast(t("toast.added"))}
       />

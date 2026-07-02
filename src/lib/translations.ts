@@ -115,7 +115,7 @@ const D = {
   "mode.taxi.d": ["Yango, Heetch, Wassa", "Yango, Heetch, Wassa", "Yango, Heetch, Wassa", "Yango · Heetch · Wassa", "Yango, Heetch, Wassa"],
 
   /* — Réseaux de transport (fiches) — */
-  "transit.brt.n": ["BRT — ligne 1", "BRT — line 1", "BRT — línea 1", "BRT — الخط 1", "BRT — liñ 1"],
+  "transit.brt.n": ["BRT · ligne 1", "BRT · line 1", "BRT · línea 1", "BRT · الخط 1", "BRT · liñ 1"],
   "transit.brt.d": ["14 stations, Guédiawaye ↔ Petersen. Rapide et climatisé.", "14 stations, Guédiawaye ↔ Petersen. Fast and air-conditioned.", "14 estaciones, Guédiawaye ↔ Petersen. Rápido y climatizado.", "14 محطة، غيدياواي ↔ بيترسن. سريع ومكيّف.", "14 estasioŋ, Guédiawaye ↔ Petersen. Gaaw te sedd."],
   "transit.brt.f": ["Toutes les 10 min · 500 FCFA", "Every 10 min · 500 FCFA", "Cada 10 min · 500 FCFA", "كل 10 دقائق · 500 فرنك", "Ci 10 simili bu nekk · 500 FCFA"],
   "transit.ter.n": ["TER", "TER train", "Tren TER", "قطار TER", "Saxaar TER"],
@@ -143,7 +143,7 @@ const D = {
   "tip.pay.t": ["Payer en mobile money", "Mobile money payments", "Pago con dinero móvil", "الدفع عبر الهاتف", "Fay ak mobile money"],
   "tip.pay.b": ["Wave et Orange Money sont acceptés presque partout, même par les taxis.", "Wave and Orange Money are accepted almost everywhere, even by taxis.", "Wave y Orange Money se aceptan casi en todas partes, incluso en taxis.", "يُقبل Wave وOrange Money في كل مكان تقريباً، حتى في التاكسي.", "Wave ak Orange Money, fu nekk lañu koy nangu, sax ci taksi yi."],
   "tip.taxi.t": ["Taxis jaune-noir", "Yellow-black taxis", "Taxis amarillo-negro", "التاكسي الأصفر والأسود", "Taksi yu mboq ak ñuul"],
-  "tip.taxi.b": ["Négociez le prix avant de monter — ou passez par une app VTC.", "Agree on the fare before getting in — or use a ride-hailing app.", "Negocia el precio antes de subir — o usa una app de VTC.", "اتفق على السعر قبل الركوب — أو استخدم تطبيق نقل.", "Waxtaanal njëg gi balaa nga dugg — walla nga jëfandikoo app VTC."],
+  "tip.taxi.b": ["Négociez le prix avant de monter, ou passez par une app VTC.", "Agree on the fare before getting in, or use a ride-hailing app.", "Negocia el precio antes de subir, o usa una app de VTC.", "اتفق على السعر قبل الركوب، أو استخدم تطبيق نقل.", "Waxtaanal njëg gi balaa nga dugg, walla nga jëfandikoo app VTC."],
   "tip.shuttle.t": ["Navettes gratuites", "Free shuttles", "Lanzaderas gratis", "حافلات مجانية", "Navet yu amul fay"],
   "tip.shuttle.b": ["Votre billet d'épreuve donne accès aux navettes officielles JOJ.", "Your event ticket gives access to the official YOG shuttles.", "Tu entrada da acceso a las lanzaderas oficiales JOJ.", "تذكرتك تتيح لك ركوب حافلات الألعاب الرسمية.", "Sa tiket day may nga dugg ci navet ofisel JOJ yi."],
 

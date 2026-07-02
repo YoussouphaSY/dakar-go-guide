@@ -85,7 +85,7 @@ const ProfilApp = () => {
       <div className="mt-3 bg-foreground rounded-[20px] p-[18px] text-background flex items-center gap-4">
         <div className="flex-1">
           <div className="font-mono text-[10px] text-muted-foreground uppercase tracking-wide">Athlétisme · 8 nov 18:00</div>
-          <div className="font-display font-extrabold text-[17px] mt-1 leading-[1.1]">Finale 200 m — hommes</div>
+          <div className="font-display font-extrabold text-[17px] mt-1 leading-[1.1]">Finale 200 m · hommes</div>
           <div className="text-xs text-muted-foreground mt-1.5">Cat. 2 · ×2 · Iba Mar Diop</div>
         </div>
         <div className="w-[62px] h-[62px] rounded-xl bg-white p-[7px] flex-shrink-0">

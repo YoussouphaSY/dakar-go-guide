@@ -24,7 +24,7 @@ const Splash = ({ onDone }: SplashProps) => {
       {/* visuel officiel AYO */}
       <div className="relative w-full px-6 anim-fade">
         <img
-          src="/assets/brand/ayo-road-to.jpg"
+          src="/assets/brand/splash-ayo.png"
           alt="Road to Dakar 2026 avec AYO"
           className="w-full rounded-[22px] shadow-2xl"
         />
