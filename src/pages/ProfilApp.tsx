@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Download, MessageCircle, ChevronRight, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
+import { useT } from "@/lib/useT";
 import { LANGS, INTERESTS, SETTINGS, qrCells, type LangId } from "@/data/appMock";
 
 /*
@@ -14,17 +15,18 @@ const SETTING_ICON: Record<string, typeof Download> = {
   help: MessageCircle,
 };
 
-/* Rappels/alertes (migrés depuis l'Agenda). */
+/* Rappels/alertes (migrés depuis l'Agenda) — clés de traduction. */
 const NOTIF_OPTIONS = [
-  { key: "h1", title: "1 heure avant", sub: "Le temps de se préparer" },
-  { key: "m30", title: "30 minutes avant", sub: "Dernier rappel + départ conseillé" },
-  { key: "recap", title: "Récap quotidien", sub: "Chaque matin à 7:30" },
-];
+  { key: "h1", tKey: "notif.h1.t", sKey: "notif.h1.s" },
+  { key: "m30", tKey: "notif.m30.t", sKey: "notif.m30.s" },
+  { key: "recap", tKey: "notif.recap.t", sKey: "notif.recap.s" },
+] as const;
 
 const cells = qrCells();
 
 const ProfilApp = () => {
   const nav = useNavigate();
+  const { t } = useT();
   const lang = useApp((s) => s.lang);
   const setLang = useApp((s) => s.setLang);
   const interests = useApp((s) => s.interests);
@@ -46,7 +48,7 @@ const ProfilApp = () => {
         <span className="font-mono text-[11px]">▂▄▆ ⵛ ⏻</span>
       </div>
 
-      <h2 className="font-display font-extrabold text-[30px] tracking-tight">Profil</h2>
+      <h2 className="font-display font-extrabold text-[30px] tracking-tight">{t("pr.title")}</h2>
 
       <div className="mt-[18px] flex items-center gap-4">
         <div className="w-[72px] h-[72px] rounded-full bg-[repeating-linear-gradient(135deg,#E7E7E2_0_6px,#F4F3EE_6px_12px)] border border-border flex-shrink-0 flex items-center justify-center font-mono text-[8px] text-muted-foreground">
@@ -54,12 +56,12 @@ const ProfilApp = () => {
         </div>
         <div>
           <div className="font-display font-extrabold text-[22px] tracking-tight">Awa Ndiaye</div>
-          <div className="text-[13px] text-muted-foreground mt-0.5">Visiteuse · 🇸🇳 Sénégal</div>
+          <div className="text-[13px] text-muted-foreground mt-0.5">{t("pr.visitor")}</div>
         </div>
       </div>
 
       {/* langue */}
-      <h3 className="font-display font-extrabold text-base mt-[26px]">Langue</h3>
+      <h3 className="font-display font-extrabold text-base mt-[26px]">{t("pr.lang")}</h3>
       <div className="flex gap-2 mt-3 flex-wrap">
         {LANGS.map((l) => {
           const on = l.id === lang;
@@ -79,7 +81,7 @@ const ProfilApp = () => {
       </div>
 
       {/* billet */}
-      <h3 className="font-display font-extrabold text-base mt-[26px]">Mes billets</h3>
+      <h3 className="font-display font-extrabold text-base mt-[26px]">{t("pr.tickets")}</h3>
       <div className="mt-3 bg-foreground rounded-[20px] p-[18px] text-background flex items-center gap-4">
         <div className="flex-1">
           <div className="font-mono text-[10px] text-muted-foreground uppercase tracking-wide">Athlétisme · 8 nov 18:00</div>
@@ -104,19 +106,19 @@ const ProfilApp = () => {
       </div>
 
       {/* notifications (alertes migrées de l'Agenda) */}
-      <h3 className="font-display font-extrabold text-base mt-[26px]">Notifications</h3>
+      <h3 className="font-display font-extrabold text-base mt-[26px]">{t("pr.notifs")}</h3>
       <div className="mt-3 flex flex-col gap-2.5">
         {NOTIF_OPTIONS.map((r) => {
           const on = reminders[r.key];
           return (
             <div key={r.key} className="flex items-center gap-3.5 bg-background border border-border rounded-[18px] px-4 py-[13px]">
               <div className="flex-1">
-                <div className="font-semibold text-[14px]">{r.title}</div>
-                <div className="text-[12.5px] text-muted-foreground mt-0.5">{r.sub}</div>
+                <div className="font-semibold text-[14px]">{t(r.tKey)}</div>
+                <div className="text-[12.5px] text-muted-foreground mt-0.5">{t(r.sKey)}</div>
               </div>
               <button
                 onClick={() => toggleReminder(r.key)}
-                aria-label={r.title}
+                aria-label={t(r.tKey)}
                 className={cn("w-12 h-[29px] rounded-full relative flex-shrink-0 transition-base", on ? "bg-primary" : "bg-muted-foreground/30")}
               >
                 <span className={cn("absolute top-[3px] left-[3px] w-[23px] h-[23px] rounded-full bg-white shadow transition-transform", on && "translate-x-[19px]")} />
@@ -127,7 +129,7 @@ const ProfilApp = () => {
       </div>
 
       {/* centres d'intérêt */}
-      <h3 className="font-display font-extrabold text-base mt-[26px]">Centres d'intérêt</h3>
+      <h3 className="font-display font-extrabold text-base mt-[26px]">{t("pr.interests")}</h3>
       <div className="flex gap-2 mt-3 flex-wrap">
         {INTERESTS.map((i) => {
           const on = interests[i.id];
@@ -140,7 +142,7 @@ const ProfilApp = () => {
                 on ? "border-primary bg-primary/10 text-primary" : "border-border bg-background text-muted-foreground",
               )}
             >
-              {i.name}
+              {t(`sport.${i.id}` as Parameters<typeof t>[0])}
             </button>
           );
         })}
@@ -157,7 +159,9 @@ const ProfilApp = () => {
               className="text-left flex items-center gap-3.5 py-[15px] border-b border-border/60"
             >
               <Icon className="w-5 h-5 text-foreground flex-shrink-0" strokeWidth={1.8} />
-              <span className="flex-1 font-medium text-[15px]">{s.label}</span>
+              <span className="flex-1 font-medium text-[15px]">
+                {t((s.id === "offline" ? "pr.offline" : "pr.help") as Parameters<typeof t>[0])}
+              </span>
               <ChevronRight className="w-[18px] h-[18px] text-border" strokeWidth={2} />
             </button>
           );
@@ -170,7 +174,7 @@ const ProfilApp = () => {
         className="mt-6 w-full flex items-center justify-center gap-2 border border-destructive/30 text-destructive font-semibold text-[14.5px] py-3.5 rounded-[14px] active:scale-[0.99] transition-base"
       >
         <LogOut className="w-[18px] h-[18px]" strokeWidth={2} />
-        Se déconnecter
+        {t("pr.logout")}
       </button>
     </div>
   );

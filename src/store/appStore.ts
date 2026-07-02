@@ -8,9 +8,28 @@
 */
 
 import { create } from "zustand";
-import type { HomeFilter, LangId } from "@/data/appMock";
+import type { LangId } from "@/data/appMock";
+import type { MapFilter } from "@/data/mobility";
+import { tr, isRTLLang } from "@/lib/translations";
 
 const AGENDA_KEY = "dakargo-agenda";
+const LANG_KEY = "dakargo-app-lang";
+
+function loadLang(): LangId {
+  try {
+    const raw = localStorage.getItem(LANG_KEY);
+    if (raw && ["FR", "EN", "AR", "WO", "ES"].includes(raw)) return raw as LangId;
+  } catch {
+    /* ignore */
+  }
+  return "FR";
+}
+
+/* L'arabe passe toute l'interface en RTL. */
+function applyLangToDocument(lang: LangId) {
+  document.documentElement.lang = lang.toLowerCase();
+  document.documentElement.dir = isRTLLang(lang) ? "rtl" : "ltr";
+}
 
 function loadAgenda(): string[] {
   try {
@@ -45,12 +64,14 @@ interface AppState {
   eventId: string | null;
   agendaHintSeen: boolean;
   agenda: string[];
-  mapFilter: HomeFilter;
+  mapFilter: MapFilter;
   placeId: string | null;
   langOpen: boolean;
   reminders: Record<string, boolean>;
   interests: Record<string, boolean>;
   moMode: string;
+  /* Destination sélectionnée sur l'écran Mobilité (id de POI site JOJ). */
+  moDest: string;
   chat: ChatMsg[];
   toast: string | null;
 
@@ -67,10 +88,11 @@ interface AppState {
   setProgVenue: (v: string) => void;
   setProgSheet: (s: ProgSheet) => void;
   setEventId: (id: string | null) => void;
-  setMapFilter: (f: HomeFilter) => void;
+  setMapFilter: (f: MapFilter) => void;
   setPlaceId: (id: string | null) => void;
   setLangOpen: (o: boolean) => void;
   setMoMode: (m: string) => void;
+  setMoDest: (id: string) => void;
   toggleReminder: (k: string) => void;
   toggleInterest: (k: string) => void;
   toggleAgenda: (id: string) => void;
@@ -81,8 +103,11 @@ interface AppState {
 
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
+const initialLang = loadLang();
+if (typeof document !== "undefined") applyLangToDocument(initialLang);
+
 export const useApp = create<AppState>((set, get) => ({
-  lang: "FR",
+  lang: initialLang,
   slide: 0,
   progDay: "11-08",
   progVenue: "Tous",
@@ -90,12 +115,13 @@ export const useApp = create<AppState>((set, get) => ({
   eventId: null,
   agendaHintSeen: false,
   agenda: loadAgenda(),
-  mapFilter: "comp",
+  mapFilter: "competition",
   placeId: null,
   langOpen: false,
   reminders: { h1: true, m30: true, recap: false },
   interests: { nat: true, ath: true, basket: false, judo: false, lutte: true },
   moMode: "taxi",
+  moDest: "arene",
   chat: [
     { who: "bot", text: "Bonjour 👋 Je suis AYO, votre guide des JOJ Dakar 2026. Comment puis-je vous aider ?" },
   ],
@@ -116,10 +142,14 @@ export const useApp = create<AppState>((set, get) => ({
     const next = !get().notifOn;
     try { localStorage.setItem("dakargo-notif", next ? "1" : "0"); } catch { /* ignore */ }
     set({ notifOn: next });
-    get().pushToast(next ? "Notifications activées" : "Notifications désactivées");
+    get().pushToast(tr(get().lang, next ? "toast.notifOn" : "toast.notifOff"));
   },
 
-  setLang: (lang) => set({ lang, langOpen: false }),
+  setLang: (lang) => {
+    try { localStorage.setItem(LANG_KEY, lang); } catch { /* ignore */ }
+    applyLangToDocument(lang);
+    set({ lang, langOpen: false });
+  },
   setProgDay: (progDay) => set({ progDay, progSheet: null }),
   setProgVenue: (progVenue) => set({ progVenue, progSheet: null }),
   setProgSheet: (progSheet) => set({ progSheet }),
@@ -128,6 +158,7 @@ export const useApp = create<AppState>((set, get) => ({
   setPlaceId: (placeId) => set({ placeId }),
   setLangOpen: (langOpen) => set({ langOpen }),
   setMoMode: (moMode) => set({ moMode }),
+  setMoDest: (moDest) => set({ moDest }),
   toggleReminder: (k) => set((s) => ({ reminders: { ...s.reminders, [k]: !s.reminders[k] } })),
   toggleInterest: (k) => set((s) => ({ interests: { ...s.interests, [k]: !s.interests[k] } })),
 
@@ -137,7 +168,7 @@ export const useApp = create<AppState>((set, get) => ({
     const next = has ? agenda.filter((x) => x !== id) : [...agenda, id];
     saveAgenda(next);
     set({ agenda: next });
-    get().pushToast(has ? "Retiré de mon agenda" : "Ajouté à mon agenda");
+    get().pushToast(tr(get().lang, has ? "toast.removed" : "toast.added"));
   },
 
   dismissHint: () => set({ agendaHintSeen: true }),

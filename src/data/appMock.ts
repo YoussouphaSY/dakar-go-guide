@@ -184,43 +184,7 @@ export const MEDAL_TABLE: MedalRow[] = [
   { rank: 4, country: "Kenya", gold: 3, silver: 6, bronze: 2 },
 ];
 
-/* — Carte accueil : filtres & POI (démo) — */
-export type HomeFilter = "comp" | "faire" | "fest" | "resto";
-
-export interface HomePlace {
-  id: string;
-  cat: HomeFilter;
-  catLabel: string;
-  name: string;
-  left: number;
-  top: number;
-  hours: string;
-  dist: string;
-  desc: string;
-}
-
-export const HOME_FILTERS: { id: HomeFilter; name: string }[] = [
-  { id: "comp", name: "Compét." },
-  { id: "faire", name: "Activités" },
-  { id: "fest", name: "Festivités" },
-  { id: "resto", name: "Tourisme" },
-];
-
-export const HOME_PLACES: HomePlace[] = [
-  { id: "arene", cat: "comp", catLabel: "Compétition", name: "Arène olympique", left: 68, top: 30, hours: "16:40", dist: "14 km", desc: "Natation et cérémonies. Le cœur battant des Jeux, à Diamniadio." },
-  { id: "iba", cat: "comp", catLabel: "Compétition", name: "Iba Mar Diop", left: 52, top: 50, hours: "18:00", dist: "6 km", desc: "Athlétisme et rugby à 7, en plein centre de Dakar." },
-  { id: "expo", cat: "comp", catLabel: "Compétition", name: "Centre des Expositions", left: 60, top: 42, hours: "17:00", dist: "14 km", desc: "Escrime, gymnastique et boxe, à Diamniadio." },
-  { id: "wade", cat: "comp", catLabel: "Compétition", name: "Stade A. Wade", left: 78, top: 58, hours: "10:00", dist: "16 km", desc: "Cérémonies et tir à l'arc — la grande enceinte de Diamniadio." },
-  { id: "arena", cat: "comp", catLabel: "Compétition", name: "Dakar Arena", left: 72, top: 40, hours: "19:00", dist: "15 km", desc: "Futsal et basket 3×3 dans la salle couverte de référence." },
-  { id: "saly", cat: "comp", catLabel: "Compétition", name: "Saly Plage Ouest", left: 50, top: 80, hours: "08:00", dist: "60 km", desc: "Beach volley, triathlon et voile sur la côte de Saly." },
-  { id: "goree", cat: "faire", catLabel: "Activité", name: "Île de Gorée", left: 28, top: 60, hours: "09:00–18:00", dist: "3 km", desc: "Mémoire et patrimoine UNESCO, à 20 min en chaloupe." },
-  { id: "renaissance", cat: "faire", catLabel: "Activité", name: "Mon. Renaissance", left: 18, top: 32, hours: "10:00–19:00", dist: "4 km", desc: "La plus haute statue d'Afrique, vue panoramique sur la ville." },
-  { id: "lacrose", cat: "faire", catLabel: "Activité", name: "Lac Rose", left: 84, top: 22, hours: "toute la journée", dist: "35 km", desc: "Le célèbre lac aux eaux roses, balade et récolte de sel." },
-  { id: "fanzone", cat: "fest", catLabel: "Festivité", name: "Fan Zone Corniche", left: 38, top: 44, hours: "dès 16:00", dist: "2 km", desc: "Écrans géants, concerts et animations gratuites face à l'océan." },
-  { id: "teranga-night", cat: "fest", catLabel: "Festivité", name: "Nuit de la Teranga", left: 44, top: 54, hours: "20:00", dist: "1,5 km", desc: "Concerts d'artistes sénégalais et africains, place de la Nation." },
-  { id: "teranga", cat: "resto", catLabel: "Tourisme", name: "Resto Teranga", left: 60, top: 66, hours: "12:00–23:00", dist: "600 m", desc: "Cuisine sénégalaise : thiéboudienne, yassa, dibi." },
-  { id: "musee", cat: "resto", catLabel: "Tourisme", name: "Musée des Civilisations", left: 30, top: 48, hours: "10:00–18:00", dist: "3 km", desc: "Le Musée des Civilisations noires, art et histoire du continent." },
-];
+/* — Carte accueil : les POI/filtres vivent dans data/mobility.ts (GPS réels). — */
 
 /* — Diapo actualités (accueil) : résultats, faits, records, actus JOJ — */
 export type NewsKind = "resultat" | "athlete" | "record" | "actu";
@@ -257,26 +221,22 @@ export const LIVE_BANNER: LiveBanner[] = [
   { id: "b-next2", state: "next", sport: "Escrime", title: "Finale fleuret — femmes", when: "18:30" },
 ];
 
-/* — Découvrir Dakar (carrousel accueil) — */
-export const DISCOVER = [
-  { id: "goree", cat: "Patrimoine", name: "Île de Gorée" },
-  { id: "lacrose", cat: "Nature", name: "Lac Rose" },
-  { id: "musee", cat: "Culture", name: "Musée des Civilisations" },
-  { id: "renaissance", cat: "Panorama", name: "Mon. Renaissance" },
+/* — Découvrir Dakar (carrousel accueil) — cat = clé de traduction, filter = filtre carte ciblé — */
+export const DISCOVER: {
+  id: string;
+  cat: "patrimoine" | "nature" | "culture" | "panorama";
+  name: string;
+  img?: string;
+  filter: import("@/data/mobility").MapFilter;
+}[] = [
+  /* goree.jpg / musee.png des ressources sont en réalité des photos de la Renaissance → placeholders */
+  { id: "goree", cat: "patrimoine", name: "Île de Gorée", filter: "tourisme" },
+  { id: "lacrose", cat: "nature", name: "Lac Rose", filter: "activite" },
+  { id: "musee", cat: "culture", name: "Musée des Civilisations", filter: "tourisme" },
+  { id: "renaissance", cat: "panorama", name: "Mon. Renaissance", img: "/assets/venues/renaissance.jpg", filter: "tourisme" },
 ];
 
-/* — Mobilité (démo) — */
-export const MODES = [
-  { id: "walk", name: "À pied", detail: "Itinéraire piéton", time: "1 h 05", price: "Gratuit" },
-  { id: "bus", name: "BRT + marche", detail: "Bus Rapid Transit, ligne 1", time: "28 min", price: "500 FCFA" },
-  { id: "taxi", name: "Taxi · VTC", detail: "Yango, Heetch, Wassa", time: "22 min", price: "~3 500 FCFA" },
-] as const;
-
-export const PRACTICAL = [
-  { id: "park", title: "Parkings", sub: "3 zones · navettes gratuites" },
-  { id: "aid", title: "Premiers secours", sub: "Poste près de l'entrée Est" },
-  { id: "pmr", title: "Accès PMR", sub: "Rampes & places dédiées" },
-];
+/* — Mobilité : trajets, réseaux et services vivent dans data/mobility.ts — */
 
 /* — Profil — */
 export const LANGS = [

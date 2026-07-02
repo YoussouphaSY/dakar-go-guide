@@ -5,17 +5,16 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
-import {
-  HOME_FILTERS, DISCOVER, NEWS, type HomeFilter, type NewsKind,
-} from "@/data/appMock";
-import MiniMap, { CAT_COLOR } from "@/components/app/MiniMap";
+import { NEWS, DISCOVER, type NewsKind } from "@/data/appMock";
+import { MAP_FILTERS, type MapFilter } from "@/data/mobility";
+import { useT } from "@/lib/useT";
+import MiniMap from "@/components/app/MiniMap";
 
 /*
-  HomeApp — accueil de l'interface app (mobile), révision Prototype-2 :
-  header, diapo actualités (résultats/records/actus), bannière live &
-  prochains matchs, carte à pins filtrable (pop-up ancré au-dessus du point),
-  en direct & à venir, découvrir Dakar, encart eSIM SONATEL.
-  (La rangée d'accès rapides Programme/Carte/Billets/AYO a été retirée.)
+  HomeApp — accueil de l'interface app (mobile) :
+  header, diapo actualités, carte Leaflet réelle filtrable (fiche riche du
+  lieu au tap, sites JOJ toujours en valeur), en direct & à venir,
+  découvrir Dakar. Interface traduite (FR/EN/ES/AR/WO) via useT.
 */
 
 const NEWS_ACCENT: Record<NewsKind, string> = {
@@ -27,6 +26,7 @@ const NEWS_ACCENT: Record<NewsKind, string> = {
 
 const HomeApp = () => {
   const nav = useNavigate();
+  const { t } = useT();
   const lang = useApp((s) => s.lang);
   const mapFilter = useApp((s) => s.mapFilter);
   const setMapFilter = useApp((s) => s.setMapFilter);
@@ -34,8 +34,6 @@ const HomeApp = () => {
   const pushToast = useApp((s) => s.pushToast);
   const notifOn = useApp((s) => s.notifOn);
   const toggleNotif = useApp((s) => s.toggleNotif);
-
-  const shownCount = HOME_FILTERS.find((f) => f.id === mapFilter)?.name ?? "";
 
   /* diapo actus : défilement auto */
   const [slide, setSlide] = useState(0);
@@ -64,7 +62,7 @@ const HomeApp = () => {
           </div>
           <div>
             <div className="font-display font-bold text-[18px] tracking-tight leading-none">Dakar 2026</div>
-            <div className="text-xs text-muted-foreground mt-0.5">Bonjour 👋</div>
+            <div className="text-xs text-muted-foreground mt-0.5">{t("home.greeting")}</div>
           </div>
         </div>
         <div className="flex items-center gap-2.5">
@@ -77,7 +75,7 @@ const HomeApp = () => {
           </button>
           <button
             onClick={toggleNotif}
-            aria-label={notifOn ? "Désactiver les notifications" : "Activer les notifications"}
+            aria-label={notifOn ? t("home.notifOffAria") : t("home.notifOnAria")}
             aria-pressed={notifOn}
             className={cn(
               "w-10 h-10 rounded-full border flex items-center justify-center relative transition-base",
@@ -121,62 +119,70 @@ const HomeApp = () => {
 
       {/* map filter chips */}
       <div className="scr flex gap-2 mt-4 overflow-x-auto pb-0.5">
-        {HOME_FILTERS.map((f) => {
+        {MAP_FILTERS.map((f) => {
           const on = f.id === mapFilter;
           return (
             <button
               key={f.id}
-              onClick={() => setMapFilter(f.id as HomeFilter)}
+              onClick={() => setMapFilter(f.id as MapFilter)}
               className={cn(
                 "flex-shrink-0 inline-flex items-center gap-[7px] rounded-full px-3.5 py-[9px] text-[13px] font-semibold whitespace-nowrap border transition-base",
                 on ? "bg-foreground text-background border-foreground" : "bg-background text-muted-foreground border-border",
               )}
             >
-              <span className="w-[7px] h-[7px] rounded-full" style={{ background: CAT_COLOR[f.id as HomeFilter] }} />
-              {f.name}
+              <span className="w-[7px] h-[7px] rounded-full" style={{ background: f.color }} />
+              {t(`filter.${f.id}` as Parameters<typeof t>[0])}
             </button>
           );
         })}
       </div>
 
-      {/* mini map (pop-up ancré au-dessus du point) */}
-      <div className="mt-3.5 relative h-[248px] rounded-[24px] overflow-hidden shadow-md bg-[#EEEFEA]">
+      {/* carte réelle (Leaflet) — fiche riche au tap sur un pin */}
+      <div className="mt-3.5 relative z-0 h-[310px] rounded-[24px] overflow-hidden shadow-md bg-[#E7F0F2]">
         <MiniMap />
-        <div className="absolute top-3 left-3 bg-background rounded-full px-3 py-[7px] font-mono text-[11px] font-bold tracking-wide flex items-center gap-[7px] shadow-md z-[6]">
-          <span className="w-[7px] h-[7px] rounded-full" style={{ background: CAT_COLOR[mapFilter] }} />
-          {shownCount.toUpperCase()}
+        <div className="absolute top-3 left-3 bg-background rounded-full px-3 py-[7px] font-mono text-[11px] font-bold tracking-wide flex items-center gap-[7px] shadow-md z-[600] pointer-events-none">
+          <span className="w-[7px] h-[7px] rounded-full" style={{ background: MAP_FILTERS.find((f) => f.id === mapFilter)?.color }} />
+          {t(`filter.${mapFilter}` as Parameters<typeof t>[0]).toUpperCase()}
         </div>
       </div>
 
       {/* en direct & à venir */}
-      <SectionHeader title="En direct & à venir" action="Tout voir" onAction={() => nav("/programme")} />
+      <SectionHeader title={t("home.liveUpcoming")} action={t("home.seeAll")} onAction={() => nav("/programme")} />
       <LiveCard
         day="04" month="NOV" time="16:40" live sport="Natation"
         title="Demi-finale 100 m nage libre" venue="Arène · Diamniadio"
-        onAdd={() => pushToast("Ajouté à mon agenda")}
+        upcomingLabel={t("home.upcoming")} addAria={t("home.addAgendaAria")}
+        onAdd={() => pushToast(t("toast.added"))}
       />
       <LiveCard
         day="05" month="NOV" time="09:00" sport="Athlétisme"
         title="Séries 200 m — hommes" venue="Stade L. S. Senghor" added
-        onAdd={() => pushToast("Ajouté à mon agenda")}
+        upcomingLabel={t("home.upcoming")} addAria={t("home.addAgendaAria")}
+        onAdd={() => pushToast(t("toast.added"))}
       />
 
       {/* découvrir Dakar — carrousel défilant en boucle */}
-      <SectionHeader title="Découvrir Dakar" action="Explorer" onAction={() => setMapFilter("faire")} />
+      <SectionHeader title={t("home.discover")} action={t("home.explore")} onAction={() => setMapFilter("activite")} />
       <div className="mt-3.5 overflow-hidden">
         <div className="flex gap-3 w-max animate-[marquee_26s_linear_infinite] hover:[animation-play-state:paused] pb-1">
           {[...DISCOVER, ...DISCOVER].map((d, i) => (
             <button
               key={`${d.id}-${i}`}
-              onClick={() => setMapFilter("faire")}
+              onClick={() => setMapFilter(d.filter)}
               className="flex-shrink-0 w-[150px] text-left"
             >
               <div className="h-[120px] rounded-2xl overflow-hidden bg-[repeating-linear-gradient(135deg,#E7E7E2_0_11px,#F1F1EC_11px_22px)] relative">
-                <div className="absolute inset-0 flex items-center justify-center font-mono text-[9px] text-muted-foreground">
-                  photo · {d.name}
-                </div>
+                {d.img ? (
+                  <img src={d.img} alt={d.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center font-mono text-[9px] text-muted-foreground">
+                    photo · {d.name}
+                  </div>
+                )}
               </div>
-              <div className="font-mono text-[9.5px] text-muted-foreground uppercase tracking-wide mt-2.5">{d.cat}</div>
+              <div className="font-mono text-[9.5px] text-muted-foreground uppercase tracking-wide mt-2.5">
+                {t(`cat.${d.cat}` as Parameters<typeof t>[0])}
+              </div>
               <div className="font-display font-bold text-[15px] mt-0.5 leading-[1.15]">{d.name}</div>
             </button>
           ))}
@@ -196,10 +202,11 @@ const SectionHeader = ({ title, action, onAction }: { title: string; action: str
 );
 
 const LiveCard = ({
-  day, month, time, live, sport, title, venue, added, onAdd,
+  day, month, time, live, sport, title, venue, added, onAdd, upcomingLabel, addAria,
 }: {
   day: string; month: string; time: string; live?: boolean;
   sport: string; title: string; venue: string; added?: boolean; onAdd: () => void;
+  upcomingLabel: string; addAria: string;
 }) => (
   <div className="mt-3.5 bg-background border border-border rounded-[20px] p-3.5 shadow-sm flex items-center gap-3.5">
     <div className="text-center flex-shrink-0 w-[42px]">
@@ -216,7 +223,7 @@ const LiveCard = ({
             LIVE
           </span>
         ) : (
-          <span className="bg-muted text-muted-foreground text-[9.5px] font-bold tracking-wide px-[7px] py-[3px] rounded-[5px]">À VENIR</span>
+          <span className="bg-muted text-muted-foreground text-[9.5px] font-bold tracking-wide px-[7px] py-[3px] rounded-[5px]">{upcomingLabel}</span>
         )}
         <span className="font-mono text-[10px] text-muted-foreground uppercase tracking-wide">{sport}</span>
       </div>
@@ -228,7 +235,7 @@ const LiveCard = ({
     </div>
     <button
       onClick={onAdd}
-      aria-label="Ajouter à l'agenda"
+      aria-label={addAria}
       className={cn(
         "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 active:scale-95 transition-base",
         added ? "bg-primary" : "bg-primary/10",

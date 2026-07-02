@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AlertTriangle, MapPin, ArrowRight, Trash2, CalendarPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
-import { findEvent, dayLabel } from "@/data/appMock";
+import { useT, dayLabelT } from "@/lib/useT";
+import { findEvent } from "@/data/appMock";
 
 /*
   AgendaApp — écran Agenda (mobile). Affiche les ÉPREUVES RÉELLEMENT AJOUTÉES
@@ -37,6 +38,7 @@ interface AgendaEntry {
 
 const AgendaApp = () => {
   const nav = useNavigate();
+  const { t, lang } = useT();
   const agenda = useApp((s) => s.agenda);
   const toggleAgenda = useApp((s) => s.toggleAgenda);
 
@@ -74,9 +76,9 @@ const AgendaApp = () => {
         <span className="font-mono text-[11px]">▂▄▆ ⵛ ⏻</span>
       </div>
 
-      <h2 className="font-display font-extrabold text-[30px] tracking-tight">Mon agenda</h2>
+      <h2 className="font-display font-extrabold text-[30px] tracking-tight">{t("ag.title")}</h2>
       <p className="text-[14.5px] text-muted-foreground mt-1.5">
-        {empty ? "Aucune épreuve pour l'instant." : `${agenda.length} épreuve${agenda.length > 1 ? "s" : ""} enregistrée${agenda.length > 1 ? "s" : ""}.`}
+        {empty ? t("ag.none") : t("ag.count", { n: agenda.length })}
       </p>
 
       {/* conflict banner */}
@@ -84,9 +86,9 @@ const AgendaApp = () => {
         <div className="mt-3.5 flex gap-3 items-start bg-destructive/5 border border-destructive/20 rounded-2xl p-3.5">
           <AlertTriangle className="w-[19px] h-[19px] text-destructive flex-shrink-0 mt-px" strokeWidth={2} />
           <div>
-            <div className="font-semibold text-[13.5px]">Des épreuves se chevauchent</div>
+            <div className="font-semibold text-[13.5px]">{t("ag.conflictTitle")}</div>
             <div className="text-[12.5px] text-destructive/80 mt-0.5 leading-[1.4]">
-              Certaines démarrent à moins de 45 min d'écart.
+              {t("ag.conflictBody")}
             </div>
           </div>
         </div>
@@ -98,15 +100,15 @@ const AgendaApp = () => {
           <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
             <CalendarPlus className="w-7 h-7 text-muted-foreground" strokeWidth={1.8} />
           </div>
-          <div className="font-display font-bold text-[17px] mt-4">Votre agenda est vide</div>
+          <div className="font-display font-bold text-[17px] mt-4">{t("ag.emptyTitle")}</div>
           <div className="text-[13px] text-muted-foreground mt-1.5 max-w-[240px] leading-[1.5]">
-            Ajoutez des épreuves depuis le programme pour les retrouver ici.
+            {t("ag.emptyBody")}
           </div>
           <button
             onClick={() => nav("/programme")}
             className="mt-5 bg-primary text-primary-foreground font-semibold text-[14px] px-5 py-3 rounded-[14px] inline-flex items-center gap-2 active:scale-[0.98] transition-base"
           >
-            Voir le programme
+            {t("ag.seeProg")}
             <ArrowRight className="w-[16px] h-[16px]" strokeWidth={2.3} />
           </button>
         </div>
@@ -114,7 +116,7 @@ const AgendaApp = () => {
         <>
           {days.map((day) => (
             <div key={day} className="mt-6">
-              <div className="font-mono text-[11px] text-muted-foreground uppercase tracking-wide">{dayLabel(day)}</div>
+              <div className="font-mono text-[11px] text-muted-foreground uppercase tracking-wide">{dayLabelT(day, lang)}</div>
               <div className="mt-3 flex flex-col gap-3.5">
                 {groups[day].map((a) => (
                   <div
@@ -132,12 +134,12 @@ const AgendaApp = () => {
                         </span>
                       )}
                       {a.conflict && (
-                        <span className="bg-destructive/10 text-destructive text-[10px] font-bold px-2 py-[3px] rounded-full">Conflit</span>
+                        <span className="bg-destructive/10 text-destructive text-[10px] font-bold px-2 py-[3px] rounded-full">{t("ag.conflict")}</span>
                       )}
                       <span className="text-xs text-muted-foreground ml-auto">{a.sport}</span>
                       <button
                         onClick={() => toggleAgenda(a.id)}
-                        aria-label="Supprimer de l'agenda"
+                        aria-label={t("ag.removeAria")}
                         className="w-8 h-8 -mr-1 rounded-full flex items-center justify-center text-destructive hover:bg-destructive/10 transition-base"
                       >
                         <Trash2 className="w-[17px] h-[17px]" strokeWidth={2} />
@@ -151,7 +153,7 @@ const AgendaApp = () => {
                     <div className="mt-3 flex items-center gap-2.5 bg-primary/10 rounded-[14px] px-3 py-[11px]">
                       <ArrowRight className="w-[18px] h-[18px] text-primary flex-shrink-0" strokeWidth={2} />
                       <div className="text-[13px] text-foreground">
-                        <span className="font-semibold">Départ conseillé {a.depart}</span> · ~40 min avant
+                        <span className="font-semibold">{t("ag.depart", { t: a.depart })}</span> · {t("ag.before")}
                       </div>
                     </div>
                   </div>
@@ -165,7 +167,7 @@ const AgendaApp = () => {
             onClick={() => nav("/programme")}
             className="mt-7 w-full bg-background border border-border rounded-[16px] py-3.5 flex items-center justify-center gap-2 font-semibold text-[14.5px] active:scale-[0.99] transition-base"
           >
-            Voir le programme
+            {t("ag.seeProg")}
             <ArrowRight className="w-[17px] h-[17px] text-primary" strokeWidth={2.3} />
           </button>
         </>

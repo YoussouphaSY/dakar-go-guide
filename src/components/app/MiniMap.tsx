@@ -1,137 +1,204 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { X, Clock, MapPin, Navigation } from "lucide-react";
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { X, Clock, MapPin, Navigation, Plus } from "lucide-react";
 import { useApp } from "@/store/appStore";
-import { HOME_PLACES, type HomeFilter } from "@/data/appMock";
+import { useT } from "@/lib/useT";
+import {
+  POIS, MAP_FILTERS, MAP_CENTER, MAP_ZOOM, USER_POS,
+  poisByFilter, poiDesc, type Poi,
+} from "@/data/mobility";
+import { dropPin, userDot } from "./mapIcons";
 
 /*
-  MiniMap — carte stylisée (SVG) + pins en goutte, reprise du prototype.
-  Filtre mono-sélection : n'affiche que les POI du type actif.
-  Le clic sur un pin ouvre une info-bulle ANCRÉE juste au-dessus du point
-  (et non une feuille en bas), avec actions « S'y rendre » / « Agenda ».
+  MiniMap — vraie carte Leaflet de l'accueil (fond CARTO clair, GPS réels).
+  Les sites JOJ restent TOUJOURS visibles (pins orange) ; le filtre actif
+  ajoute sa couche par-dessus. Le tap sur un pin ouvre une fiche riche en
+  bas de la carte : photo, horaires, distance, description traduite,
+  « S'y rendre » (pré-remplit la Mobilité) et ajout à l'agenda.
 */
 
-const CAT_COLOR: Record<HomeFilter, string> = {
-  comp: "#E2571E",
-  faire: "#00853F",
-  fest: "#C77A1E",
-  resto: "#6E6E68",
+const VENUE_COLOR = MAP_FILTERS.find((f) => f.id === "competition")!.color;
+
+const filterColor = (f: string) => MAP_FILTERS.find((x) => x.id === f)?.color ?? VENUE_COLOR;
+
+/* Recadre sur les POI du filtre actif quand il change. */
+const FitOnFilter = ({ pois }: { pois: Poi[] }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (pois.length === 0) return;
+    const bounds = L.latLngBounds(pois.map((p) => [p.lat, p.lng] as [number, number]));
+    map.fitBounds(bounds, { padding: [34, 34], maxZoom: 12 });
+  }, [pois, map]);
+  return null;
 };
 
-interface MiniMapProps {
-  /** Position de l'utilisateur (%) : left, top. */
-  user?: { left: number; top: number };
-}
+/* Zoome doucement sur la sélection ; clic sur la carte = fermer la fiche. */
+const MapBehaviour = ({ selected, onBlank }: { selected: Poi | null; onBlank: () => void }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (selected) map.flyTo([selected.lat, selected.lng], Math.max(map.getZoom(), 12.5), { duration: 0.5 });
+  }, [selected, map]);
+  useMapEvents({ click: onBlank });
+  return null;
+};
 
-const MiniMap = ({ user = { left: 18, top: 84 } }: MiniMapProps) => {
+const MiniMap = () => {
   const nav = useNavigate();
+  const { t, lang } = useT();
   const mapFilter = useApp((s) => s.mapFilter);
   const pushToast = useApp((s) => s.pushToast);
+  const setMoDest = useApp((s) => s.setMoDest);
   const [openId, setOpenId] = useState<string | null>(null);
 
-  const shown = HOME_PLACES.filter((p) => p.cat === mapFilter);
-  const pinColor = CAT_COLOR[mapFilter];
-  const active = shown.find((p) => p.id === openId) ?? null;
+  const catPois = useMemo(() => poisByFilter(mapFilter), [mapFilter]);
+  const venues = useMemo(() => POIS.filter((p) => p.type === "venue"), []);
+  const active = POIS.find((p) => p.id === openId) ?? null;
+
+  /* Fermer la fiche quand on change de filtre. */
+  useEffect(() => setOpenId(null), [mapFilter]);
+
+  const go = (p: Poi) => {
+    if (p.type === "venue") setMoDest(p.id);
+    nav("/mobilite");
+  };
 
   return (
-    <div className="absolute inset-0 bg-[#EEEFEA]" onClick={() => setOpenId(null)}>
-      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" className="absolute inset-0 block">
-        <rect width="100" height="100" fill="#EFF0EB" />
-        <rect x="6" y="52" width="24" height="20" rx="4" fill="#E5EADF" />
-        <rect x="44" y="8" width="24" height="16" rx="4" fill="#E5EADF" />
-        <g stroke="#E1E1DA" fill="none" strokeLinecap="round" vectorEffect="non-scaling-stroke">
-          <path d="M0,40 L100,32" strokeWidth="6" />
-          <path d="M42,0 L48,100" strokeWidth="5" />
-          <path d="M0,70 L100,62" strokeWidth="4" />
-          <path d="M6,100 L84,22" strokeWidth="9" />
-        </g>
-      </svg>
+    <div className="absolute inset-0" dir="ltr">
+      <MapContainer
+        center={MAP_CENTER}
+        zoom={MAP_ZOOM}
+        zoomControl={false}
+        attributionControl={false}
+        scrollWheelZoom={false}
+        dragging
+        className="absolute inset-0 h-full w-full z-0"
+        style={{ background: "#E7F0F2" }}
+      >
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+        <FitOnFilter pois={catPois} />
+        <MapBehaviour selected={active} onBlank={() => setOpenId(null)} />
 
-      {shown.map((p) => {
-        const on = p.id === openId;
-        const size = on ? 36 : 30;
-        return (
-          <div
+        {/* Sites JOJ : toujours visibles, en retrait quand un autre filtre est actif */}
+        {mapFilter !== "competition" && venues.map((p) => (
+          <Marker
+            key={`v-${p.id}`}
+            position={[p.lat, p.lng]}
+            icon={dropPin(VENUE_COLOR, p.id === openId ? 36 : 24, { muted: p.id !== openId, selected: p.id === openId })}
+            eventHandlers={{ click: () => setOpenId(p.id) }}
+            zIndexOffset={p.id === openId ? 1000 : -100}
+          />
+        ))}
+
+        {/* Couche du filtre actif */}
+        {catPois.map((p) => (
+          <Marker
             key={p.id}
-            onClick={(e) => { e.stopPropagation(); setOpenId(on ? null : p.id); }}
-            className="absolute cursor-pointer"
-            style={{ left: `${p.left}%`, top: `${p.top}%`, transform: "translate(-50%,-100%)", zIndex: on ? 8 : 4 }}
-          >
-            <div
-              className="flex items-center justify-center border-[2.5px] border-white shadow-[0_4px_12px_rgba(14,15,12,0.28)]"
-              style={{ width: size, height: size, borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg)", background: pinColor }}
-            >
-              <span className="w-[7px] h-[7px] rounded-full bg-white" style={{ transform: "rotate(45deg)" }} />
-            </div>
-          </div>
-        );
-      })}
+            position={[p.lat, p.lng]}
+            icon={dropPin(filterColor(mapFilter), p.id === openId ? 40 : 32, { selected: p.id === openId })}
+            eventHandlers={{ click: () => setOpenId(p.id) }}
+            zIndexOffset={p.id === openId ? 1000 : 0}
+          />
+        ))}
 
-      {/* user location */}
-      <div className="absolute" style={{ left: `${user.left}%`, top: `${user.top}%`, transform: "translate(-50%,-50%)" }}>
-        <span className="block w-[14px] h-[14px] rounded-full bg-primary border-[3px] border-white shadow-[0_2px_6px_rgba(0,0,0,0.25)]" />
+        <Marker position={USER_POS} icon={userDot()} interactive={false} />
+      </MapContainer>
+
+      {/* crédit fond de carte */}
+      <div className="absolute bottom-1 right-2 z-[500] text-[8px] text-muted-foreground/70 pointer-events-none">
+        © OpenStreetMap · CARTO
       </div>
 
-      {/* bulle compacte ancrée au-dessus du point */}
+      {/* fiche riche du lieu sélectionné */}
       {active && (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="absolute z-[20] anim-fade"
-          style={{
-            left: `${active.left}%`,
-            top: `calc(${active.top}% - 42px)`,
-            transform: "translate(-50%,-100%)",
-            width: 190,
-            maxWidth: "74%",
-          }}
-        >
-          <div className="bg-background rounded-[14px] shadow-lg border border-border px-3 py-2.5">
-            <div className="flex items-start gap-2">
+        <div className="absolute left-2 right-2 bottom-2 z-[1000] anim-fade" dir={lang === "AR" ? "rtl" : "ltr"}>
+          <div className="bg-background rounded-[18px] shadow-lg border border-border p-2.5">
+            <div className="flex gap-2.5">
+              {active.image ? (
+                <img
+                  src={active.image}
+                  alt={active.name}
+                  className="w-[76px] h-[76px] rounded-[13px] object-cover flex-shrink-0"
+                />
+              ) : (
+                <div className="w-[76px] h-[76px] rounded-[13px] bg-[repeating-linear-gradient(135deg,#E7E7E2_0_8px,#F1F1EC_8px_16px)] flex items-center justify-center font-mono text-[8px] text-muted-foreground flex-shrink-0">
+                  photo
+                </div>
+              )}
               <div className="flex-1 min-w-0">
-                <div className="font-display font-bold text-[13.5px] leading-[1.1] truncate">{active.name}</div>
-                <div className="flex items-center gap-2.5 mt-1">
-                  <span className="inline-flex items-center gap-1 text-[10.5px] text-muted-foreground">
-                    <Clock className="w-[11px] h-[11px] text-primary" strokeWidth={2} />{active.hours}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-[10.5px] text-muted-foreground">
-                    <MapPin className="w-[11px] h-[11px] text-primary" strokeWidth={2} />{active.dist}
+                <div className="flex items-start gap-1.5">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-display font-bold text-[14.5px] leading-[1.1] truncate">{active.name}</div>
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <span
+                        className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-[2px] rounded-[5px] text-white"
+                        style={{ background: active.type === "venue" ? VENUE_COLOR : filterColor(active.filter ?? mapFilter) }}
+                      >
+                        {t(`poiType.${active.type}`)}
+                      </span>
+                      <span className="text-[10.5px] text-muted-foreground truncate">{active.city}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setOpenId(null)}
+                    aria-label={t("map.close")}
+                    className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0"
+                  >
+                    <X className="w-3 h-3 text-muted-foreground" strokeWidth={2.6} />
+                  </button>
+                </div>
+                <div className="flex items-center gap-2.5 mt-1.5">
+                  {active.schedule && (
+                    <span className="inline-flex items-center gap-1 text-[10.5px] text-muted-foreground min-w-0">
+                      <Clock className="w-[11px] h-[11px] text-primary flex-shrink-0" strokeWidth={2} />
+                      <span className="truncate">{active.schedule}</span>
+                    </span>
+                  )}
+                  <span className="inline-flex items-center gap-1 text-[10.5px] text-muted-foreground flex-shrink-0">
+                    <MapPin className="w-[11px] h-[11px] text-primary" strokeWidth={2} />
+                    {active.dist}
                   </span>
                 </div>
               </div>
-              <button
-                onClick={() => setOpenId(null)}
-                aria-label="Fermer"
-                className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0"
-              >
-                <X className="w-3 h-3 text-muted-foreground" strokeWidth={2.6} />
-              </button>
             </div>
+
+            <p className="text-[11.5px] leading-[1.45] text-muted-foreground mt-2 line-clamp-2">
+              {poiDesc(active, lang)}
+            </p>
+
+            {active.tags && active.tags.length > 0 && (
+              <div className="flex gap-1 mt-1.5 overflow-hidden flex-wrap max-h-[20px]">
+                {active.tags.map((tag) => (
+                  <span key={tag} className="text-[9.5px] font-semibold bg-muted text-foreground/70 px-1.5 py-[2px] rounded-[5px] whitespace-nowrap">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
             <div className="flex gap-1.5 mt-2.5">
               <button
-                onClick={() => nav("/mobilite")}
-                className="flex-1 bg-primary text-primary-foreground text-[11.5px] font-semibold py-[7px] rounded-[9px] inline-flex items-center justify-center gap-1 active:scale-[0.98] transition-base"
+                onClick={() => go(active)}
+                className="flex-1 bg-primary text-primary-foreground text-[12px] font-semibold py-[8px] rounded-[10px] inline-flex items-center justify-center gap-1.5 active:scale-[0.98] transition-base"
               >
-                <Navigation className="w-3 h-3" strokeWidth={2.2} />
-                S'y rendre
+                <Navigation className="w-3.5 h-3.5" strokeWidth={2.2} />
+                {t("map.go")}
               </button>
               <button
-                onClick={() => { setOpenId(null); pushToast("Ajouté à mon agenda"); }}
-                className="bg-background border-[1.5px] border-border text-foreground text-[11.5px] font-semibold px-2.5 py-[7px] rounded-[9px] active:scale-[0.98] transition-base"
+                onClick={() => { setOpenId(null); pushToast(t("toast.added")); }}
+                className="bg-background border-[1.5px] border-border text-foreground text-[12px] font-semibold px-3 py-[8px] rounded-[10px] inline-flex items-center gap-1 active:scale-[0.98] transition-base"
               >
-                Agenda
+                <Plus className="w-3.5 h-3.5" strokeWidth={2.4} />
+                {t("map.agenda")}
               </button>
             </div>
           </div>
-          {/* flèche vers le point */}
-          <div
-            className="mx-auto w-2.5 h-2.5 bg-background border-b border-r border-border"
-            style={{ transform: "rotate(45deg) translateY(-5px)", marginTop: -5 }}
-          />
         </div>
       )}
     </div>
   );
 };
 
-export { CAT_COLOR };
 export default MiniMap;

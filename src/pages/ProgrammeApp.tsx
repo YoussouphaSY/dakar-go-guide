@@ -1,19 +1,20 @@
 import { Search, CalendarDays, MapPin, Plus, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
+import { useT, dayLabelT } from "@/lib/useT";
 import AnchoredPopover from "@/components/app/AnchoredPopover";
-import { PROG_EVENTS, dayLabel, jojDays, PROG_VENUE_INFO } from "@/data/appMock";
+import { PROG_EVENTS, jojDays, PROG_VENUE_INFO } from "@/data/appMock";
 
 /*
   ProgrammeApp — écran Programme (mobile). Recherche + filtres date/lieu en
   petits pop-ups ancrés (calendrier JOJ / liste des lieux) qui se ferment au
   clic ailleurs. Liste des séances du jour + ajout à l'agenda. Touch d'une
-  séance → détail (EventSheet global).
+  séance → détail (EventSheet global). Interface traduite.
 */
 
-const WEEKDAYS = ["L", "M", "M", "J", "V", "S", "D"];
-
 const ProgrammeApp = () => {
+  const { t, lang } = useT();
+  const weekdays = t("prog.weekdays").split(",");
   const progDay = useApp((s) => s.progDay);
   const progVenue = useApp((s) => s.progVenue);
   const progSheet = useApp((s) => s.progSheet);
@@ -35,21 +36,21 @@ const ProgrammeApp = () => {
         <span className="font-mono text-[11px]">▂▄▆ ⵛ ⏻</span>
       </div>
 
-      <h2 className="font-display font-extrabold text-[30px] tracking-tight">Programme</h2>
-      <p className="text-[14.5px] text-muted-foreground mt-1.5">Touchez une épreuve pour voir les détails.</p>
+      <h2 className="font-display font-extrabold text-[30px] tracking-tight">{t("prog.title")}</h2>
+      <p className="text-[14.5px] text-muted-foreground mt-1.5">{t("prog.hint")}</p>
 
       {/* search + filter buttons (pop-ups ancrés) */}
       <div className="flex items-center gap-2.5 mt-[18px]">
         <div className="flex-1 flex items-center gap-2.5 bg-muted rounded-[14px] px-[15px] py-[13px]">
           <Search className="w-[17px] h-[17px] text-muted-foreground" strokeWidth={2} />
-          <span className="text-sm text-muted-foreground">Rechercher…</span>
+          <span className="text-sm text-muted-foreground">{t("prog.search")}</span>
         </div>
 
         {/* filtre date */}
         <div className="relative flex-shrink-0">
           <button
             onClick={() => setProgSheet(progSheet === "date" ? null : "date")}
-            aria-label="Filtrer par date"
+            aria-label={t("prog.filterDateAria")}
             className={cn(
               "w-[50px] h-[50px] rounded-[14px] border flex items-center justify-center transition-base",
               progSheet === "date" ? "border-primary bg-primary/5 text-primary" : "border-border bg-background",
@@ -62,10 +63,10 @@ const ProgrammeApp = () => {
             onClose={() => setProgSheet(null)}
             className="right-0 top-[56px] w-[268px] p-3.5"
           >
-            <div className="font-display font-extrabold text-[15px] tracking-tight">Choisir une date</div>
+            <div className="font-display font-extrabold text-[15px] tracking-tight">{t("prog.chooseDate")}</div>
             <div className="text-[11px] text-muted-foreground mt-0.5">31 oct → 13 nov 2026</div>
             <div className="grid grid-cols-7 gap-1 mt-2.5 text-center">
-              {WEEKDAYS.map((w, i) => (
+              {weekdays.map((w, i) => (
                 <div key={i} className="font-mono text-[9px] text-muted-foreground py-0.5">{w}</div>
               ))}
               {Array.from({ length: jojDays()[0]?.weekday ?? 0 }).map((_, i) => (
@@ -97,7 +98,7 @@ const ProgrammeApp = () => {
         <div className="relative flex-shrink-0">
           <button
             onClick={() => setProgSheet(progSheet === "lieu" ? null : "lieu")}
-            aria-label="Filtrer par lieu"
+            aria-label={t("prog.filterPlaceAria")}
             className={cn(
               "w-[50px] h-[50px] rounded-[14px] border flex items-center justify-center transition-base",
               progSheet === "lieu" ? "border-primary bg-primary/5 text-primary" : "border-border bg-background",
@@ -110,7 +111,7 @@ const ProgrammeApp = () => {
             onClose={() => setProgSheet(null)}
             className="right-0 top-[56px] w-[250px] p-2"
           >
-            <div className="font-display font-extrabold text-[14px] tracking-tight px-2 pt-1.5 pb-1">Lieu</div>
+            <div className="font-display font-extrabold text-[14px] tracking-tight px-2 pt-1.5 pb-1">{t("prog.place")}</div>
             <div className="max-h-[280px] overflow-y-auto scr">
               {PROG_VENUE_INFO.map((v) => {
                 const on = v.name === progVenue;
@@ -126,9 +127,11 @@ const ProgrammeApp = () => {
                     <MapPin className={cn("w-4 h-4 flex-shrink-0", on ? "text-primary" : "text-muted-foreground")} strokeWidth={2} />
                     <div className="flex-1 min-w-0">
                       <div className={cn("text-[13px] font-semibold truncate", on && "text-primary")}>
-                        {v.name === "Tous" ? "Tous les lieux" : v.name}
+                        {v.name === "Tous" ? t("prog.allPlaces") : v.name}
                       </div>
-                      <div className="text-[10.5px] text-muted-foreground truncate">{v.city}</div>
+                      <div className="text-[10.5px] text-muted-foreground truncate">
+                        {v.name === "Tous" ? t("prog.allEvents") : v.city}
+                      </div>
                     </div>
                     {on && <Check className="w-4 h-4 text-primary flex-shrink-0" strokeWidth={2.6} />}
                   </button>
@@ -140,9 +143,9 @@ const ProgrammeApp = () => {
       </div>
 
       <div className="flex items-center gap-2 mt-3.5 text-[13px] text-muted-foreground">
-        <span className="font-semibold text-foreground">{dayLabel(progDay)}</span>
+        <span className="font-semibold text-foreground">{dayLabelT(progDay, lang)}</span>
         <span className="opacity-45">·</span>
-        <span>{progVenue === "Tous" ? "Tous les lieux" : progVenue}</span>
+        <span>{progVenue === "Tous" ? t("prog.allPlaces") : progVenue}</span>
       </div>
 
       {/* events */}
@@ -177,7 +180,7 @@ const ProgrammeApp = () => {
                 </div>
                 <button
                   onClick={() => toggleAgenda(e.id)}
-                  aria-label="Ajouter à l'agenda"
+                  aria-label={t("home.addAgendaAria")}
                   className={cn(
                     "w-[42px] h-[42px] rounded-full flex items-center justify-center flex-shrink-0 active:scale-95 transition-base",
                     inA ? "bg-primary" : "bg-primary/10",
@@ -196,7 +199,7 @@ const ProgrammeApp = () => {
         })}
         {events.length === 0 && (
           <div className="text-center text-sm text-muted-foreground py-10">
-            Aucune séance pour ce filtre.
+            {t("prog.empty")}
           </div>
         )}
       </div>

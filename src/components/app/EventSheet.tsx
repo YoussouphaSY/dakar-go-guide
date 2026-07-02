@@ -1,8 +1,9 @@
 import { X, Clock, MapPin, Check, Plus } from "lucide-react";
 import BottomSheet from "./BottomSheet";
 import { useApp } from "@/store/appStore";
+import { useT, dayLabelT } from "@/lib/useT";
 import {
-  findEvent, EVENT_DETAILS, dayLabel,
+  findEvent, EVENT_DETAILS,
   type EventDetail, type ProgEvent,
 } from "@/data/appMock";
 import { cn } from "@/lib/utils";
@@ -12,6 +13,7 @@ import { cn } from "@/lib/utils";
   liste de départ (couloirs) ou festivité. Bouton d'ajout à l'agenda.
 */
 const EventSheet = () => {
+  const { t, lang } = useT();
   const eventId = useApp((s) => s.eventId);
   const setEventId = useApp((s) => s.setEventId);
   const agenda = useApp((s) => s.agenda);
@@ -36,7 +38,7 @@ const EventSheet = () => {
         </div>
         <button
           onClick={close}
-          aria-label="Fermer"
+          aria-label={t("map.close")}
           className="absolute top-3.5 right-3.5 w-[34px] h-[34px] rounded-full bg-background/90 flex items-center justify-center"
         >
           <X className="w-4 h-4 text-foreground" strokeWidth={2.4} />
@@ -48,7 +50,7 @@ const EventSheet = () => {
           {ev.live && (
             <span className="inline-flex items-center gap-[5px] bg-destructive text-destructive-foreground text-[11px] font-bold px-2.5 py-[5px] rounded-full">
               <span className="w-[5px] h-[5px] rounded-full bg-current anim-live" />
-              EN DIRECT
+              {t("ev.live")}
             </span>
           )}
         </div>
@@ -60,7 +62,7 @@ const EventSheet = () => {
         <div className="flex flex-wrap gap-4 mt-3">
           <div className="flex items-center gap-[7px] text-[13.5px] text-foreground/80">
             <Clock className="w-[15px] h-[15px] text-primary" strokeWidth={2} />
-            {dayLabel(ev.day)} · {ev.time}
+            {dayLabelT(ev.day, lang)} · {ev.time}
           </div>
           <div className="flex items-center gap-[7px] text-[13.5px] text-foreground/80">
             <MapPin className="w-[15px] h-[15px] text-primary" strokeWidth={2} />
@@ -81,7 +83,7 @@ const EventSheet = () => {
         {det.format === "startlist" && det.athletes && (
           <>
             <div className="font-mono text-[10.5px] text-muted-foreground uppercase tracking-wide mt-5">
-              Liste de départ
+              {t("ev.startlist")}
             </div>
             <div className="mt-2.5 flex flex-col gap-2">
               {det.athletes.map((a) => (
@@ -116,13 +118,13 @@ const EventSheet = () => {
             )}
           >
             {inA ? <Check className="w-[17px] h-[17px]" strokeWidth={2.4} /> : <Plus className="w-[17px] h-[17px]" strokeWidth={2.2} />}
-            {inA ? "Dans mon agenda" : "Ajouter à mon agenda"}
+            {inA ? t("ev.inAgenda") : t("ev.add")}
           </button>
           <button
-            onClick={() => pushToast("Billetterie bientôt disponible")}
+            onClick={() => pushToast(t("toast.tickets"))}
             className="bg-primary text-primary-foreground font-semibold text-[15px] px-5 py-[15px] rounded-[15px] active:scale-[0.98] transition-base"
           >
-            Billets
+            {t("ev.tickets")}
           </button>
         </div>
       </div>

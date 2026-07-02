@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, MessageCircle, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
+import { useT } from "@/lib/useT";
 import { SUGGESTIONS } from "@/data/appMock";
 
 /*
@@ -13,6 +14,7 @@ import { SUGGESTIONS } from "@/data/appMock";
 
 const AyoApp = () => {
   const nav = useNavigate();
+  const { t } = useT();
   const chat = useApp((s) => s.chat);
   const addChat = useApp((s) => s.addChat);
   const endRef = useRef<HTMLDivElement>(null);
@@ -30,7 +32,7 @@ const AyoApp = () => {
     <div className="flex-1 flex flex-col min-h-0 bg-muted/40">
       {/* header */}
       <div className="flex-shrink-0 flex items-center gap-3.5 px-[18px] pt-2.5 pb-3.5 bg-background border-b border-border">
-        <button onClick={() => nav("/")} aria-label="Retour" className="w-[38px] h-[38px] flex items-center justify-center -ml-2">
+        <button onClick={() => nav("/")} aria-label={t("ayo.backAria")} className="w-[38px] h-[38px] flex items-center justify-center -ml-2">
           <ChevronLeft className="w-[22px] h-[22px]" strokeWidth={2} />
         </button>
         <div className="w-[42px] h-[42px] rounded-full bg-primary flex items-center justify-center relative flex-shrink-0">
@@ -41,7 +43,7 @@ const AyoApp = () => {
           <div className="font-display font-extrabold text-[17px]">AYO</div>
           <div className="text-[11.5px] text-primary flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-            En ligne · FR EN AR WO ES
+            {t("ayo.online")} · FR EN AR WO ES
           </div>
         </div>
       </div>
@@ -83,8 +85,8 @@ const AyoApp = () => {
 
       {/* input */}
       <div className="flex-shrink-0 flex items-center gap-2.5 px-4 pt-2.5 pb-[max(1rem,env(safe-area-inset-bottom))] bg-background border-t border-border">
-        <div className="flex-1 bg-muted rounded-full px-[18px] py-[13px] text-sm text-muted-foreground">Écrivez à AYO…</div>
-        <button aria-label="Envoyer" className="w-[46px] h-[46px] rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+        <div className="flex-1 bg-muted rounded-full px-[18px] py-[13px] text-sm text-muted-foreground">{t("ayo.write")}</div>
+        <button aria-label={t("ayo.sendAria")} className="w-[46px] h-[46px] rounded-full bg-primary flex items-center justify-center flex-shrink-0">
           <Send className="w-5 h-5 text-primary-foreground" strokeWidth={2} />
         </button>
       </div>
