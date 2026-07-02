@@ -1,12 +1,5 @@
 import type { LangId } from "@/data/appMock";
 
-/*
-  translations — dictionnaire de l'interface APP (FR / EN / ES / AR / WO).
-  Chaque clé porte un tuple [fr, en, es, ar, wo] ; `tr` retombe sur le
-  français si une langue manque. Les variables s'écrivent {t}, {n}…
-  Le wolof est une première passe à faire relire par un locuteur natif.
-  (Fichier pur, sans dépendance au store — voir useT.ts pour le hook.)
-*/
 
 const ORDER: LangId[] = ["FR", "EN", "ES", "AR", "WO"];
 
@@ -21,7 +14,7 @@ const D = {
   "nav.profil": ["Profil", "Profile", "Perfil", "الملف", "Profil"],
 
   /* — Accueil — */
-  "home.greeting": ["Bonjour 👋", "Hello 👋", "Hola 👋", "مرحباً 👋", "Nanga def 👋"],
+  "home.greeting": ["Bonjour ", "Hello ", "Hola ", "مرحباً ", "Nanga def "],
   "home.liveUpcoming": ["En direct & à venir", "Live & upcoming", "En directo y próximos", "مباشر وقادم", "Ci saa si ak li ñëw"],
   "home.seeAll": ["Tout voir", "See all", "Ver todo", "عرض الكل", "Gis lépp"],
   "home.discover": ["Découvrir Dakar", "Discover Dakar", "Descubre Dakar", "اكتشف داكار", "Xam Ndakaaru"],
@@ -31,13 +24,13 @@ const D = {
   "home.notifOnAria": ["Activer les notifications", "Turn notifications on", "Activar notificaciones", "تفعيل الإشعارات", "Taal yëgle yi"],
   "home.notifOffAria": ["Désactiver les notifications", "Turn notifications off", "Desactivar notificaciones", "إيقاف الإشعارات", "Fey yëgle yi"],
 
-  /* — Filtres de la carte — */
+  /* Filtres de la carte — */
   "filter.competition": ["Compétitions", "Competitions", "Competición", "المنافسات", "Jonganté yi"],
   "filter.activite": ["Activités", "Things to do", "Qué hacer", "أنشطة", "Yëngu-yëngu"],
   "filter.festivite": ["Festivités", "Festivities", "Fiestas", "احتفالات", "Xew yi"],
   "filter.tourisme": ["Tourisme", "Food & sights", "Turismo", "سياحة", "Tukki ak lekk"],
 
-  /* — Types de lieu / carte — */
+  /* Types de lieu / carte — */
   "poiType.venue": ["Site JOJ", "YOG venue", "Sede JOJ", "موقع الألعاب", "Bérab JOJ"],
   "poiType.transport": ["Transport", "Transit", "Transporte", "نقل", "Transport"],
   "poiType.food": ["Restauration", "Food", "Comida", "مطاعم", "Lekk"],
@@ -90,6 +83,8 @@ const D = {
   "ag.removeAria": ["Supprimer de l'agenda", "Remove from agenda", "Quitar de la agenda", "إزالة من الأجندة", "Dindi ko ci ajanda"],
   "ag.download": ["Télécharger l'agenda (PDF)", "Download agenda (PDF)", "Descargar agenda (PDF)", "تنزيل الأجندة (PDF)", "Yebbi ajanda (PDF)"],
   "ag.downloaded": ["Agenda téléchargé", "Agenda downloaded", "Agenda descargada", "تم تنزيل الأجندة", "Yebbi nañu ajanda bi"],
+  "ag.addCal": ["Ajouter au calendrier du téléphone", "Add to phone calendar", "Añadir al calendario", "أضف إلى تقويم الهاتف", "Yokk ci kalandriye telefon"],
+  "ag.calAdded": ["Calendrier exporté (.ics)", "Calendar exported (.ics)", "Calendario exportado (.ics)", "تم تصدير التقويم (.ics)", "Kalandriye bi génn (.ics)"],
 
   /* — Mobilité — */
   "mo.title": ["Mobilité", "Mobility", "Movilidad", "التنقل", "Tukki"],
@@ -155,7 +150,7 @@ const D = {
   "pr.tickets": ["Mes billets", "My tickets", "Mis entradas", "تذاكري", "Sama tiket yi"],
   "pr.notifs": ["Notifications", "Notifications", "Notificaciones", "الإشعارات", "Yëgle yi"],
   "pr.interests": ["Centres d'intérêt", "Interests", "Intereses", "الاهتمامات", "Li nga bëgg"],
-  "pr.visitor": ["Visiteuse · 🇸🇳 Sénégal", "Visitor · 🇸🇳 Senegal", "Visitante · 🇸🇳 Senegal", "زائرة · 🇸🇳 السنغال", "Gan · 🇸🇳 Senegaal"],
+  "pr.visitor": ["Visiteuse ·  Sénégal", "Visitor ·  Senegal", "Visitante ·  Senegal", "زائرة ·  السنغال", "Gan ·  Senegaal"],
   "pr.logout": ["Se déconnecter", "Log out", "Cerrar sesión", "تسجيل الخروج", "Génn"],
   "pr.offline": ["Mode hors-ligne", "Offline mode", "Modo sin conexión", "وضع عدم الاتصال", "Bu amul internet"],
   "pr.help": ["Aide & assistance", "Help & support", "Ayuda y asistencia", "المساعدة والدعم", "Ndimbal"],

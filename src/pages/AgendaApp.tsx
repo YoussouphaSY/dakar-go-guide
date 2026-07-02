@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertTriangle, MapPin, ArrowRight, Trash2, CalendarPlus, Download } from "lucide-react";
+import { AlertTriangle, MapPin, ArrowRight, Trash2, CalendarPlus, Download, CalendarClock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { useT, dayLabelT } from "@/lib/useT";
 import { findEvent } from "@/data/appMock";
 import { downloadAgendaPdf } from "@/lib/agendaPdf";
+import { downloadAgendaIcs } from "@/lib/agendaIcs";
 
 /*
   AgendaApp — écran Agenda (mobile). Affiche les ÉPREUVES RÉELLEMENT AJOUTÉES
@@ -82,6 +83,16 @@ const AgendaApp = () => {
     pushToast(t("ag.downloaded"));
   };
 
+  const addToCalendar = () => {
+    const entries = days.flatMap((d) =>
+      groups[d].map((e) => ({
+        id: e.id, day: e.day, time: e.time, sport: e.sport, title: e.title, venue: e.venue,
+      })),
+    );
+    downloadAgendaIcs(entries);
+    pushToast(t("ag.calAdded"));
+  };
+
   return (
     <div className="scr flex-1 overflow-y-auto px-[22px] pb-5 pt-2">
       <div className="flex justify-between items-center pt-1.5 pb-3 text-[13px] font-semibold">
@@ -97,13 +108,22 @@ const AgendaApp = () => {
           </p>
         </div>
         {!empty && (
-          <button
-            onClick={downloadPdf}
-            aria-label={t("ag.download")}
-            className="mt-1 w-11 h-11 flex-shrink-0 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-base"
-          >
-            <Download className="w-[21px] h-[21px]" strokeWidth={2} />
-          </button>
+          <div className="mt-1 flex items-center gap-2 flex-shrink-0">
+            <button
+              onClick={addToCalendar}
+              aria-label={t("ag.addCal")}
+              className="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-base"
+            >
+              <CalendarClock className="w-[21px] h-[21px]" strokeWidth={2} />
+            </button>
+            <button
+              onClick={downloadPdf}
+              aria-label={t("ag.download")}
+              className="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-base"
+            >
+              <Download className="w-[21px] h-[21px]" strokeWidth={2} />
+            </button>
+          </div>
         )}
       </div>
 
