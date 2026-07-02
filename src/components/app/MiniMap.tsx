@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { X, Clock, MapPin, Navigation, Plus } from "lucide-react";
+import { X, Clock, MapPin, Navigation, Plus, ChevronRight } from "lucide-react";
 import { useApp } from "@/store/appStore";
 import { useT } from "@/lib/useT";
 import { asset } from "@/lib/utils";
@@ -52,6 +52,7 @@ const MiniMap = () => {
   const mapFilter = useApp((s) => s.mapFilter);
   const pushToast = useApp((s) => s.pushToast);
   const setMoDest = useApp((s) => s.setMoDest);
+  const setVenueId = useApp((s) => s.setVenueId);
   const [openId, setOpenId] = useState<string | null>(null);
 
   const catPois = useMemo(() => poisByFilter(mapFilter), [mapFilter]);
@@ -165,9 +166,18 @@ const MiniMap = () => {
               </div>
             </div>
 
-            <p className="text-[11.5px] leading-[1.45] text-muted-foreground mt-2 line-clamp-2">
-              {poiDesc(active, lang)}
-            </p>
+            <button
+              onClick={() => setVenueId(active.id)}
+              className="mt-2 w-full text-left group"
+            >
+              <p className="text-[11.5px] leading-[1.45] text-muted-foreground line-clamp-2">
+                {poiDesc(active, lang)}
+              </p>
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary mt-1">
+                {t("map.more")}
+                <ChevronRight className="w-3 h-3" strokeWidth={2.4} />
+              </span>
+            </button>
 
             {active.tags && active.tags.length > 0 && (
               <div className="flex gap-1 mt-1.5 overflow-hidden flex-wrap max-h-[20px]">

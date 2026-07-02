@@ -39,6 +39,19 @@ const D = {
   "map.agenda": ["Agenda", "Agenda", "Agenda", "الأجندة", "Ajanda"],
   "map.close": ["Fermer", "Close", "Cerrar", "إغلاق", "Tëj"],
   "map.myPos": ["Vous êtes ici", "You are here", "Estás aquí", "أنت هنا", "Fii nga nekk"],
+  "map.more": ["Voir le lieu", "View venue", "Ver el lugar", "عرض الموقع", "Gis bérab bi"],
+
+  /* — Fiche lieu détaillée — */
+  "venue.capacity": ["Capacité", "Capacity", "Aforo", "السعة", "Ñaata nit"],
+  "venue.sports": ["Sports accueillis", "Sports hosted", "Deportes", "الرياضات", "Futbal yi"],
+  "venue.services": ["Services sur place", "On-site services", "Servicios", "الخدمات", "Ëmb yi"],
+  "venue.access": ["Accès", "Getting there", "Cómo llegar", "الوصول", "Àgg"],
+  "venue.about": ["À propos", "About", "Acerca de", "حول", "Ci mbir mi"],
+  "svc.parking": ["Parking", "Parking", "Aparcamiento", "موقف سيارات", "Parking"],
+  "svc.food": ["Restauration", "Food", "Comida", "مطاعم", "Lekk"],
+  "svc.secours": ["Premiers secours", "First aid", "Primeros auxilios", "إسعافات أولية", "Faj gaaw"],
+  "svc.pmr": ["Accès PMR", "Accessible", "Acceso PMR", "لذوي الإعاقة", "Àgg ñi am ndoyal"],
+  "svc.shuttle": ["Navettes", "Shuttles", "Lanzaderas", "حافلات نقل", "Nawet"],
 
   /* — Toasts — */
   "toast.added": ["Ajouté à mon agenda", "Added to my agenda", "Añadido a mi agenda", "أُضيف إلى أجندتي", "Yokk nañu ko ci sama ajanda"],

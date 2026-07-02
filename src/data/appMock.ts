@@ -195,14 +195,15 @@ export interface NewsItem {
   tag: string;      // étiquette courte (RÉSULTAT, RECORD…)
   title: string;
   sub: string;      // ligne secondaire (qui / quand / détail)
+  img?: string;     // photo de fond (à défaut : fond sombre)
 }
 
 export const NEWS: NewsItem[] = [
-  { id: "n-or", kind: "resultat", tag: "Résultat", title: "A. Diallo décroche l'or du 100 m nage libre", sub: "Natation · 53,71 s · nouveau record des Jeux" },
-  { id: "n-record", kind: "record", tag: "Record", title: "Record du 200 m battu en séries", sub: "Athlétisme · 20,42 s · K. Mensah (GHA)" },
-  { id: "n-athlete", kind: "athlete", tag: "Fait marquant", title: "N. Sarr, 16 ans, en finale du fleuret", sub: "Escrime · la benjamine de l'équipe sénégalaise" },
-  { id: "n-actu", kind: "actu", tag: "Actu JOJ", title: "La flamme illumine la Corniche ce soir", sub: "Cérémonie · concert gratuit dès 19:00" },
-  { id: "n-medal", kind: "resultat", tag: "Médailles", title: "Le Sénégal en tête du tableau", sub: "8 or · 5 argent · 6 bronze" },
+  { id: "n-or", kind: "resultat", tag: "Résultat", title: "A. Diallo décroche l'or du 100 m nage libre", sub: "Natation · 53,71 s · nouveau record des Jeux", img: "/assets/news/nage.jpg" },
+  { id: "n-record", kind: "record", tag: "Record", title: "Record du 200 m battu en séries", sub: "Athlétisme · 20,42 s · K. Mensah (GHA)", img: "/assets/news/sprint.jpg" },
+  { id: "n-athlete", kind: "athlete", tag: "Fait marquant", title: "N. Sarr, 16 ans, en finale du fleuret", sub: "Escrime · la benjamine de l'équipe sénégalaise", img: "/assets/news/nsarr.webp" },
+  { id: "n-actu", kind: "actu", tag: "Actu JOJ", title: "La flamme illumine la Corniche ce soir", sub: "Cérémonie · concert gratuit dès 19:00", img: "/assets/news/flamme.jpg" },
+  { id: "n-medal", kind: "resultat", tag: "Médailles", title: "Le Sénégal en tête du tableau", sub: "8 or · 5 argent · 6 bronze", img: "/assets/news/medailles.jpg" },
 ];
 
 /* — Bannière live / prochains matchs (accueil) — */
@@ -229,10 +230,9 @@ export const DISCOVER: {
   img?: string;
   filter: import("@/data/mobility").MapFilter;
 }[] = [
-  /* goree.jpg / musee.png des ressources sont en réalité des photos de la Renaissance → placeholders */
-  { id: "goree", cat: "patrimoine", name: "Île de Gorée", filter: "tourisme" },
-  { id: "lacrose", cat: "nature", name: "Lac Rose", filter: "activite" },
-  { id: "musee", cat: "culture", name: "Musée des Civilisations", filter: "tourisme" },
+  { id: "goree", cat: "patrimoine", name: "Île de Gorée", img: "/assets/venues/goree.jpg", filter: "tourisme" },
+  { id: "lacrose", cat: "nature", name: "Lac Rose", img: "/assets/venues/lac-rose.jpg", filter: "activite" },
+  { id: "musee", cat: "culture", name: "Musée des Civilisations", img: "/assets/venues/musee.jpg", filter: "tourisme" },
   { id: "renaissance", cat: "panorama", name: "Mon. Renaissance", img: "/assets/venues/renaissance.jpg", filter: "tourisme" },
 ];
 

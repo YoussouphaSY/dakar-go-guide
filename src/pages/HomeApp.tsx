@@ -111,19 +111,26 @@ const HomeApp = () => {
       <div ref={trackRef} className="scr flex overflow-x-auto snap-x snap-mandatory rounded-[22px]">
         {NEWS.map((n) => (
           <div key={n.id} className="min-w-full snap-center">
-            <div className="relative h-[168px] rounded-[22px] overflow-hidden bg-foreground text-background">
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.04)_0_14px,transparent_14px_28px)]" />
+            <div className="relative h-[168px] rounded-[22px] overflow-hidden bg-foreground text-white">
+              {n.img ? (
+                <>
+                  <img src={asset(n.img)} alt={n.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+                </>
+              ) : (
+                <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.04)_0_14px,transparent_14px_28px)]" />
+              )}
               <div className="relative h-full p-5 flex flex-col justify-end">
                 <span
-                  className="self-start text-[10px] font-bold uppercase tracking-wide px-2.5 py-[5px] rounded-full text-background"
+                  className="self-start text-[10px] font-bold uppercase tracking-wide px-2.5 py-[5px] rounded-full text-white"
                   style={{ background: NEWS_ACCENT[n.kind] }}
                 >
                   {n.tag}
                 </span>
-                <div className="font-display font-extrabold text-[19px] leading-[1.12] tracking-tight mt-2.5 max-w-[280px]">
+                <div className="font-display font-extrabold text-[19px] leading-[1.12] tracking-tight mt-2.5 max-w-[280px] drop-shadow-sm">
                   {n.title}
                 </div>
-                <div className="text-[12.5px] text-muted-foreground mt-1.5">{n.sub}</div>
+                <div className="text-[12.5px] text-white/80 mt-1.5">{n.sub}</div>
               </div>
             </div>
           </div>

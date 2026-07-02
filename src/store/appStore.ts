@@ -65,7 +65,7 @@ interface AppState {
   agendaHintSeen: boolean;
   agenda: string[];
   mapFilter: MapFilter;
-  placeId: string | null;
+  venueId: string | null;   // fiche lieu détaillée (plein écran)
   langOpen: boolean;
   reminders: Record<string, boolean>;
   interests: Record<string, boolean>;
@@ -89,7 +89,7 @@ interface AppState {
   setProgSheet: (s: ProgSheet) => void;
   setEventId: (id: string | null) => void;
   setMapFilter: (f: MapFilter) => void;
-  setPlaceId: (id: string | null) => void;
+  setVenueId: (id: string | null) => void;
   setLangOpen: (o: boolean) => void;
   setMoMode: (m: string) => void;
   setMoDest: (id: string) => void;
@@ -116,7 +116,7 @@ export const useApp = create<AppState>((set, get) => ({
   agendaHintSeen: false,
   agenda: loadAgenda(),
   mapFilter: "competition",
-  placeId: null,
+  venueId: null,
   langOpen: false,
   reminders: { h1: true, m30: true, recap: false },
   interests: { nat: true, ath: true, basket: false, judo: false, lutte: true },
@@ -154,8 +154,8 @@ export const useApp = create<AppState>((set, get) => ({
   setProgVenue: (progVenue) => set({ progVenue, progSheet: null }),
   setProgSheet: (progSheet) => set({ progSheet }),
   setEventId: (eventId) => set({ eventId }),
-  setMapFilter: (mapFilter) => set({ mapFilter, placeId: null }),
-  setPlaceId: (placeId) => set({ placeId }),
+  setMapFilter: (mapFilter) => set({ mapFilter, venueId: null }),
+  setVenueId: (venueId) => set({ venueId }),
   setLangOpen: (langOpen) => set({ langOpen }),
   setMoMode: (moMode) => set({ moMode }),
   setMoDest: (moDest) => set({ moDest }),

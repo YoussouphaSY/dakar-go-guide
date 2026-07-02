@@ -20,6 +20,20 @@ export interface PoiI18n {
   wo?: string;
 }
 
+/* Sport accueilli sur un site JOJ, avec sa période. */
+export interface VenueSport {
+  name: string;   // "Boxe"
+  dates: string;  // "7–12 nov"
+}
+
+/* Détails riches d'un site (fiche plein écran). Surtout les sites de compétition. */
+export interface VenueDetail {
+  capacity?: string;                    // "15 000 places"
+  sports?: VenueSport[];                // sports accueillis + dates
+  services?: ("parking" | "food" | "secours" | "pmr" | "shuttle")[];
+  access?: string;                      // note d'accès courte
+}
+
 export interface Poi {
   id: string;
   name: string;
@@ -35,6 +49,7 @@ export interface Poi {
   image?: string;   // chemin public (aperçu fiche)
   tags?: string[];  // détails : sports accueillis, lignes, spécialités…
   schedule?: string; // horaires (ex. "Tous les jours · 16:00–00:00")
+  venue?: VenueDetail; // détails riches (fiche plein écran) — sites JOJ
 }
 
 export const POIS: Poi[] = [
@@ -46,7 +61,18 @@ export const POIS: Poi[] = [
       es: "Pabellón multideporte de 15 000 plazas: baloncesto 3×3 y futsal. Polo olímpico de Diamniadio.",
       ar: "صالة متعددة الرياضات تتسع لـ15000 متفرج: كرة السلة 3×3 وكرة الصالات. القطب الأولمبي بديامنياديو.",
     },
-    tags: ["Basket 3×3", "Futsal"], schedule: "Badminton & Futsal · 1er–12 nov" },
+    image: "/assets/venues/arene.jpg",
+    tags: ["Basket 3×3", "Futsal"], schedule: "Badminton & Futsal · 1er–12 nov",
+    venue: {
+      capacity: "15 000 places",
+      sports: [
+        { name: "Badminton", dates: "1er–5 nov" },
+        { name: "Futsal", dates: "6–12 nov" },
+        { name: "Basket 3×3", dates: "6–9 nov" },
+      ],
+      services: ["parking", "food", "secours", "pmr"],
+      access: "Autoroute à péage · sortie Diamniadio · navettes depuis Dakar",
+    } },
   { id: "expo", name: "Dakar Expo Center", type: "venue", filter: "competition", lat: 14.7330, lng: -17.1840, dist: "13 km", time: "21 min", city: "Diamniadio",
     desc: "Boxe, judo, escrime, gymnastique et wushu, au Centre des Expositions de Diamniadio.",
     i18n: {
@@ -55,7 +81,20 @@ export const POIS: Poi[] = [
       ar: "الملاكمة والجودو والمبارزة والجمباز والووشو في مركز المعارض بديامنياديو.",
     },
     image: "/assets/venues/expo.jpg",
-    tags: ["Boxe", "Judo", "Escrime", "Gymnastique", "Wushu"], schedule: "1er–13 nov · selon discipline" },
+    tags: ["Boxe", "Judo", "Escrime", "Gymnastique", "Wushu"], schedule: "1er–13 nov · selon discipline",
+    venue: {
+      capacity: "5 halls · 8 000 places",
+      sports: [
+        { name: "Wushu", dates: "1er–3 nov" },
+        { name: "Judo", dates: "1er–3 nov" },
+        { name: "Tennis de table", dates: "31 oct–5 nov" },
+        { name: "Gymnastique", dates: "5–11 nov" },
+        { name: "Boxe", dates: "7–12 nov" },
+        { name: "Escrime", dates: "8–13 nov" },
+      ],
+      services: ["parking", "food", "secours", "pmr"],
+      access: "Pôle urbain de Diamniadio · TER station Diamniadio + navette",
+    } },
   { id: "wade", name: "Stade Abdoulaye Wade", type: "venue", filter: "competition", lat: 14.7570, lng: -17.0760, dist: "16 km", time: "24 min", city: "Diamniadio",
     desc: "Le grand stade national : cérémonie d'ouverture et tir à l'arc.",
     i18n: {
@@ -64,7 +103,17 @@ export const POIS: Poi[] = [
       ar: "الملعب الوطني الكبير: حفل الافتتاح ورماية القوس.",
     },
     image: "/assets/venues/wade.jpg",
-    tags: ["Cérémonie d'ouverture", "Tir à l'arc"], schedule: "Ouverture 31 oct · Tir à l'arc 6–10 nov" },
+    tags: ["Cérémonie d'ouverture", "Tir à l'arc"], schedule: "Ouverture 31 oct · Tir à l'arc 6–10 nov",
+    venue: {
+      capacity: "50 000 places",
+      sports: [
+        { name: "Cérémonie d'ouverture", dates: "31 oct" },
+        { name: "Tir à l'arc", dates: "6–10 nov" },
+        { name: "Cérémonie de clôture", dates: "13 nov" },
+      ],
+      services: ["parking", "food", "secours", "pmr", "shuttle"],
+      access: "Le plus grand stade du pays · navettes officielles depuis Dakar",
+    } },
   { id: "iba", name: "Complexe Iba Mar Diop", type: "venue", filter: "competition", lat: 14.6890, lng: -17.4560, dist: "3 km", time: "10 min", city: "Dakar",
     desc: "Athlétisme, taekwondo et rugby à 7, au cœur de Dakar.",
     i18n: {
@@ -73,7 +122,17 @@ export const POIS: Poi[] = [
       ar: "ألعاب القوى والتايكوندو والرغبي السباعي في قلب داكار.",
     },
     image: "/assets/venues/iba.jpg",
-    tags: ["Athlétisme", "Taekwondo", "Rugby à 7"], schedule: "Rugby 1–3 · Athlé 8–10 · Taekwondo 8–12 nov" },
+    tags: ["Athlétisme", "Taekwondo", "Rugby à 7"], schedule: "Rugby 1–3 · Athlé 8–10 · Taekwondo 8–12 nov",
+    venue: {
+      capacity: "20 000 places",
+      sports: [
+        { name: "Rugby à 7", dates: "1er–3 nov" },
+        { name: "Athlétisme", dates: "8–10 nov" },
+        { name: "Taekwondo", dates: "8–12 nov" },
+      ],
+      services: ["parking", "food", "secours", "pmr"],
+      access: "En plein cœur de Dakar · accessible en BRT et taxi",
+    } },
   { id: "oeuf", name: "Complexe Tour de l'Œuf", type: "venue", filter: "competition", lat: 14.7050, lng: -17.4730, dist: "5 km", time: "13 min", city: "Dakar",
     desc: "Natation, baseball5, skateboard, basket 3×3 et breaking.",
     i18n: {
@@ -82,7 +141,19 @@ export const POIS: Poi[] = [
       ar: "السباحة والبيسبول5 والتزلج وكرة السلة 3×3 والبريك دانس.",
     },
     image: "/assets/venues/oeuf.jpg",
-    tags: ["Natation", "Baseball5", "Skateboard", "Breaking"], schedule: "Natation 1–6 · Breaking 12–13 nov" },
+    tags: ["Natation", "Baseball5", "Skateboard", "Breaking"], schedule: "Natation 1–6 · Breaking 12–13 nov",
+    venue: {
+      capacity: "Complexe · 6 000 places",
+      sports: [
+        { name: "Baseball5", dates: "30 oct–3 nov" },
+        { name: "Natation", dates: "1er–6 nov" },
+        { name: "Skateboard", dates: "4 & 5 nov" },
+        { name: "Basket 3×3", dates: "6–9 nov" },
+        { name: "Breaking", dates: "12 & 13 nov" },
+      ],
+      services: ["parking", "food", "secours", "pmr"],
+      access: "Bord de Corniche · à quelques minutes du centre de Dakar",
+    } },
   { id: "corniche", name: "Corniche Ouest", type: "venue", filter: "competition", lat: 14.6920, lng: -17.4760, dist: "4 km", time: "11 min", city: "Dakar",
     desc: "Cyclisme sur route en bord d'océan.",
     i18n: {
@@ -91,7 +162,13 @@ export const POIS: Poi[] = [
       ar: "سباق الدراجات على الطريق بمحاذاة المحيط.",
     },
     image: "/assets/venues/corniche.jpg",
-    tags: ["Cyclisme"], schedule: "Cyclisme · 8 & 10 nov" },
+    tags: ["Cyclisme"], schedule: "Cyclisme · 8 & 10 nov",
+    venue: {
+      capacity: "Circuit ouvert · accès libre",
+      sports: [{ name: "Cyclisme sur route", dates: "8 & 10 nov" }],
+      services: ["secours", "food"],
+      access: "Parcours en bord d'océan · zones spectateurs le long de la Corniche",
+    } },
   { id: "saly", name: "Saly Beach West", type: "venue", filter: "competition", lat: 14.4490, lng: -17.0080, dist: "80 km", time: "1 h 10", city: "Saly",
     desc: "Sports de plage : beach-volley, lutte, handball, voile, triathlon, aviron.",
     i18n: {
@@ -100,7 +177,20 @@ export const POIS: Poi[] = [
       ar: "رياضات شاطئية: الكرة الطائرة الشاطئية والمصارعة وكرة اليد والإبحار والترياتلون والتجديف.",
     },
     image: "/assets/venues/saly.jpg",
-    tags: ["Beach-volley", "Lutte", "Voile", "Triathlon"], schedule: "2–13 nov · selon discipline" },
+    tags: ["Beach-volley", "Lutte", "Voile", "Triathlon"], schedule: "2–13 nov · selon discipline",
+    venue: {
+      capacity: "Site balnéaire · gradins temporaires",
+      sports: [
+        { name: "Aviron de mer", dates: "31 oct–3 nov" },
+        { name: "Beach-volley", dates: "2–4 nov" },
+        { name: "Triathlon", dates: "5 & 6 nov" },
+        { name: "Lutte de plage", dates: "7 & 8 nov" },
+        { name: "Planche à voile", dates: "8–12 nov" },
+        { name: "Handball de plage", dates: "9–13 nov" },
+      ],
+      services: ["parking", "food", "secours"],
+      access: "Station de Saly · ≈ 80 km de Dakar · navettes dédiées",
+    } },
   { id: "equestre", name: "Centre équestre", type: "venue", filter: "competition", lat: 14.7280, lng: -17.1950, dist: "13 km", time: "21 min", city: "Diamniadio",
     desc: "Saut d'obstacles : l'épreuve d'équitation.",
     i18n: {
@@ -109,7 +199,13 @@ export const POIS: Poi[] = [
       ar: "قفز الحواجز: منافسة الفروسية.",
     },
     image: "/assets/venues/equestre.jpg",
-    tags: ["Équitation"], schedule: "Équitation · 3–6 nov" },
+    tags: ["Équitation"], schedule: "Équitation · 3–6 nov",
+    venue: {
+      capacity: "Carrière · tribunes 2 000 places",
+      sports: [{ name: "Équitation (saut d'obstacles)", dates: "3–6 nov" }],
+      services: ["parking", "secours", "pmr"],
+      access: "Pôle de Diamniadio · à proximité de Dakar Arena",
+    } },
 
   /* ── Festivités pendant les JOJ ── */
   { id: "fanzone", name: "Fan Zone Corniche", type: "poi", filter: "festivite", lat: 14.6905, lng: -17.4710, dist: "4 km", time: "11 min", city: "Dakar",
@@ -155,6 +251,7 @@ export const POIS: Poi[] = [
       es: "Baño, surf y piragua hacia la isla de Ngor, rincón preferido de las Almadías.",
       ar: "سباحة وركوب أمواج وقوارب إلى جزيرة نغور، أشهر مواقع رأس ألمادي.",
     },
+    image: "/assets/venues/ngor.jpg",
     tags: ["Plage", "Surf", "Pirogue"], schedule: "Tous les jours" },
   { id: "marche-sandaga", name: "Marché Sandaga", type: "poi", filter: "activite", lat: 14.6770, lng: -17.4400, dist: "2 km", time: "8 min", city: "Dakar",
     desc: "Le grand marché de Dakar : tissus, artisanat et ambiance authentique.",
@@ -163,6 +260,7 @@ export const POIS: Poi[] = [
       es: "El gran mercado de Dakar: telas, artesanía y ambiente auténtico.",
       ar: "سوق داكار الكبير: أقمشة وحرف يدوية وأجواء أصيلة.",
     },
+    image: "/assets/venues/sandaga.jpg",
     tags: ["Shopping", "Artisanat"], schedule: "Lun–Sam · 9:00–19:00" },
   { id: "lac-rose", name: "Lac Rose", type: "poi", filter: "activite", lat: 14.8390, lng: -17.2350, dist: "35 km", time: "45 min", city: "Dakar",
     desc: "Le célèbre lac aux eaux roses (Retba), récolte de sel et quad sur les dunes.",
@@ -171,6 +269,7 @@ export const POIS: Poi[] = [
       es: "El famoso lago rosa (Retba): cosecha de sal y quads en las dunas.",
       ar: "البحيرة الوردية الشهيرة (ريتبا): جني الملح وركوب الدراجات الرباعية على الكثبان.",
     },
+    image: "/assets/venues/lac-rose.jpg",
     tags: ["Nature", "Quad", "Sel"], schedule: "Tous les jours" },
 
   /* ── Restos / sites touristiques ── */
@@ -199,6 +298,7 @@ export const POIS: Poi[] = [
       ar: "تراث عالمي لليونسكو وذاكرة تجارة الرقيق، على بعد 20 دقيقة بالعبّارة.",
     },
     /* pas de photo : goree.jpg du dossier media est en réalité le Monument de la Renaissance */
+    image: "/assets/venues/goree.jpg",
     tags: ["UNESCO", "Histoire"], schedule: "Chaloupe dès 7:00" },
   { id: "musee-mcn", name: "Musée des Civilisations noires", type: "poi", filter: "tourisme", lat: 14.6720, lng: -17.4350, dist: "2,5 km", time: "9 min", city: "Dakar",
     desc: "Vaste musée dédié aux civilisations et à l'art africains.",
@@ -207,6 +307,7 @@ export const POIS: Poi[] = [
       es: "Amplio museo dedicado a las civilizaciones y al arte africanos.",
       ar: "متحف واسع مكرّس للحضارات والفنون الأفريقية.",
     },
+    image: "/assets/venues/musee.jpg",
     tags: ["Musée", "Art", "Culture"], schedule: "Mar–Dim · 10:00–19:00" },
 ];
 
