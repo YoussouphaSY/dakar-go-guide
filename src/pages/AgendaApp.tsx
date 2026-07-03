@@ -4,6 +4,7 @@ import { AlertTriangle, MapPin, ArrowRight, Trash2, CalendarPlus, Download, Cale
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { useT, dayLabelT } from "@/lib/useT";
+import { sportTr, venueTr, eventTitle } from "@/data/eventI18n";
 import { findEvent } from "@/data/appMock";
 import { downloadAgendaPdf } from "@/lib/agendaPdf";
 import { downloadAgendaIcs } from "@/lib/agendaIcs";
@@ -75,8 +76,8 @@ const AgendaApp = () => {
   const downloadPdf = () => {
     const entries = days.flatMap((d) =>
       groups[d].map((e) => ({
-        day: e.day, time: e.time, sport: e.sport, title: e.title,
-        venue: e.venue, depart: e.depart, conflict: e.conflict,
+        day: e.day, time: e.time, sport: sportTr(e.sport, lang), title: eventTitle(e.id, e.title, lang),
+        venue: venueTr(e.venue, lang), depart: e.depart, conflict: e.conflict,
       })),
     );
     downloadAgendaPdf(entries, lang);
@@ -86,7 +87,8 @@ const AgendaApp = () => {
   const addToCalendar = () => {
     const entries = days.flatMap((d) =>
       groups[d].map((e) => ({
-        id: e.id, day: e.day, time: e.time, sport: e.sport, title: e.title, venue: e.venue,
+        id: e.id, day: e.day, time: e.time, sport: sportTr(e.sport, lang),
+        title: eventTitle(e.id, e.title, lang), venue: venueTr(e.venue, lang),
       })),
     );
     downloadAgendaIcs(entries);
@@ -181,7 +183,7 @@ const AgendaApp = () => {
                       {a.conflict && (
                         <span className="bg-destructive/10 text-destructive text-[10px] font-bold px-2 py-[3px] rounded-full">{t("ag.conflict")}</span>
                       )}
-                      <span className="text-xs text-muted-foreground ml-auto">{a.sport}</span>
+                      <span className="text-xs text-muted-foreground ml-auto">{sportTr(a.sport, lang)}</span>
                       <button
                         onClick={() => toggleAgenda(a.id)}
                         aria-label={t("ag.removeAria")}
@@ -190,10 +192,10 @@ const AgendaApp = () => {
                         <Trash2 className="w-[17px] h-[17px]" strokeWidth={2} />
                       </button>
                     </div>
-                    <div className="font-display font-bold text-[17px] mt-1.5 leading-[1.15]">{a.title}</div>
+                    <div className="font-display font-bold text-[17px] mt-1.5 leading-[1.15]">{eventTitle(a.id, a.title, lang)}</div>
                     <div className="flex items-center gap-1.5 text-[12.5px] text-muted-foreground mt-1.5">
                       <MapPin className="w-3.5 h-3.5" strokeWidth={2} />
-                      {a.venue}
+                      {venueTr(a.venue, lang)}
                     </div>
                     <div className="mt-3 flex items-center gap-2.5 bg-primary/10 rounded-[14px] px-3 py-[11px]">
                       <ArrowRight className="w-[18px] h-[18px] text-primary flex-shrink-0" strokeWidth={2} />

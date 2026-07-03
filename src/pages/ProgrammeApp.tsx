@@ -2,6 +2,7 @@ import { Search, CalendarDays, MapPin, Plus, Check, ChevronRight } from "lucide-
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { useT, dayLabelT } from "@/lib/useT";
+import { sportTr, venueTr, eventTitle } from "@/data/eventI18n";
 import AnchoredPopover from "@/components/app/AnchoredPopover";
 import { PROG_EVENTS, jojDays, PROG_VENUE_INFO } from "@/data/appMock";
 
@@ -172,9 +173,9 @@ const ProgrammeApp = () => {
                   </div>
                   <div className="w-px self-stretch bg-border flex-shrink-0 min-h-[46px]" />
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs text-muted-foreground">{e.sport}</div>
-                    <div className="font-display font-bold text-[16.5px] leading-[1.2] mt-0.5">{e.title}</div>
-                    <div className="text-[12.5px] text-muted-foreground mt-[3px]">{e.venue}</div>
+                    <div className="text-xs text-muted-foreground">{sportTr(e.sport, lang)}</div>
+                    <div className="font-display font-bold text-[16.5px] leading-[1.2] mt-0.5">{eventTitle(e.id, e.title, lang)}</div>
+                    <div className="text-[12.5px] text-muted-foreground mt-[3px]">{venueTr(e.venue, lang)}</div>
                   </div>
                   <ChevronRight className="w-[18px] h-[18px] text-border flex-shrink-0" strokeWidth={2} />
                 </div>

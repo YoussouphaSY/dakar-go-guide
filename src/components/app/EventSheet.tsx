@@ -2,6 +2,7 @@ import { X, Clock, MapPin, Check, Plus } from "lucide-react";
 import BottomSheet from "./BottomSheet";
 import { useApp } from "@/store/appStore";
 import { useT, dayLabelT } from "@/lib/useT";
+import { sportTr, venueTr, phaseTr, eventTitle, eventAbout } from "@/data/eventI18n";
 import {
   findEvent, EVENT_DETAILS,
   type EventDetail, type ProgEvent,
@@ -34,7 +35,7 @@ const EventSheet = () => {
     <BottomSheet open onClose={close} scrollable>
       <div className="relative h-[150px] bg-[repeating-linear-gradient(135deg,#E7E7E2_0_12px,#F1F1EC_12px_24px)] rounded-t-[30px] overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-muted-foreground">
-          photo · {ev.sport}
+          photo · {sportTr(ev.sport, lang)}
         </div>
         <button
           onClick={close}
@@ -45,7 +46,7 @@ const EventSheet = () => {
         </button>
         <div className="absolute top-3.5 left-3.5 flex gap-[7px]">
           <span className="bg-background/90 text-[11px] font-semibold text-foreground/80 px-2.5 py-[5px] rounded-full">
-            {det.phase}
+            {phaseTr(det.phase, lang)}
           </span>
           {ev.live && (
             <span className="inline-flex items-center gap-[5px] bg-destructive text-destructive-foreground text-[11px] font-bold px-2.5 py-[5px] rounded-full">
@@ -57,8 +58,8 @@ const EventSheet = () => {
       </div>
 
       <div className="px-[22px] pt-5 pb-7">
-        <div className="text-xs text-muted-foreground uppercase tracking-wide">{ev.sport}</div>
-        <h3 className="font-display font-extrabold text-2xl tracking-tight leading-[1.08] mt-1">{ev.title}</h3>
+        <div className="text-xs text-muted-foreground uppercase tracking-wide">{sportTr(ev.sport, lang)}</div>
+        <h3 className="font-display font-extrabold text-2xl tracking-tight leading-[1.08] mt-1">{eventTitle(ev.id, ev.title, lang)}</h3>
         <div className="flex flex-wrap gap-4 mt-3">
           <div className="flex items-center gap-[7px] text-[13.5px] text-foreground/80">
             <Clock className="w-[15px] h-[15px] text-primary" strokeWidth={2} />
@@ -66,7 +67,7 @@ const EventSheet = () => {
           </div>
           <div className="flex items-center gap-[7px] text-[13.5px] text-foreground/80">
             <MapPin className="w-[15px] h-[15px] text-primary" strokeWidth={2} />
-            {ev.venue}
+            {venueTr(ev.venue, lang)}
           </div>
         </div>
 
@@ -107,7 +108,7 @@ const EventSheet = () => {
           </>
         )}
 
-        <p className="text-sm leading-[1.55] text-muted-foreground mt-[18px]">{det.about}</p>
+        <p className="text-sm leading-[1.55] text-muted-foreground mt-[18px]">{eventAbout(eventId, det.about, lang)}</p>
 
         <div className="flex gap-2.5 mt-5">
           <button

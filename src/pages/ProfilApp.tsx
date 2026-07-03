@@ -3,11 +3,11 @@ import { Download, MessageCircle, ChevronRight, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/store/appStore";
 import { useT } from "@/lib/useT";
-import { LANGS, INTERESTS, SETTINGS, qrCells, type LangId } from "@/data/appMock";
+import { LANGS, INTERESTS, SETTINGS, type LangId } from "@/data/appMock";
 
 /*
-  ProfilApp — écran Profil (mobile), fidèle au prototype (Prototype-2).
-  Avatar, langue, notifications (alertes), billet (QR), centres d'intérêt, réglages.
+  ProfilApp — écran Profil (mobile).
+  Avatar, langue, notifications (alertes), centres d'intérêt, réglages, déconnexion.
 */
 
 const SETTING_ICON: Record<string, typeof Download> = {
@@ -21,8 +21,6 @@ const NOTIF_OPTIONS = [
   { key: "m30", tKey: "notif.m30.t", sKey: "notif.m30.s" },
   { key: "recap", tKey: "notif.recap.t", sKey: "notif.recap.s" },
 ] as const;
-
-const cells = qrCells();
 
 const ProfilApp = () => {
   const nav = useNavigate();
@@ -78,31 +76,6 @@ const ProfilApp = () => {
             </button>
           );
         })}
-      </div>
-
-      {/* billet */}
-      <h3 className="font-display font-extrabold text-base mt-[26px]">{t("pr.tickets")}</h3>
-      <div className="mt-3 bg-foreground rounded-[20px] p-[18px] text-background flex items-center gap-4">
-        <div className="flex-1">
-          <div className="font-mono text-[10px] text-muted-foreground uppercase tracking-wide">Athlétisme · 8 nov 18:00</div>
-          <div className="font-display font-extrabold text-[17px] mt-1 leading-[1.1]">Finale 200 m · hommes</div>
-          <div className="text-xs text-muted-foreground mt-1.5">Cat. 2 · ×2 · Iba Mar Diop</div>
-        </div>
-        <div className="w-[62px] h-[62px] rounded-xl bg-white p-[7px] flex-shrink-0">
-          <svg viewBox="0 0 25 25" width="48" height="48">
-            <rect x="0" y="0" width="7" height="7" fill="none" stroke="#0E0F0C" strokeWidth="1.6" />
-            <rect x="2" y="2" width="3" height="3" fill="#0E0F0C" />
-            <rect x="18" y="0" width="7" height="7" fill="none" stroke="#0E0F0C" strokeWidth="1.6" />
-            <rect x="20" y="2" width="3" height="3" fill="#0E0F0C" />
-            <rect x="0" y="18" width="7" height="7" fill="none" stroke="#0E0F0C" strokeWidth="1.6" />
-            <rect x="2" y="20" width="3" height="3" fill="#0E0F0C" />
-            <g fill="#0E0F0C">
-              {cells.map((c, i) => (
-                <rect key={i} x={c.x} y={c.y} width="1" height="1" />
-              ))}
-            </g>
-          </svg>
-        </div>
       </div>
 
       {/* notifications (alertes migrées de l'Agenda) */}
@@ -168,14 +141,22 @@ const ProfilApp = () => {
         })}
       </div>
 
-      {/* déconnexion */}
+      {/* déconnexion — carte distincte, pastille rouge douce */}
       <button
         onClick={logout}
-        className="mt-6 w-full flex items-center justify-center gap-2 border border-destructive/30 text-destructive font-semibold text-[14.5px] py-3.5 rounded-[14px] active:scale-[0.99] transition-base"
+        className="mt-6 w-full group flex items-center gap-3.5 bg-destructive/5 rounded-[16px] px-4 py-3.5 active:scale-[0.99] transition-base"
       >
-        <LogOut className="w-[18px] h-[18px]" strokeWidth={2} />
-        {t("pr.logout")}
+        <span className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0 transition-base group-active:bg-destructive/20">
+          <LogOut className="w-[19px] h-[19px] text-destructive" strokeWidth={2} />
+        </span>
+        <span className="flex-1 text-left">
+          <span className="block font-semibold text-[14.5px] text-destructive">{t("pr.logout")}</span>
+          <span className="block text-[12px] text-destructive/60 mt-0.5">Awa Ndiaye</span>
+        </span>
+        <ChevronRight className="w-[18px] h-[18px] text-destructive/40" strokeWidth={2} />
       </button>
+
+      <div className="h-2" />
     </div>
   );
 };
