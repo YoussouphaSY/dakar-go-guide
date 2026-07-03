@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import AppShell from "@/components/layout/AppShell";
 import { useApp } from "@/store/appStore";
 import Splash from "./Splash";
@@ -9,6 +9,7 @@ import Preferences from "./Preferences";
   AppGate — enchaînement d'ouverture de l'interface app :
   Splash (à chaque ouverture) → [si non connecté] Auth → Préférences → app.
   Une fois « prêt », on rend les routes de l'app (children).
+  La déconnexion (authed → false) renvoie directement à l'écran de connexion.
 */
 
 type Phase = "splash" | "auth" | "prefs" | "ready";
@@ -17,6 +18,11 @@ const AppGate = ({ children }: { children: ReactNode }) => {
   const authed = useApp((s) => s.authed);
   const setAuthed = useApp((s) => s.setAuthed);
   const [phase, setPhase] = useState<Phase>("splash");
+
+  // Déconnexion en cours d'usage : on repasse à l'écran de connexion.
+  useEffect(() => {
+    if (!authed && phase === "ready") setPhase("auth");
+  }, [authed, phase]);
 
   if (phase === "ready") return <>{children}</>;
 

@@ -35,8 +35,9 @@ const ProfilApp = () => {
   const settings = SETTINGS.filter((s) => s.id !== "notif");
 
   const logout = () => {
-    setAuthed(false);
+    // AppGate détecte authed=false et réaffiche l'écran de connexion.
     nav("/");
+    setAuthed(false);
   };
 
   return (

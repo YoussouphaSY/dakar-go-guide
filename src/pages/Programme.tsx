@@ -13,14 +13,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-/*
-  Programme (web) — reprend le design du Planner mobile Claude :
-  3 onglets segmentés Programme / Agenda / Alertes, adaptés en layout web large.
-  - Programme : recherche + filtres (lieu / date calendrier / sport déroulant) + séances + ajout agenda
-  - Agenda    : récap du jour, détection de conflits d'horaires, reco de départ, timeline
-  - Alertes   : réglages rappels (1h / 30 min / récap) + prochains rappels
-  Agenda persistant en localStorage (clé partagée avec le mobile).
-*/
+ 
 
 const AGENDA_KEY = "dakargo-agenda";
 type Tab = "programme" | "agenda" | "alertes";

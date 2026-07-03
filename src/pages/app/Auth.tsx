@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
   Auth — connexion / inscription (UI seule, sans backend).
   Register : Nom/Prénom · Email ou numéro · MDP → OTP de confirmation.
   Login : Email ou numéro · MDP → OTP.
-  L'OTP accepte le code de démo « 123456 » (ou tout code à 6 chiffres).
+  L'OTP accepte le code de démo « 1234 » (ou tout code à 4 chiffres).
 */
 
 type Mode = "login" | "register";
@@ -16,7 +16,8 @@ interface AuthProps {
   onDone: () => void;
 }
 
-const DEMO_CODE = "123456";
+const OTP_LEN = 4;
+const DEMO_CODE = "1234";
 
 const Auth = ({ onDone }: AuthProps) => {
   const [mode, setMode] = useState<Mode>("register");
@@ -25,7 +26,7 @@ const Auth = ({ onDone }: AuthProps) => {
   const [lastName, setLastName] = useState("");
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState<string[]>(() => Array(OTP_LEN).fill(""));
   const [error, setError] = useState("");
 
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -46,13 +47,13 @@ const Auth = ({ onDone }: AuthProps) => {
 
   const otpValue = otp.join("");
   const verifyOtp = () => {
-    if (otpValue.length !== 6) {
-      setError("Entrez les 6 chiffres reçus.");
+    if (otpValue.length !== OTP_LEN) {
+      setError(`Entrez les ${OTP_LEN} chiffres reçus.`);
       return;
     }
     // UI seule : on accepte le code démo, sinon message d'aide.
-    if (otpValue !== DEMO_CODE && !/^\d{6}$/.test(otpValue)) {
-      setError("Code invalide. (démo : 123456)");
+    if (otpValue !== DEMO_CODE && !new RegExp(`^\\d{${OTP_LEN}}$`).test(otpValue)) {
+      setError(`Code invalide. (démo : ${DEMO_CODE})`);
       return;
     }
     setError("");
@@ -64,7 +65,7 @@ const Auth = ({ onDone }: AuthProps) => {
     const next = [...otp];
     next[i] = v;
     setOtp(next);
-    if (v && i < 5) otpRefs.current[i + 1]?.focus();
+    if (v && i < OTP_LEN - 1) otpRefs.current[i + 1]?.focus();
   };
 
   useEffect(() => {
@@ -153,7 +154,7 @@ const Auth = ({ onDone }: AuthProps) => {
         <>
           <h1 className="font-display font-extrabold text-[30px] tracking-tight mt-6">Vérification</h1>
           <p className="text-[14.5px] text-muted-foreground mt-1.5 leading-[1.5]">
-            Nous avons envoyé un code à 6 chiffres à<br />
+            Nous avons envoyé un code à {OTP_LEN} chiffres à<br />
             <span className="font-semibold text-foreground">{identifier || "votre contact"}</span>.
           </p>
 
